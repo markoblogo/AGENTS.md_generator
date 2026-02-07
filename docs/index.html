@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <!-- Primary SEO -->
+  <title>AGENTS.md Generator (agentsgen) — Safe AGENTS.md & RUNBOOK.md for AI coding agents</title>
+  <meta name="description" content="Generate and maintain AGENTS.md / RUNBOOK.md safely: marker-based updates, diff-first workflow, and auto-detected repo commands (Makefile, package.json, Python). No overwrites. OSS." />
+  <link rel="canonical" href="https://agentsmd.abvx.xyz/" />
+
+  <!-- Robots -->
+  <meta name="robots" content="index,follow,max-image-preview:large" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="AGENTS.md Generator (agentsgen)" />
+  <meta property="og:description" content="Safe-by-default generator for AGENTS.md / RUNBOOK.md. Marker-based updates, diffs, autodetect. No repo damage." />
+  <meta property="og:url" content="https://agentsmd.abvx.xyz/" />
+  <meta property="og:image" content="https://agentsmd.abvx.xyz/og.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AGENTS.md Generator (agentsgen)" />
+  <meta name="twitter:description" content="Generate & update AGENTS.md safely. Markers + diffs + autodetect. OSS." />
+  <meta name="twitter:image" content="https://agentsmd.abvx.xyz/og.png" />
+
+  <!-- Favicons -->
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+  <!-- Structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "AGENTS.md Generator (agentsgen)",
+    "applicationCategory": "DeveloperApplication",
+    "operatingSystem": "macOS, Linux, Windows",
+    "description": "Safe-by-default generator for AGENTS.md / RUNBOOK.md. Marker-based updates, diff-first workflow, and auto-detect of repo commands.",
+    "url": "https://agentsmd.abvx.xyz/",
+    "codeRepository": "https://github.com/markoblogo/AGENTS.md_generator",
+    "license": "https://github.com/markoblogo/AGENTS.md_generator/blob/main/LICENSE",
+    "softwareVersion": "0.1.0",
+    "author": {
+      "@type": "Person",
+      "name": "Marko Blogo"
+    }
+  }
+  </script>
+  <style>
+    :root{
+      color-scheme: light dark;
+      --bg0: #0b0f14;
+      --bg1: #101826;
+      --card: rgba(255,255,255,.06);
+      --cardBorder: rgba(255,255,255,.10);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.72);
+      --muted2: rgba(255,255,255,.55);
+      --accent: #76d5ff;
+      --accent2: #a6ffcb;
+      --shadow: 0 16px 60px rgba(0,0,0,.45);
+      --radius: 16px;
+    }
+
+    @media (prefers-color-scheme: light) {
+      :root{
+        --bg0: #f7f7f4;
+        --bg1: #eef3ff;
+        --card: rgba(0,0,0,.03);
+        --cardBorder: rgba(0,0,0,.08);
+        --text: rgba(0,0,0,.88);
+        --muted: rgba(0,0,0,.70);
+        --muted2: rgba(0,0,0,.55);
+        --accent: #0069ff;
+        --accent2: #00a36a;
+        --shadow: 0 18px 70px rgba(0,0,0,.10);
+      }
+    }
+
+    *{ box-sizing: border-box; }
+    html, body{ height: 100%; }
+    body{
+      margin: 0;
+      color: var(--text);
+      background:
+        radial-gradient(900px 600px at 20% 10%, color-mix(in oklab, var(--accent) 22%, transparent), transparent 70%),
+        radial-gradient(900px 600px at 85% 30%, color-mix(in oklab, var(--accent2) 18%, transparent), transparent 70%),
+        linear-gradient(180deg, var(--bg1), var(--bg0));
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
+    }
+
+    a{ color: inherit; text-decoration: none; }
+    a:hover{ opacity: .95; }
+
+    .wrap{
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 28px 18px 70px;
+    }
+
+    .nav{
+      display:flex;
+      gap:14px;
+      align-items:center;
+      justify-content:space-between;
+      margin-bottom: 26px;
+    }
+
+    .brand{
+      display:flex;
+      align-items: baseline;
+      gap: 10px;
+      letter-spacing: -.01em;
+    }
+    .brand strong{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      font-size: 14px;
+      padding: 6px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--cardBorder);
+      background: color-mix(in oklab, var(--card) 80%, transparent);
+    }
+    .brand span{ color: var(--muted2); font-size: 14px; }
+
+    .navlinks{ display:flex; gap:12px; flex-wrap:wrap; }
+    .navlinks a{
+      opacity: .86;
+      font-size: 14px;
+      padding: 6px 8px;
+      border-radius: 10px;
+    }
+    .navlinks a:hover{ background: color-mix(in oklab, var(--card) 75%, transparent); opacity: .98; }
+
+    .hero{ padding: 22px 0 10px; }
+    h1{
+      font-family: ui-serif, Georgia, "Times New Roman", Times, serif;
+      font-size: 46px;
+      letter-spacing:-.03em;
+      margin: 0 0 10px;
+      line-height: 1.05;
+    }
+    .sub{
+      font-size: 18px;
+      line-height:1.52;
+      color: var(--muted);
+      max-width: 860px;
+    }
+
+    .btns{ display:flex; flex-wrap:wrap; gap:10px; margin: 18px 0 8px; }
+    .btn{
+      border: 1px solid var(--cardBorder);
+      padding: 10px 12px;
+      border-radius: 12px;
+      font-weight: 650;
+      background: color-mix(in oklab, var(--card) 70%, transparent);
+      box-shadow: 0 0 0 rgba(0,0,0,0);
+      transition: transform .12s ease, box-shadow .12s ease;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      box-shadow: var(--shadow);
+    }
+    .btn.primary{
+      border-color: color-mix(in oklab, var(--accent) 55%, var(--cardBorder));
+      background: linear-gradient(135deg,
+        color-mix(in oklab, var(--accent) 22%, var(--card)),
+        color-mix(in oklab, var(--accent2) 18%, var(--card))
+      );
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+      margin-top: 22px;
+    }
+    @media(min-width: 860px){ .grid { grid-template-columns: 1fr 1fr; } }
+
+    section{
+      margin-top: 26px;
+      padding-top: 14px;
+      border-top: 1px solid color-mix(in oklab, var(--cardBorder) 85%, transparent);
+    }
+    h2{ font-size: 18px; margin: 0 0 10px; letter-spacing: -.01em; }
+    h3{ font-size: 15px; margin: 14px 0 8px; letter-spacing: -.01em; }
+    ul{ margin: 10px 0 0 18px; color: var(--muted); }
+    li{ margin: 6px 0; }
+
+    code, pre{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+    pre{
+      padding: 14px;
+      border-radius: var(--radius);
+      border: 1px solid var(--cardBorder);
+      background: color-mix(in oklab, var(--card) 90%, transparent);
+      overflow:auto;
+    }
+    .note{
+      margin-top: 10px;
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .card{
+      border: 1px solid var(--cardBorder);
+      border-radius: var(--radius);
+      padding: 14px;
+      background: color-mix(in oklab, var(--card) 90%, transparent);
+    }
+    .muted{ color: var(--muted); }
+
+    .kicker{
+      font-size: 13px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: var(--muted2);
+      margin-bottom: 10px;
+    }
+
+    footer{
+      margin-top: 38px;
+      padding-top: 16px;
+      border-top: 1px solid color-mix(in oklab, var(--cardBorder) 85%, transparent);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .reveal{
+      animation: rise .45s ease both;
+    }
+    @keyframes rise{
+      from { transform: translateY(8px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+    @media (prefers-reduced-motion: reduce){
+      .reveal{ animation: none; }
+      .btn{ transition: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav reveal">
+      <div class="brand">
+        <strong>agentsgen</strong>
+        <span>AGENTS.md Generator</span>
+      </div>
+      <div class="navlinks">
+        <a href="https://github.com/markoblogo/AGENTS.md_generator">GitHub</a>
+        <a href="#quickstart">Quickstart</a>
+        <a href="#safety">Safety</a>
+        <a href="#limitations">Limitations</a>
+      </div>
+    </div>
+
+    <div class="hero reveal">
+      <div class="kicker">Safe by default. Diff-first. No magic.</div>
+      <h1>AGENTS.md Generator for AI coding agents</h1>
+      <div class="sub">
+        Generate and maintain <strong>AGENTS.md</strong> / <strong>RUNBOOK.md</strong> safely: marker-based updates,
+        diff-first workflow, and conservative auto-detect of repo commands.
+        Built for Claude Code, Codex, Cursor, and similar agents that need repo context fast.
+      </div>
+
+      <div class="btns">
+        <a class="btn primary" href="https://github.com/markoblogo/AGENTS.md_generator">View on GitHub</a>
+        <a class="btn" href="#quickstart">Get started</a>
+        <a class="btn" href="#safety">Why it’s safe</a>
+      </div>
+
+      <div class="grid">
+        <div class="card">
+          <h2>Problem</h2>
+          <div class="muted">
+            AI agents are fast. Repo context is not. Most repos either have no agent docs,
+            or they’re outdated, inconsistent, and easy to break.
+          </div>
+          <ul>
+            <li>How to run tests / lint / build</li>
+            <li>What “done” means</li>
+            <li>What not to touch</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h2>Solution</h2>
+          <div class="muted">
+            <strong>agentsgen</strong> creates and updates agent docs using a safety-first model:
+            updates only inside markers, otherwise generates a sibling file.
+          </div>
+          <ul>
+            <li>Markers + patch-by-range updates</li>
+            <li>Diff-first workflow (<code>--dry-run</code>, <code>--print-diff</code>)</li>
+            <li>Auto-detect (no AI)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <section id="safety" class="reveal">
+      <h2>Safety model</h2>
+      <ul>
+        <li>Updates are limited to marked sections.</li>
+        <li><code>--dry-run</code> and <code>--print-diff</code> are first-class.</li>
+        <li>If the file has no markers, the original stays untouched: <code>AGENTS.generated.md</code>.</li>
+      </ul>
+      <div class="muted" style="margin-top: 10px;">
+        Three file modes: no file (create) · markers exist (patch) · no markers (write sibling).
+      </div>
+    </section>
+
+    <section id="quickstart" class="reveal">
+      <h2>Quickstart</h2>
+      <pre><code>pipx install git+https://github.com/markoblogo/AGENTS.md_generator
+cd your-repo
+agentsgen init --autodetect
+agentsgen update --dry-run --print-diff
+agentsgen update</code></pre>
+      <div class="note">
+        Want a clean CI guardrail? Add <code>agentsgen check</code> to your pipeline to catch broken markers/config early.
+      </div>
+    </section>
+
+    <section class="reveal">
+      <h2>Auto-detect (no AI)</h2>
+      <div class="muted">Priority rules:</div>
+      <ul>
+        <li><strong>Makefile</strong> (dominant)</li>
+        <li><strong>package.json</strong> scripts</li>
+        <li>Python heuristics (uv / poetry / pytest / ruff, etc.)</li>
+        <li>Otherwise: minimal baseline (no hallucinated commands)</li>
+      </ul>
+    </section>
+
+    <section class="reveal" id="use-cases">
+      <h2>Use cases</h2>
+      <ul>
+        <li>Add repo context for Claude Code / Codex without rewriting docs by hand.</li>
+        <li>Keep agent docs consistent across many repos (same safety model, same output protocol).</li>
+        <li>Prevent destructive edits: updates are marker-only; handcrafted docs stay yours.</li>
+        <li>Standardize install/test/lint/build commands without “guessing” (Makefile and scripts win).</li>
+      </ul>
+    </section>
+
+    <section class="reveal" id="faq">
+      <h2>FAQ</h2>
+
+      <h3>What is AGENTS.md?</h3>
+      <div class="muted">
+        A repo-level contract for coding agents: setup, commands, guardrails, and “done” criteria. Think “README for agents”.
+      </div>
+
+      <h3>Will it overwrite my existing docs?</h3>
+      <div class="muted">
+        By default: no. If markers are missing, the original file is left untouched and a sibling
+        <code>*.generated.md</code> file is written instead.
+      </div>
+
+      <h3>How does autodetect work?</h3>
+      <div class="muted">
+        It only checks for cheap signals (files like <code>Makefile</code>, <code>package.json</code>, <code>pyproject.toml</code>,
+        lockfiles). No command execution. No network.
+      </div>
+
+      <h3>Does it work for monorepos?</h3>
+      <div class="muted">
+        It can detect <code>mixed</code> and intentionally leave commands empty rather than hallucinate. In that case,
+        provide explicit config in <code>.agentsgen.json</code>.
+      </div>
+
+      <h3>Why not just write it manually?</h3>
+      <div class="muted">
+        Manual docs drift. The marker model makes updates safe to re-run and keeps your custom content intact.
+      </div>
+    </section>
+
+    <section id="limitations" class="reveal">
+      <h2>Known limitations</h2>
+      <ul>
+        <li>Monorepos may be detected as <code>mixed</code>, and commands can be left empty intentionally.</li>
+        <li>Unusual workflows should be defined explicitly in <code>.agentsgen.json</code>.</li>
+        <li>This generates process guidance, not a full developer handbook.</li>
+      </ul>
+    </section>
+
+    <footer class="reveal">
+      Made for people who want agents to be useful without turning documentation into a second job.<br/>
+      <a href="https://github.com/markoblogo/AGENTS.md_generator/issues">Issues</a> ·
+      <a href="https://github.com/markoblogo/AGENTS.md_generator/pulls">PRs</a> ·
+      <a href="https://github.com/markoblogo/AGENTS.md_generator/blob/main/LICENSE">License</a>
+    </footer>
+  </div>
+</body>
+</html>

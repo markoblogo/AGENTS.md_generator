@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "mode": "safe",
+  "on_missing_markers": "write_generated",
+  "generated_suffix": ".generated",
+  "markers": {
+    "start": "<!-- AGENTSGEN:START section={section} -->",
+    "end": "<!-- AGENTSGEN:END section={section} -->"
+  },
+  "sections": [
+    "guardrails",
+    "workflow",
+    "style",
+    "verification",
+    "stack",
+    "repo_context"
+  ],
+  "presets": {},
+  "defaults": {},
+  "project": {
+    "primary_stack": "python",
+    "name": "AGENTS.md Generator",
+    "repo_root": ".",
+    "python_toolchain": "vanilla"
+  },
+  "paths": {
+    "docs": [
+      "README.md"
+    ],
+    "ci": ".github/workflows/",
+    "scripts": "scripts/",
+    "source_dirs": [
+      "src"
+    ],
+    "config_locations": [
+      "Makefile",
+      "pyproject.toml",
+      ".github/workflows/"
+    ]
+  },
+  "commands": {
+    "test": "make test",
+    "lint": "make lint",
+    "format": "make format"
+  },
+  "evidence": {
+    "python": [
+      "pyproject.toml"
+    ],
+    "node": [],
+    "make": [
+      "Makefile",
+      "target:format",
+      "target:install",
+      "target:lint",
+      "target:snapshot",
+      "target:test"
+    ],
+    "ci": [
+      ".github/workflows/ci.yml"
+    ]
+  }
+}
