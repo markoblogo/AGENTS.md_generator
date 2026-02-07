@@ -29,6 +29,39 @@ python3 -m venv .venv
 pip install -e .
 ```
 
+## Quickstart
+
+Install (recommended for dev tools):
+
+```sh
+pipx install git+https://github.com/markoblogo/AGENTS.md_generator.git
+```
+
+Generate files (autodetect on by default):
+
+```sh
+agentsgen init --defaults
+```
+
+Preview changes safely:
+
+```sh
+agentsgen update --dry-run --print-diff
+```
+
+Apply updates + validate:
+
+```sh
+agentsgen update
+agentsgen check
+```
+
+Uninstall:
+
+```sh
+pipx uninstall agentsgen
+```
+
 ## Usage
 
 ```sh
@@ -38,6 +71,23 @@ agentsgen check
 agentsgen init --defaults --stack python --dry-run --print-diff
 pipx uninstall agentsgen
 ```
+
+## Known Limitations
+
+- Auto-detect is intentionally conservative (file heuristics only; no “smart” analysis).
+- Monorepos may detect as `mixed`, and commands can be empty on purpose (better empty than wrong).
+- If a Makefile exists, Makefile targets win over other toolchains by design.
+- Templates are minimal for v0.1.x: `python`, `node`, `static`.
+- The tool only owns content inside `AGENTSGEN` marker sections; keep custom content outside markers.
+
+## Landing Page (GitHub Pages)
+
+This repo includes a minimal one-page landing in `docs/index.html`.
+
+- GitHub: Settings -> Pages
+- Source: Deploy from a branch
+- Branch: `main`
+- Folder: `/docs`
 
 ## Snapshot Commits
 
