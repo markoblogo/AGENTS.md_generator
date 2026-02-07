@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+Sitemap: https://markoblogo.github.io/AGENTS.md_generator/sitemap.xml
+
