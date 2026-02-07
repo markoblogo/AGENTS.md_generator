@@ -1,2 +1,0 @@
-agentsgen
-agentsmd_generator
