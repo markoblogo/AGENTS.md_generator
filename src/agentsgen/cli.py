@@ -222,7 +222,9 @@ def check_cmd(
     target: Path = typer.Argument(Path("."), exists=True, file_okay=False, dir_okay=True),
 ):
     """Validate that repo is agentsgen-ready. Non-zero exit code on problems."""
-    code, problems = check_repo(target)
+    code, problems, warnings = check_repo(target)
+    for w in warnings:
+        err_console.print(f"WARN: {w}")
     if problems:
         for p in problems:
             err_console.print(f"- {p}")
@@ -234,7 +236,9 @@ def doctor(
     target: Path = typer.Argument(Path("."), exists=True, file_okay=False, dir_okay=True),
 ):
     """Alias for check."""
-    code, problems = check_repo(target)
+    code, problems, warnings = check_repo(target)
+    for w in warnings:
+        err_console.print(f"WARN: {w}")
     if problems:
         for p in problems:
             err_console.print(f"- {p}")

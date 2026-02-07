@@ -244,12 +244,13 @@ def update_from_config(target: Path, dry_run: bool, print_diff: bool) -> list[Fi
     return apply_config(target, tool_cfg, write_prompts=False, dry_run=dry_run, print_diff=print_diff)
 
 
-def check_repo(target: Path) -> tuple[int, list[str]]:
+def check_repo(target: Path) -> tuple[int, list[str], list[str]]:
     problems: list[str] = []
+    warnings: list[str] = []
     cfg = target / CONFIG_FILENAME
     if not cfg.exists():
         problems.append(f"Missing {CONFIG_FILENAME}. Run: agentsgen init")
-        return 2, problems
+        return 2, problems, warnings
 
     tool_cfg = load_tool_config(target)
     info = tool_cfg.project_info
@@ -281,6 +282,8 @@ def check_repo(target: Path) -> tuple[int, list[str]]:
                     problems.append(f"{fname}: section '{sec}' is empty")
                 # Basic placeholder detection (cheap + useful).
                 if body in ("- (not specified)", "- (none)", "- (no commands configured)", "- (not set)"):
-                    problems.append(f"{fname}: section '{sec}' looks like a placeholder; fill it or remove the section")
+                    warnings.append(
+                        f"{fname}: section '{sec}' looks like a placeholder; fill it or remove the section"
+                    )
 
-    return (1 if problems else 0), problems
+    return (1 if problems else 0), problems, warnings
