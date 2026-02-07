@@ -20,7 +20,10 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -e .
+          pip install pytest
       - name: Smoke tests
         run: |
           python -m agentsgen._smoke
-
+      - name: Unit tests
+        run: |
+          pytest -q

@@ -1,0 +1,124 @@
+{# Minimal, high-signal repo context for agents #}
+
+{% set project_name = project.name|default("this repo") %}
+{% set stack = project.primary_stack|default("unknown") %}
+{% set repo_root = project.repo_root|default(".") %}
+
+{% set docs = paths.docs|default(["README.md"]) %}
+{% set plans_dir = paths.plans|default("plans/") %}
+{% set drafts_dir = paths.drafts|default("drafts/") %}
+{% set scripts_dir = paths.scripts|default("scripts/") %}
+{% set ci = paths.ci|default(".github/workflows/") %}
+
+{% set entrypoints = project.entrypoints|default([]) %}
+{% set services = project.services|default([]) %}
+
+{% set fast = commands.fast|default("") %}
+{% set full = commands.full|default("") %}
+{% set dev = commands.dev|default("") %}
+{% set build = commands.build|default("") %}
+{% set test = commands.test|default("") %}
+{% set lint = commands.lint|default("") %}
+{% set format_cmd = commands.format|default("") %}
+{% set typecheck = commands.typecheck|default("") %}
+
+### Repo context (read this first)
+
+**Project:** {{ project_name }}  
+**Stack:** {{ stack }}  
+**Repo root:** `{{ repo_root }}`
+
+#### Quick orientation
+- Start here:
+{% for d in docs %}
+  - `{{ d }}`
+{% endfor %}
+- CI workflows live in: `{{ ci }}`
+- Planning/spec drafts (if used):  
+  - Plans: `{{ plans_dir }}`  
+  - Drafts/specs: `{{ drafts_dir }}`
+- Useful scripts (if any): `{{ scripts_dir }}`
+
+{% if entrypoints %}
+#### Entrypoints (what actually runs)
+{% for ep in entrypoints %}
+- `{{ ep }}`
+{% endfor %}
+{% endif %}
+
+{% if services %}
+#### Services/modules
+{% for s in services %}
+- {{ s.name|default("service") }}{% if s.path %} — `{{ s.path }}`{% endif %}{% if s.notes %} ({{ s.notes }}){% endif %}
+{% endfor %}
+{% endif %}
+
+#### Commands (copy/paste)
+{% if dev %}
+**Dev / run**
+```bash
+{{ dev }}
+```
+{% endif %}
+
+{% if build %}
+**Build**
+```bash
+{{ build }}
+```
+{% endif %}
+
+{% if lint or format_cmd or typecheck %}
+**Quality**
+{% if lint %}
+```bash
+{{ lint }}
+```
+{% endif %}
+{% if format_cmd %}
+```bash
+{{ format_cmd }}
+```
+{% endif %}
+{% if typecheck %}
+```bash
+{{ typecheck }}
+```
+{% endif %}
+{% endif %}
+
+{% if test %}
+**Tests (direct)**
+```bash
+{{ test }}
+```
+{% endif %}
+
+{% if fast or full %}
+**Verification loop**
+{% if fast %}
+Fast:
+```bash
+{{ fast }}
+```
+{% endif %}
+{% if full %}
+Full:
+```bash
+{{ full }}
+```
+{% endif %}
+{% endif %}
+
+#### Local environment notes
+
+- Prefer the repo's existing toolchain (don't upgrade it).
+- If you need new env vars: document names, don't invent secrets.
+- If a command fails due to missing deps, explain the minimal install step.
+
+#### Where to put new things
+
+- Small scripts/utilities — {{ scripts_dir }}
+- Specs/exec notes — {{ drafts_dir }}
+- Plans (if requested) — {{ plans_dir }}
+

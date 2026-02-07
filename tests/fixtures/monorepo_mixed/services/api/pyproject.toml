@@ -1,0 +1,9 @@
+[project]
+name = "api"
+version = "0.0.0"
+
+[tool.ruff]
+line-length = 100
+
+[tool.pytest.ini_options]
+addopts = "-q"

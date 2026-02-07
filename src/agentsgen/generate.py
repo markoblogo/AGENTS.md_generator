@@ -78,107 +78,6 @@ def build_render_plan(info: ProjectInfo) -> RenderPlan:
         ]
     )
 
-    guardrails = "\n".join(
-        [
-            "## Guardrails (read this first)",
-            "",
-            "You are an autonomous coding agent. Your job is to produce *useful*, *reviewable*, and *safe* changes.",
-            "",
-            "### Non-negotiables",
-            "- Prefer small, incremental changes over big rewrites.",
-            "- Don't change behavior unless the task explicitly requires it.",
-            "- Don't introduce new dependencies unless you can justify them and keep them minimal.",
-            "- Never touch secrets, tokens, or credentials. If something looks like a secret: stop and ask.",
-            "- If you are unsure: propose two options and pick the safer one.",
-            "",
-            "### Safe edits policy",
-            "- Default to additive changes: new files or small localized edits.",
-            "- Avoid wide refactors (renames, mass formatting, code motion) unless requested.",
-            "- If you must refactor: do it in a separate step from functional changes.",
-            "- Keep diffs boring: make them easy to review.",
-            "",
-            "### Tests are the gate",
-            "- If tests exist: run them (or provide exact commands to run).",
-            "- If tests fail: fix or explain why and propose the minimal fix.",
-            "- If there are no tests: add a small smoke test or a reproducible manual check.",
-            "",
-            "### Output expectations",
-            "- Produce an explicit summary:",
-            "  1) What changed",
-            "  2) Why",
-            "  3) How to verify (commands)",
-            "  4) Risk notes (what could break)",
-            "",
-            "### When to stop and ask",
-            "Ask before doing any of the following:",
-            "- Changing public APIs, schema, or data formats",
-            "- Deleting files or large blocks of code",
-            "- Introducing new build tooling, CI, or major dependencies",
-            "- Touching auth, payments, encryption, or compliance-related code",
-        ]
-    )
-
-    workflow = "\n".join(
-        [
-            "## Workflow & PR discipline",
-            "",
-            "### Work in thin slices",
-            "Aim for a sequence that can be reviewed quickly:",
-            "1) scaffold / wiring",
-            "2) core logic",
-            "3) tests",
-            "4) docs",
-            "",
-            "### Commit hygiene (even if you don't commit)",
-            "Structure your work as if it were clean commits:",
-            "- feat: functional change",
-            "- test: tests only",
-            "- docs: docs only",
-            "- refactor: no behavior change",
-            "",
-            "### Reviewability checklist",
-            "Before you say done, confirm:",
-            "- Diff is small enough to review",
-            "- Naming is consistent with the repo",
-            "- No dead code or TODOs without context",
-            "- Verification steps are included",
-            "- Edge cases are not ignored silently",
-        ]
-    )
-
-    verification = "\n".join(
-        [
-            "## Verification (how to check my work)",
-            "",
-            "When you change code, always provide:",
-            "- One fast check (<=30s)",
-            "- One full check (tests/lint)",
-            "",
-            "Example format:",
-            "- Fast: `<command>`",
-            "- Full: `<command>`",
-            "",
-            "If you cannot run commands in this environment, still provide the exact commands for the user to run locally.",
-        ]
-    )
-
-    style = "\n".join(
-        [
-            "## Coding conventions (agent instructions)",
-            "",
-            "- Match existing style and patterns in the repo.",
-            "- Prefer clarity over cleverness.",
-            "- Avoid magic abstractions until the second iteration.",
-            "- Log/print only when it helps debugging; avoid noisy output.",
-            "- Errors should be actionable: explain what failed and how to fix it.",
-            "",
-            "When adding a function/module:",
-            "- Include a docstring (what/why, not just how)",
-            "- Keep interfaces small and composable",
-            "- Add at least one test (happy path + one edge case)",
-        ]
-    )
-
     python_notes = "\n".join(
         [
             "## Python project notes",
@@ -230,14 +129,6 @@ def build_render_plan(info: ProjectInfo) -> RenderPlan:
         ]
     )
 
-    repo_context = "\n".join(
-        [
-            "## Repo context (optional)",
-            "",
-            "- (add repo-specific notes here: invariants, no-touch areas, release process, etc.)",
-        ]
-    )
-
     return RenderPlan(
         sections={
             "overview": overview,
@@ -245,19 +136,21 @@ def build_render_plan(info: ProjectInfo) -> RenderPlan:
             "commands": commands,
             "structure": structure,
             "output_protocol": output_protocol,
-            "guardrails": guardrails,
-            "workflow": workflow,
-            "verification": verification,
-            "style": style,
             "python": python_notes,
             "node": node_notes,
             "static": static_notes,
-            "repo_context": repo_context,
         }
     )
 
 
-def render_agents_md(info: ProjectInfo, template_path: Path, single_test_hint: str, configs_hint: str) -> str:
+def render_agents_md(
+    info: ProjectInfo,
+    template_path: Path,
+    *,
+    single_test_hint: str,
+    configs_hint: str,
+    shared_blocks: dict[str, str],
+) -> str:
     plan = build_render_plan(info)
 
     ctx: dict[str, str] = {
@@ -272,14 +165,14 @@ def render_agents_md(info: ProjectInfo, template_path: Path, single_test_hint: s
         "output_protocol_block": plan.sections["output_protocol"],
         "single_test_hint": single_test_hint,
         "configs_hint": configs_hint,
-        "guardrails_block": plan.sections["guardrails"],
-        "workflow_block": plan.sections["workflow"],
-        "verification_block": plan.sections["verification"],
-        "style_block": plan.sections["style"],
+        "repo_context_block": shared_blocks.get("repo_context", "").strip(),
+        "guardrails_block": shared_blocks.get("guardrails", "").strip(),
+        "workflow_block": shared_blocks.get("workflow", "").strip(),
+        "verification_block": shared_blocks.get("verification", "").strip(),
+        "style_block": shared_blocks.get("style", "").strip(),
         "python_block": plan.sections["python"],
         "node_block": plan.sections["node"],
         "static_block": plan.sections["static"],
-        "repo_context_block": plan.sections["repo_context"],
     }
 
     return render_template(load_template(template_path), ctx)
@@ -331,14 +224,15 @@ def required_sections(stack: str) -> list[str]:
     stack = (stack or "").strip().lower()
     base = [
         "overview",
-        "rules",
-        "commands",
-        "structure",
-        "output_protocol",
+        "repo_context",
         "guardrails",
         "workflow",
         "verification",
         "style",
+        "rules",
+        "commands",
+        "structure",
+        "output_protocol",
     ]
     if stack in ("python", "node", "static"):
         return base + [stack]

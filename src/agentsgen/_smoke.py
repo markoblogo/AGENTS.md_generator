@@ -5,7 +5,8 @@ import os
 import tempfile
 from pathlib import Path
 
-from agentsgen.actions import init_or_update
+from agentsgen.actions import apply_config, save_tool_config
+from agentsgen.config import ToolConfig
 from agentsgen.model import ProjectInfo
 
 
@@ -23,7 +24,9 @@ def test1_init_creates_files_and_config() -> None:
             "dev": "npm run dev",
             "test": "npm test",
         }
-        res = init_or_update(target, info, write_prompts=True, dry_run=False, print_diff=False)
+        cfg = ToolConfig.from_project_info(info)
+        save_tool_config(target, cfg)
+        res = apply_config(target, cfg, write_prompts=True, dry_run=False, print_diff=False)
 
         assert (target / ".agentsgen.json").is_file()
         assert (target / "AGENTS.md").is_file()
@@ -32,7 +35,7 @@ def test1_init_creates_files_and_config() -> None:
 
         cfg = json.loads(_read(target / ".agentsgen.json"))
         assert cfg["version"] == 1
-        assert cfg["project"]["project_name"] == "demo"
+        assert cfg["project"]["name"] == "demo"
 
 
 def test2_update_preserves_outside_markers() -> None:
@@ -46,7 +49,9 @@ def test2_update_preserves_outside_markers() -> None:
             "test": "npm test",
         }
 
-        init_or_update(target, info, write_prompts=False, dry_run=False, print_diff=False)
+        cfg = ToolConfig.from_project_info(info)
+        save_tool_config(target, cfg)
+        apply_config(target, cfg, write_prompts=False, dry_run=False, print_diff=False)
 
         agents = target / "AGENTS.md"
         original = _read(agents)
@@ -55,7 +60,9 @@ def test2_update_preserves_outside_markers() -> None:
 
         # Change a command and re-run.
         info.commands["test"] = "npm test -- --runInBand"
-        init_or_update(target, info, write_prompts=False, dry_run=False, print_diff=False)
+        cfg = ToolConfig.from_project_info(info)
+        save_tool_config(target, cfg)
+        apply_config(target, cfg, write_prompts=False, dry_run=False, print_diff=False)
 
         updated = _read(agents)
         assert "## User Notes" in updated
@@ -79,7 +86,9 @@ def test3_no_markers_creates_generated_files() -> None:
             "test": "npm test",
         }
 
-        res = init_or_update(target, info, write_prompts=False, dry_run=False, print_diff=False)
+        cfg = ToolConfig.from_project_info(info)
+        save_tool_config(target, cfg)
+        res = apply_config(target, cfg, write_prompts=False, dry_run=False, print_diff=False)
 
         assert agents.is_file()
         assert runbook.is_file()

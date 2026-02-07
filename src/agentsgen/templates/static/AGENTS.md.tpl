@@ -4,57 +4,57 @@ This file is for coding agents (Codex/Claude/Cursor/etc.). Keep it strict and ac
 
 ## Overview
 
-<!-- AGENTSGEN:START overview -->
+<!-- AGENTSGEN:START section=overview -->
 {{overview_block}}
-<!-- AGENTSGEN:END overview -->
+<!-- AGENTSGEN:END section=overview -->
 
-<!-- AGENTSGEN:START guardrails -->
+<!-- AGENTSGEN:START section=repo_context -->
+{{repo_context_block}}
+<!-- AGENTSGEN:END section=repo_context -->
+
+<!-- AGENTSGEN:START section=guardrails -->
 {{guardrails_block}}
-<!-- AGENTSGEN:END guardrails -->
+<!-- AGENTSGEN:END section=guardrails -->
 
-<!-- AGENTSGEN:START workflow -->
+<!-- AGENTSGEN:START section=workflow -->
 {{workflow_block}}
-<!-- AGENTSGEN:END workflow -->
+<!-- AGENTSGEN:END section=workflow -->
 
-<!-- AGENTSGEN:START verification -->
+<!-- AGENTSGEN:START section=verification -->
 {{verification_block}}
-<!-- AGENTSGEN:END verification -->
+<!-- AGENTSGEN:END section=verification -->
 
-<!-- AGENTSGEN:START style -->
+<!-- AGENTSGEN:START section=style -->
 {{style_block}}
-<!-- AGENTSGEN:END style -->
+<!-- AGENTSGEN:END section=style -->
 
 ## Rules Of Engagement
 
-<!-- AGENTSGEN:START rules -->
+<!-- AGENTSGEN:START section=rules -->
 {{rules_block}}
-<!-- AGENTSGEN:END rules -->
+<!-- AGENTSGEN:END section=rules -->
 
 ## Commands
 
-<!-- AGENTSGEN:START commands -->
+<!-- AGENTSGEN:START section=commands -->
 {{commands_block}}
 
 - **Run a single test:** {{single_test_hint}}
 - **Where configs live:** {{configs_hint}}
-<!-- AGENTSGEN:END commands -->
+<!-- AGENTSGEN:END section=commands -->
 
-<!-- AGENTSGEN:START static -->
+<!-- AGENTSGEN:START section=static -->
 {{static_block}}
-<!-- AGENTSGEN:END static -->
-
-<!-- AGENTSGEN:START repo_context -->
-{{repo_context_block}}
-<!-- AGENTSGEN:END repo_context -->
+<!-- AGENTSGEN:END section=static -->
 
 ## Repo Structure
 
-<!-- AGENTSGEN:START structure -->
+<!-- AGENTSGEN:START section=structure -->
 {{structure_block}}
-<!-- AGENTSGEN:END structure -->
+<!-- AGENTSGEN:END section=structure -->
 
 ## Output Protocol
 
-<!-- AGENTSGEN:START output_protocol -->
+<!-- AGENTSGEN:START section=output_protocol -->
 {{output_protocol_block}}
-<!-- AGENTSGEN:END output_protocol -->
+<!-- AGENTSGEN:END section=output_protocol -->

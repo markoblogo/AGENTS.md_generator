@@ -4,6 +4,7 @@ from dataclasses import dataclass, field
 from typing import Any
 
 from .model import ProjectInfo
+from .detect.model import DetectResult
 
 
 @dataclass(frozen=True)
@@ -38,7 +39,14 @@ class ToolConfig:
     presets: dict[str, Any] = field(default_factory=dict)
     defaults: dict[str, Any] = field(default_factory=dict)
 
-    project: ProjectInfo = field(default_factory=lambda: ProjectInfo(project_name="", stack="static").normalized())
+    # Template context. Keep structure close to the proposed .agentsgen.json schema.
+    project: dict[str, Any] = field(default_factory=dict)
+    paths: dict[str, Any] = field(default_factory=dict)
+    commands: dict[str, Any] = field(default_factory=dict)
+    evidence: dict[str, Any] = field(default_factory=dict)
+
+    # Back-compat + internal convenience for stack templates/summary.
+    project_info: ProjectInfo = field(default_factory=lambda: ProjectInfo(project_name="", stack="static").normalized())
 
     def to_json(self) -> dict[str, Any]:
         return {
@@ -50,7 +58,10 @@ class ToolConfig:
             "sections": list(self.sections),
             "presets": self.presets,
             "defaults": self.defaults,
-            "project": self.project.to_json(),
+            "project": self.project,
+            "paths": self.paths,
+            "commands": self.commands,
+            "evidence": self.evidence,
         }
 
     @staticmethod
@@ -58,7 +69,8 @@ class ToolConfig:
         # Legacy format: ProjectInfo-only dict (no version field).
         if "version" not in d and "project_name" in d and "stack" in d:
             info = ProjectInfo.from_json(d)
-            cfg = ToolConfig(project=info)
+            cfg = ToolConfig(project_info=info)
+            cfg.project = {"name": info.project_name, "primary_stack": info.stack, "repo_root": "."}
             return cfg
 
         cfg = ToolConfig()
@@ -77,7 +89,49 @@ class ToolConfig:
         cfg.presets = dict(d.get("presets", {}) or {})
         cfg.defaults = dict(d.get("defaults", {}) or {})
 
-        proj = d.get("project", {}) or {}
-        cfg.project = ProjectInfo.from_json(proj) if proj else ProjectInfo(project_name="", stack="static").normalized()
+        cfg.project = dict(d.get("project", {}) or {})
+        cfg.paths = dict(d.get("paths", {}) or {})
+        cfg.commands = dict(d.get("commands", {}) or {})
+        cfg.evidence = dict(d.get("evidence", {}) or {})
+
+        # Derive internal ProjectInfo for existing render pipeline.
+        project_name = str(cfg.project.get("name", "")) or ""
+        primary_stack = str(cfg.project.get("primary_stack", "")) or ""
+        stack_for_templates = primary_stack if primary_stack in ("python", "node", "static") else "static"
+
+        info = ProjectInfo(project_name=project_name or "", stack=stack_for_templates).normalized()
+        # Preserve derived details where available.
+        if "node_package_manager" in cfg.project:
+            info.package_manager = str(cfg.project.get("node_package_manager") or "")
+        if "python_toolchain" in cfg.project:
+            info.python_tooling = str(cfg.project.get("python_toolchain") or "")
+        # Map detected commands into ProjectInfo (only the keys it uses).
+        for k in ["install", "dev", "test", "lint", "format", "build", "typecheck", "fast", "full"]:
+            v = str(cfg.commands.get(k, "") or "").strip()
+            if v:
+                info.commands[k] = v
+        cfg.project_info = info.normalized()
         return cfg
 
+    @staticmethod
+    def from_project_info(info: ProjectInfo) -> "ToolConfig":
+        cfg = ToolConfig()
+        cfg.project_info = info.normalized()
+        cfg.project = {
+            "name": cfg.project_info.project_name,
+            "primary_stack": cfg.project_info.stack,
+            "repo_root": ".",
+        }
+        cfg.commands = dict(cfg.project_info.commands)
+        return cfg
+
+    @staticmethod
+    def from_detect(det: DetectResult) -> "ToolConfig":
+        cfg = ToolConfig()
+        cfg.project = dict(det.project or {})
+        cfg.paths = dict(det.paths or {})
+        cfg.commands = dict(det.commands or {})
+        cfg.evidence = det.to_json().get("evidence", {})
+        # Derive ProjectInfo using existing parser logic.
+        cfg = ToolConfig.from_json(cfg.to_json())
+        return cfg

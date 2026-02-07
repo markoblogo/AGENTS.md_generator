@@ -2,18 +2,18 @@
 
 ## Quickstart
 
-<!-- AGENTSGEN:START quickstart -->
+<!-- AGENTSGEN:START section=quickstart -->
 {{quickstart_block}}
-<!-- AGENTSGEN:END quickstart -->
+<!-- AGENTSGEN:END section=quickstart -->
 
 ## Common Tasks
 
-<!-- AGENTSGEN:START common_tasks -->
+<!-- AGENTSGEN:START section=common_tasks -->
 {{common_tasks_block}}
-<!-- AGENTSGEN:END common_tasks -->
+<!-- AGENTSGEN:END section=common_tasks -->
 
 ## Troubleshooting
 
-<!-- AGENTSGEN:START troubleshooting -->
+<!-- AGENTSGEN:START section=troubleshooting -->
 {{troubleshooting_block}}
-<!-- AGENTSGEN:END troubleshooting -->
+<!-- AGENTSGEN:END section=troubleshooting -->

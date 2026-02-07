@@ -1,0 +1,10 @@
+{
+  "name": "node_pnpm",
+  "private": true,
+  "scripts": {
+    "dev": "node server.js",
+    "test": "node test.js",
+    "lint": "echo lint",
+    "build": "echo build"
+  }
+}

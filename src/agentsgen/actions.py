@@ -24,6 +24,7 @@ from .markers import (
 from .config import ToolConfig
 from .model import ProjectInfo
 from .normalize import normalize_markdown
+from .shared_sections import render_all_shared
 from .templates import prompt_template_path, templates_base_dir
 
 
@@ -75,14 +76,32 @@ def _patch_existing_with_generated(existing: str, generated: str, sections: list
     return existing, missing
 
 
-def _render_all(info: ProjectInfo) -> tuple[str, str]:
+def _render_shared_blocks(cfg: ToolConfig) -> dict[str, str]:
+    ctx = {
+        "project": cfg.project or {},
+        "paths": cfg.paths or {},
+        "commands": cfg.commands or {},
+        "defaults": cfg.defaults or {},
+    }
+    return render_all_shared(ctx)
+
+
+def _render_all(cfg: ToolConfig) -> tuple[str, str]:
+    info = cfg.project_info
     base = templates_base_dir()
     agents_tpl, runbook_tpl = template_paths(base, info.stack)
 
     configs_hint = ", ".join([f"`{p}`" for p in info.config_locations]) if info.config_locations else "(not specified)"
     single_test_hint = (info.commands.get("single_test", "") or "(not specified)").strip()
+    shared = _render_shared_blocks(cfg)
 
-    agents_md = render_agents_md(info, agents_tpl, single_test_hint=single_test_hint, configs_hint=configs_hint)
+    agents_md = render_agents_md(
+        info,
+        agents_tpl,
+        single_test_hint=single_test_hint,
+        configs_hint=configs_hint,
+        shared_blocks=shared,
+    )
     runbook_md = render_runbook_md(info, runbook_tpl)
 
     return normalize_markdown(agents_md), normalize_markdown(runbook_md)
@@ -158,41 +177,23 @@ def _handle_file(
     return FileResult(path=path, action="updated" if changed else "skipped", message="updated" if changed else "no changes", changed=changed, diff=d)
 
 
-def init_or_update(
+def apply_config(
     target: Path,
-    info: ProjectInfo,
+    cfg: ToolConfig,
+    *,
     write_prompts: bool,
     dry_run: bool,
     print_diff: bool,
 ) -> list[FileResult]:
-    info = info.normalized()
-
-    # Config is always saved on init (unless dry-run).
     results: list[FileResult] = []
-    cfg_path = target / CONFIG_FILENAME
-    tool_cfg = ToolConfig(project=info)
-    if cfg_path.exists():
-        # Keep idempotent: overwrite only if content differs.
-        new_cfg = tool_cfg.to_json()
-        old_cfg = read_json(cfg_path)
-        if old_cfg != new_cfg:
-            if not dry_run:
-                write_json_atomic(cfg_path, new_cfg)
-            results.append(FileResult(path=cfg_path, action="updated", message="config updated", changed=True))
-        else:
-            results.append(FileResult(path=cfg_path, action="skipped", message="config unchanged", changed=False))
-    else:
-        if not dry_run:
-            write_json_atomic(cfg_path, tool_cfg.to_json())
-        results.append(FileResult(path=cfg_path, action="created", message="config created", changed=True))
 
-    agents_full, runbook_full = _render_all(info)
+    agents_full, runbook_full = _render_all(cfg)
 
     results.append(
         _handle_file(
             target / AGENTS_FILENAME,
             agents_full,
-            required=required_sections(info.stack),
+            required=required_sections(cfg.project_info.stack),
             dry_run=dry_run,
             print_diff=print_diff,
         )
@@ -226,9 +227,21 @@ def init_or_update(
     return results
 
 
+def init_or_update(
+    target: Path,
+    info: ProjectInfo,
+    write_prompts: bool,
+    dry_run: bool,
+    print_diff: bool,
+) -> list[FileResult]:
+    # Back-compat wrapper for older callers.
+    cfg = ToolConfig.from_project_info(info.normalized())
+    return apply_config(target, cfg, write_prompts=write_prompts, dry_run=dry_run, print_diff=print_diff)
+
+
 def update_from_config(target: Path, dry_run: bool, print_diff: bool) -> list[FileResult]:
     tool_cfg = load_tool_config(target)
-    return init_or_update(target, tool_cfg.project, write_prompts=False, dry_run=dry_run, print_diff=print_diff)
+    return apply_config(target, tool_cfg, write_prompts=False, dry_run=dry_run, print_diff=print_diff)
 
 
 def check_repo(target: Path) -> tuple[int, list[str]]:
@@ -239,7 +252,7 @@ def check_repo(target: Path) -> tuple[int, list[str]]:
         return 2, problems
 
     tool_cfg = load_tool_config(target)
-    info = tool_cfg.project
+    info = tool_cfg.project_info
 
     for fname in [AGENTS_FILENAME, RUNBOOK_FILENAME]:
         p = target / fname

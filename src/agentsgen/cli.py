@@ -7,8 +7,11 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
-from .actions import check_repo, init_or_update, update_from_config
-from .detect import detect_stack
+import json
+
+from .actions import apply_config, check_repo, load_tool_config, save_tool_config, update_from_config
+from .config import ToolConfig
+from .detect import detect_repo
 from .model import ProjectInfo
 from .stacks import adapter_for
 from .stacks.base import project_name_from_dir
@@ -43,8 +46,11 @@ def _interactive_init(
     stack_opt: str | None,
     name_opt: str | None,
 ) -> ProjectInfo:
-    det = detect_stack(target)
-    suggested = det.stack
+    det = detect_repo(target)
+    suggested = str(det.project.get("primary_stack", "static"))
+    confidence = "high" if (det.evidence.python or det.evidence.node or det.evidence.make) else "low"
+    if suggested == "mixed":
+        suggested = "static"
 
     # In --defaults mode, avoid prompting (safe for non-interactive usage).
     if defaults:
@@ -52,7 +58,7 @@ def _interactive_init(
         project_name = (name_opt or project_name_from_dir(target)).strip()
     else:
         stack = typer.prompt(
-            f"Stack (node|python|static) [detected: {suggested}, {det.confidence}]",
+            f"Stack (node|python|static) [detected: {suggested}, {confidence}]",
             default=(stack_opt or suggested),
         ).strip().lower()
 
@@ -129,13 +135,38 @@ def init(
     defaults: bool = typer.Option(False, "--defaults", help="Use defaults (no prompts)"),
     stack: str | None = typer.Option(None, "--stack", help="Override stack in --defaults mode"),
     name: str | None = typer.Option(None, "--name", help="Override project name in --defaults mode"),
+    autodetect: bool = typer.Option(True, "--autodetect/--no-autodetect", help="Fill config using heuristic detection (read-only)"),
+    print_detect: bool = typer.Option(False, "--print-detect", help="Print detection evidence"),
+    force_config: bool = typer.Option(False, "--force-config", help="Overwrite .agentsgen.json"),
     prompts: bool = typer.Option(True, "--prompts/--no-prompts", help="Write prompt/execspec.md"),
     dry_run: bool = typer.Option(False, "--dry-run", help="Do not write files"),
     print_diff: bool = typer.Option(False, "--print-diff", help="Print unified diff"),
 ):
     """Initialize a repo: write .agentsgen.json and create/update AGENTS.md + RUNBOOK.md safely."""
-    info = _interactive_init(target, defaults=defaults, stack_opt=stack, name_opt=name)
-    results = init_or_update(target, info, write_prompts=prompts, dry_run=dry_run, print_diff=print_diff)
+    cfg_path = target / ".agentsgen.json"
+    cfg: ToolConfig
+
+    if cfg_path.exists() and not force_config:
+        cfg = load_tool_config(target)
+    else:
+        if autodetect:
+            det = detect_repo(target)
+            if print_detect:
+                err_console.print(json.dumps(det.to_json(), indent=2))
+            cfg = ToolConfig.from_detect(det)
+            if name:
+                cfg.project["name"] = name
+            if stack:
+                cfg.project["primary_stack"] = stack
+            cfg = ToolConfig.from_json(cfg.to_json())
+        else:
+            info = _interactive_init(target, defaults=defaults, stack_opt=stack, name_opt=name)
+            cfg = ToolConfig.from_project_info(info)
+
+        if not dry_run:
+            save_tool_config(target, cfg)
+
+    results = apply_config(target, cfg, write_prompts=prompts, dry_run=dry_run, print_diff=print_diff)
 
     # Any error result => exit 1.
     errors = [r for r in results if r.action == "error"]
@@ -191,6 +222,27 @@ def doctor(
         for p in problems:
             err_console.print(f"- {p}")
     raise typer.Exit(code=code)
+
+@app.command()
+def detect(
+    repo: Path = typer.Argument(Path("."), exists=True, file_okay=False, dir_okay=True),
+    format: str = typer.Option("text", "--format", help="Output format: text|json"),
+):
+    """Detect stack/tooling/commands using safe heuristics and print evidence."""
+    det = detect_repo(repo)
+    if format == "json":
+        console.print(json.dumps(det.to_json(), indent=2))
+        raise typer.Exit(code=0)
+
+    console.print(f"primary_stack: {det.project.get('primary_stack')}")
+    if det.commands:
+        console.print("commands:")
+        for k in sorted(det.commands.keys()):
+            console.print(f"- {k}: {det.commands[k]}")
+    console.print("evidence:")
+    for k, v in det.to_json().get("evidence", {}).items():
+        if v:
+            console.print(f"- {k}: {', '.join(v)}")
 
 
 def main(argv: list[str] | None = None) -> None:
