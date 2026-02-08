@@ -1,5 +1,5 @@
 :root{
-  color-scheme: light;
+  color-scheme: light dark;
 
   /* Layout */
   --max: 1120px;
@@ -28,6 +28,22 @@
   /* Typography */
   --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Arial, sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+}
+
+[data-theme="dark"]{
+  --bg: #0b1220;
+  --bg-soft: #0f172a;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --border: #1f2937;
+  --card: #0b1220;
+
+  --shadow: 0 18px 50px rgba(0, 0, 0, 0.55);
+  --shadow-soft: 0 10px 28px rgba(0, 0, 0, 0.42);
+
+  --accent: #22c55e;
+  --accent-ink: #b8ffd2;
+  --ring: 0 0 0 4px rgba(34, 197, 94, 0.28);
 }
 
 *{ box-sizing: border-box; }
@@ -66,9 +82,9 @@ a{ color: inherit; text-decoration: none; }
   position: sticky;
   top: 0;
   z-index: 30;
-  background: rgba(255,255,255,.70);
+  background: color-mix(in oklab, var(--bg) 70%, transparent);
   backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(226,232,240,.75);
+  border-bottom: 1px solid color-mix(in oklab, var(--border) 75%, transparent);
 }
 .topbar-inner{
   display:flex;
@@ -90,7 +106,7 @@ a{ color: inherit; text-decoration: none; }
   padding: 7px 10px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: rgba(255,255,255,.9);
+  background: color-mix(in oklab, var(--card) 92%, transparent);
   box-shadow: var(--shadow-soft);
 }
 .brand-title{
@@ -114,7 +130,7 @@ a{ color: inherit; text-decoration: none; }
   border-radius: 999px;
 }
 .nav a.link:hover{
-  background: rgba(226,232,240,.55);
+  background: color-mix(in oklab, var(--bg-soft) 70%, transparent);
   color: var(--text);
 }
 
@@ -140,7 +156,7 @@ a{ color: inherit; text-decoration: none; }
   color: white;
 }
 .btn.secondary{
-  background: rgba(255,255,255,.85);
+  background: color-mix(in oklab, var(--card) 90%, var(--bg-soft));
 }
 .btn.ghost{
   border-color: transparent;
@@ -149,8 +165,16 @@ a{ color: inherit; text-decoration: none; }
   color: var(--muted);
 }
 .btn.ghost:hover{
-  background: rgba(226,232,240,.55);
+  background: color-mix(in oklab, var(--bg-soft) 70%, transparent);
   color: var(--text);
+}
+
+.btn.icon{
+  padding: 10px 12px;
+  width: 42px;
+}
+.btn.icon svg{
+  display:block;
 }
 
 .btn:focus, .btn:focus-visible,
@@ -174,7 +198,7 @@ header + main{ padding-top: 14px; }
   padding: 8px 12px;
   border-radius: 999px;
   border: 1px solid var(--border);
-  background: rgba(255,255,255,.85);
+  background: color-mix(in oklab, var(--card) 90%, var(--bg-soft));
   box-shadow: var(--shadow-soft);
   color: var(--accent-ink);
   font-weight: 650;
@@ -182,7 +206,7 @@ header + main{ padding-top: 14px; }
 }
 .badge span{
   font-family: var(--mono);
-  color: rgba(15,23,42,.60);
+  color: color-mix(in oklab, var(--muted) 92%, var(--text));
   font-weight: 600;
 }
 
@@ -272,7 +296,7 @@ pre{
   margin: 0;
   padding: 16px;
   border-radius: var(--radius);
-  border: 1px solid rgba(226,232,240,.9);
+  border: 1px solid color-mix(in oklab, var(--border) 85%, transparent);
   background: var(--bg-soft);
   overflow: auto;
   line-height: 1.55;
@@ -281,8 +305,8 @@ pre{
 code{
   padding: .12em .35em;
   border-radius: 9px;
-  background: rgba(226,232,240,.55);
-  border: 1px solid rgba(226,232,240,.75);
+  background: color-mix(in oklab, var(--bg-soft) 70%, transparent);
+  border: 1px solid color-mix(in oklab, var(--border) 70%, transparent);
 }
 pre code{
   padding: 0;
@@ -296,7 +320,7 @@ pre code{
   border-radius: 999px;
   padding: 8px 10px;
   border: 1px solid var(--border);
-  background: rgba(255,255,255,.9);
+  background: color-mix(in oklab, var(--card) 90%, transparent);
   box-shadow: var(--shadow-soft);
   cursor: pointer;
   font-family: var(--font);
@@ -362,8 +386,8 @@ details summary::after{
   content: "";
   width: 10px;
   height: 10px;
-  border-right: 2px solid rgba(71,85,105,.75);
-  border-bottom: 2px solid rgba(71,85,105,.75);
+  border-right: 2px solid color-mix(in oklab, var(--muted) 90%, transparent);
+  border-bottom: 2px solid color-mix(in oklab, var(--muted) 90%, transparent);
   transform: rotate(45deg);
   transition: transform .15s ease;
   flex: 0 0 auto;
@@ -381,7 +405,7 @@ details[open] summary::after{
   padding: 44px 0 70px;
   border-top: 1px solid var(--border);
   color: var(--muted);
-  background: rgba(255,255,255,.55);
+  background: color-mix(in oklab, var(--card) 55%, transparent);
 }
 .footer-grid{
   display:flex;
@@ -414,4 +438,3 @@ details[open] summary::after{
   .btn:hover{ transform: none; }
   details summary::after{ transition: none; }
 }
-

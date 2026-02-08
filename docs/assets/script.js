@@ -1,4 +1,36 @@
 (() => {
+  const applyTheme = (t) => {
+    document.documentElement.dataset.theme = t;
+    try {
+      localStorage.setItem("theme", t);
+    } catch {}
+  };
+
+  const getTheme = () => document.documentElement.dataset.theme || "light";
+
+  const themeBtn = document.getElementById("theme-toggle");
+  if (themeBtn) {
+    const sync = () => {
+      const t = getTheme();
+      themeBtn.setAttribute("aria-pressed", t === "dark" ? "true" : "false");
+      themeBtn.setAttribute(
+        "aria-label",
+        t === "dark" ? "Switch to light theme" : "Switch to dark theme",
+      );
+      themeBtn.setAttribute(
+        "title",
+        t === "dark" ? "Switch to light theme" : "Switch to dark theme",
+      );
+    };
+
+    sync();
+    themeBtn.addEventListener("click", () => {
+      const next = getTheme() === "dark" ? "light" : "dark";
+      applyTheme(next);
+      sync();
+    });
+  }
+
   const btn = document.querySelector("[data-copy-target]");
   if (!btn) return;
 
@@ -25,4 +57,3 @@
     }
   });
 })();
-
