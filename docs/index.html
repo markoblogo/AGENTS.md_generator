@@ -113,8 +113,8 @@
       document.documentElement.dataset.theme = prefersDark ? "dark" : "light";
     })();
   </script>
-  <!-- Cache bust (Pages/CDN/browser). Update version when changing CSS. -->
-  <link rel="stylesheet" href="/assets/styles.css?v=20260208c" />
+  <!-- Cache bust (Pages/CDN/browser). Update version when changing CSS/JS. -->
+  <link rel="stylesheet" href="/assets/styles.css?v=20260208d" />
 </head>
 <body>
   <a class="skip" href="#content">Skip to content</a>
@@ -358,6 +358,46 @@ agentsgen update</code></pre>
       </div>
     </div>
   </footer>
-  <script src="/assets/script.js?v=20260208c" defer></script>
+  <script src="/assets/script.js?v=20260208d" defer></script>
+  <script>
+    // Theme toggle fallback: bind inline to survive stale-cached external JS.
+    // Guarded to avoid double toggles if multiple scripts bind handlers.
+    (() => {
+      if (window.__agentsgenThemeInit) return;
+      window.__agentsgenThemeInit = true;
+
+      const applyTheme = (t) => {
+        document.documentElement.dataset.theme = t;
+        try {
+          localStorage.setItem("theme", t);
+        } catch {}
+      };
+
+      const getTheme = () => document.documentElement.dataset.theme || "light";
+
+      const themeBtn = document.getElementById("theme-toggle");
+      if (!themeBtn) return;
+
+      const sync = () => {
+        const t = getTheme();
+        themeBtn.setAttribute("aria-pressed", t === "dark" ? "true" : "false");
+        themeBtn.setAttribute(
+          "aria-label",
+          t === "dark" ? "Switch to light theme" : "Switch to dark theme",
+        );
+        themeBtn.setAttribute(
+          "title",
+          t === "dark" ? "Switch to light theme" : "Switch to dark theme",
+        );
+      };
+
+      sync();
+      themeBtn.addEventListener("click", () => {
+        const next = getTheme() === "dark" ? "light" : "dark";
+        applyTheme(next);
+        sync();
+      });
+    })();
+  </script>
 </body>
 </html>
