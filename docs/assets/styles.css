@@ -187,6 +187,11 @@ main section, .section{ padding: var(--section-y) 0; }
 .hero-grid{
   display: grid;
   gap: 18px;
+  position: relative;
+}
+.hero-left{
+  position: relative;
+  padding-top: 72px;
 }
 
 h1{
@@ -199,7 +204,7 @@ h1{
 }
 .hero-title-wrap{
   position: relative;
-  padding-top: 44px;
+  padding-top: 0;
 }
 .lede{
   margin: 0;
@@ -531,7 +536,7 @@ details[open] summary::after{ transform: rotate(-135deg); }
     font-size: 11px;
     padding: 7px 10px;
   }
-  .hero-title-wrap{ padding-top: 12px; }
+  .hero-left{ padding-top: 0; }
 }
 
 @media (prefers-reduced-motion: reduce){
@@ -541,23 +546,31 @@ details[open] summary::after{ transform: rotate(-135deg); }
 
 /* --- HERO STICKERS (LOUD, PAPER, OVERLAP) --- */
 .hero { position: relative; }
-.hero-grid,
 .hero-title-wrap{
   position: relative;
   overflow: visible;
 }
 
-.hero-sticker-cluster{
+.hero-sticker-cluster,
+.hero-stickers{
   position:absolute;
-  left: -8px;
   top: 10px;
-  z-index: 30;
-  display: grid;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
   gap: 10px;
+  max-width: 420px;
   pointer-events: none;
 }
 
-.hero-sticker-cluster .sticker{
+.hero-left h1{
+  position: relative;
+  z-index: 1;
+}
+
+.hero-sticker-cluster .sticker,
+.hero-stickers .sticker{
   pointer-events: none;
   position: relative;
   display: inline-flex;
@@ -577,7 +590,8 @@ details[open] summary::after{ transform: rotate(-135deg); }
   filter: saturate(1.15);
 }
 
-.hero-sticker-cluster .sticker::before{
+.hero-sticker-cluster .sticker::before,
+.hero-stickers .sticker::before{
   content:"";
   position:absolute;
   inset: 8px;
@@ -587,7 +601,8 @@ details[open] summary::after{ transform: rotate(-135deg); }
   pointer-events: none;
 }
 
-.hero-sticker-cluster .sticker::after{
+.hero-sticker-cluster .sticker::after,
+.hero-stickers .sticker::after{
   content:"";
   position:absolute;
   inset: 0;
@@ -597,7 +612,8 @@ details[open] summary::after{ transform: rotate(-135deg); }
   pointer-events: none;
 }
 
-.hero-sticker-cluster .sticker-burst{
+.hero-sticker-cluster .sticker-burst,
+.hero-stickers .sticker-burst{
   background: #ff3b30;
   color: #fff;
   border-radius: 18px;
@@ -612,27 +628,31 @@ details[open] summary::after{ transform: rotate(-135deg); }
   );
 }
 
-.hero-sticker-cluster .sticker-burst .sticker-kicker{
+.hero-sticker-cluster .sticker-burst .sticker-kicker,
+.hero-stickers .sticker-burst .sticker-kicker{
   display:block;
   font-size: 12px;
   line-height: 1.0;
   opacity: .95;
 }
 
-.hero-sticker-cluster .sticker-burst .sticker-big{
+.hero-sticker-cluster .sticker-burst .sticker-big,
+.hero-stickers .sticker-burst .sticker-big{
   display:block;
   font-size: 18px;
   line-height: 1.1;
   margin-top: 2px;
 }
 
-.hero-sticker-cluster .sticker-ribbon{
+.hero-sticker-cluster .sticker-ribbon,
+.hero-stickers .sticker-ribbon{
   background: #ffd400;
   color: #0b1020;
   transform: rotate(6deg);
 }
 
-.hero-sticker-cluster .sticker-micro{
+.hero-sticker-cluster .sticker-micro,
+.hero-stickers .sticker-micro{
   background: #2bff88;
   color: #0b1020;
   transform: rotate(-12deg);
@@ -642,19 +662,28 @@ details[open] summary::after{ transform: rotate(-135deg); }
 
 @media (min-width: 900px){
   .hero-sticker-cluster{
-    top: 14px;
-    left: -8px;
+    top: 10px;
+    left: 0;
   }
 }
 
 @media (max-width: 640px){
-  .hero-sticker-cluster{
+  .hero-left{ padding-top: 0; }
+
+  .hero-sticker-cluster,
+  .hero-stickers{
     position: static;
+    top: 0;
+    left: 0;
     margin-bottom: 10px;
     display: flex;
+    flex-direction: row;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
+    max-width: 100%;
   }
-  .hero-sticker-cluster .sticker{ transform: none; }
-  .hero-sticker-cluster .sticker-burst{ clip-path: none; border-radius: 18px; }
+  .hero-sticker-cluster .sticker,
+  .hero-stickers .sticker{ transform: none; }
+  .hero-sticker-cluster .sticker-burst,
+  .hero-stickers .sticker-burst{ clip-path: none; border-radius: 18px; }
 }
