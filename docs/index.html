@@ -106,7 +106,7 @@
     })();
   </script>
   <!-- Cache bust (Pages/CDN/browser). Update version when changing CSS/JS. -->
-  <link rel="stylesheet" href="/assets/styles.css?v=20260208e" />
+  <link rel="stylesheet" href="/assets/styles.css?v=20260216a" />
 </head>
 <body>
   <a class="skip" href="#content">Skip to content</a>
@@ -139,17 +139,30 @@
   <main id="content">
     <section class="hero">
       <div class="container">
-        <div class="badge">Safe-by-default. Marker-only updates. <span>diff-first</span></div>
-        <h1>AGENTS.md Generator for AI coding agents</h1>
-        <p class="lede">
-          Generate and maintain <strong>AGENTS.md</strong> / <strong>RUNBOOK.md</strong> with marker-only safe updates.
-          Add PR Guard and optionally enforce LLMO Pack drift with <code>pack --check</code>.
-        </p>
+        <div class="hero-grid">
+          <div>
+            <div class="badge">Safe-by-default. Marker-only updates. <span>diff-first</span></div>
+            <h1>AGENTS.md Generator for AI coding agents</h1>
+            <p class="lede">
+              Generate and maintain <strong>AGENTS.md</strong> / <strong>RUNBOOK.md</strong> with marker-only safe updates.
+              Add PR Guard and optionally enforce LLMO Pack drift with <code>pack --check</code>.
+            </p>
 
-        <div class="hero-cta" role="group" aria-label="Primary actions">
-          <a class="btn primary" href="#quickstart">Get started</a>
-          <a class="btn secondary" href="https://github.com/markoblogo/AGENTS.md_generator">View on GitHub</a>
-          <a class="btn ghost" href="#safety">Why it’s safe</a>
+            <div class="hero-cta" role="group" aria-label="Primary actions">
+              <a class="btn primary" href="#quickstart">Get started</a>
+              <a class="btn secondary" href="https://github.com/markoblogo/AGENTS.md_generator">View on GitHub</a>
+              <a class="btn ghost" href="#safety">Why it’s safe</a>
+            </div>
+          </div>
+          <aside class="card feature-card">
+            <h3>Why teams keep this</h3>
+            <ul class="bullets">
+              <li>Updates only inside markers; handwritten content stays yours.</li>
+              <li>Diff-first workflow for predictable reviews.</li>
+              <li>Guard and pack checks catch drift before merge.</li>
+            </ul>
+            <div class="note">Safety model: missing -> create, markers -> patch, no markers -> <code>*.generated.*</code>.</div>
+          </aside>
         </div>
         <p class="note">Safe to re-run. Diff-first. Fork-safe PR guard. Optional pack drift check.</p>
       </div>
@@ -162,7 +175,15 @@
           <p>Bootstrap agent docs in minutes. No repo damage.</p>
         </div>
 
-        <div class="grid-2">
+        <div class="grid-2 quickstart-grid">
+          <div class="card quickstart-copy">
+            <h3>What you get fast</h3>
+            <ul class="bullets">
+              <li>Repo-level agent contract with safe updates.</li>
+              <li>Reviewable diffs before writing changes.</li>
+              <li>Optional pack drift checks for CI.</li>
+            </ul>
+          </div>
           <div class="card code-card">
             <button class="copy" type="button" data-copy-target="#qs-code">Copy</button>
             <pre id="qs-code"><code>pipx install git+https://github.com/markoblogo/AGENTS.md_generator
@@ -189,13 +210,31 @@ agentsgen pack --autodetect --check</code></pre>
           <p>Where this helps immediately.</p>
         </div>
 
-        <div class="card">
-          <ul class="bullets">
-            <li>Give Codex / Claude Code / Cursor repo context without rewriting docs by hand.</li>
-            <li>Keep agent docs consistent across many repos with the same safety model.</li>
-            <li>Prevent destructive edits via marker-only ownership and diff-first updates.</li>
-            <li>Standardize install/test/lint/build commands without guessing (Makefile/scripts win).</li>
-          </ul>
+        <div class="grid-2 use-cases-grid">
+          <div class="card">
+            <h3>Agent context, fast</h3>
+            <ul class="bullets">
+              <li>Give Codex / Claude Code / Cursor immediate repo rules.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Consistent across repos</h3>
+            <ul class="bullets">
+              <li>Reuse the same safety model and output protocol everywhere.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>Safer updates</h3>
+            <ul class="bullets">
+              <li>Marker-only ownership plus diff-first workflow.</li>
+            </ul>
+          </div>
+          <div class="card">
+            <h3>No command guessing</h3>
+            <ul class="bullets">
+              <li>Makefile/scripts priority keeps commands realistic.</li>
+            </ul>
+          </div>
         </div>
       </div>
     </section>
@@ -207,17 +246,19 @@ agentsgen pack --autodetect --check</code></pre>
           <p>Fail PRs when agent docs drift. Optionally enforce LLMO pack drift in the same job.</p>
         </div>
 
-        <div class="card">
-          <ul class="bullets">
-            <li>Validates <code>AGENTS.md</code> / <code>RUNBOOK.md</code> and can comment on PRs.</li>
-            <li><code>pack_check: "true"</code> enforces <code>agentsgen pack --check</code> in the same run.</li>
-            <li>Fork-safe by default; PR comments are best-effort.</li>
-          </ul>
-        </div>
-
-        <div class="card code-card">
-          <button class="copy" type="button" data-copy-target="#guard-code">Copy</button>
-          <pre id="guard-code"><code>name: agentsgen guard + pack check
+        <div class="grid-2 guard-grid">
+          <div class="card">
+            <h3>Why it matters</h3>
+            <ul class="bullets">
+              <li>Fail PRs when generated docs drift.</li>
+              <li><code>pack_check: "true"</code> adds <code>agentsgen pack --check</code>.</li>
+              <li>Marker-only ownership stays intact for handcrafted docs.</li>
+            </ul>
+            <div class="note">Works on forks (best-effort comments).</div>
+          </div>
+          <div class="card code-card">
+            <button class="copy" type="button" data-copy-target="#guard-code">Copy</button>
+            <pre id="guard-code"><code>name: agentsgen guard + pack check
 
 on:
   pull_request:
@@ -241,7 +282,8 @@ jobs:
             RUNBOOK.md
           pack_check: "true"
           pack_format: "json"</code></pre>
-          <div class="note">If you do not want PR comments, set <code>comment: "false"</code>.</div>
+            <div class="note">If you do not want PR comments, set <code>comment: "false"</code>.</div>
+          </div>
         </div>
       </div>
     </section>
@@ -334,7 +376,7 @@ jobs:
           <h2>Docs (deep dives)</h2>
           <p>Everything detailed lives in docs. The landing stays short.</p>
         </div>
-        <div class="safety-row">
+        <div class="docs-grid">
           <div class="card"><a href="https://agentsmd.abvx.xyz/gh-action.html">Action docs</a></div>
           <div class="card"><a href="https://agentsmd.abvx.xyz/llmo-pack.html">LLMO Pack docs</a></div>
           <div class="card"><a href="https://agentsmd.abvx.xyz/release-checklist.html">Release kit</a></div>
