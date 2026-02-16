@@ -115,13 +115,18 @@ def _quote(value: str) -> str:
 
 
 def _build_fix_lines(
-    path: str, files_arg: str, show_commands: bool, problems: list[str]
+    path: str,
+    files_arg: str,
+    show_commands: bool,
+    problems: list[str],
+    *,
+    pack_failed: bool,
 ) -> list[str]:
     if not show_commands:
         return []
     path_q = _quote(path)
     has_missing = any(p.startswith("Missing ") for p in problems)
-    return [
+    lines = [
         "",
         "**How to fix (run locally):**",
         (
@@ -132,8 +137,24 @@ def _build_fix_lines(
         f"- `agentsgen update {path_q}` (apply generator updates for marker-managed sections)",
         f"- ensure `{files_arg}` exist and contain AGENTSGEN markers",
         f"- `agentsgen check {path_q}`",
-        "- commit changes and push",
     ]
+    if pack_failed:
+        lines.append(
+            f"- `agentsgen pack {path_q} --autodetect` (refresh LLMO pack files)"
+        )
+        lines.append(f"- `agentsgen pack {path_q} --autodetect --check`")
+    lines.append("- commit changes and push")
+    return lines
+
+
+def _run_pack_check(path: str) -> tuple[int, str]:
+    p = subprocess.run(
+        ["agentsgen", "pack", path, "--autodetect", "--check", "--format", "json"],
+        capture_output=True,
+        text=True,
+    )
+    out = (p.stdout or "") + (("\n" + p.stderr) if p.stderr else "")
+    return p.returncode, out.strip()
 
 
 def main() -> int:
@@ -144,31 +165,53 @@ def main() -> int:
     comment = _to_bool(os.getenv("INPUT_COMMENT", "false"))
     token = os.getenv("INPUT_TOKEN", "")
     show_commands = _to_bool(os.getenv("INPUT_SHOW_COMMANDS", "true"), default=True)
+    pack_enabled = _to_bool(os.getenv("INPUT_PACK", "false"), default=False)
 
     target = Path(path)
     code, problems, warnings = check_repo(target)
     problems, warnings = _targeted_messages(problems, warnings, files)
+    pack_failed = False
+    pack_output = ""
+
+    if pack_enabled:
+        pack_code, pack_output = _run_pack_check(path)
+        if pack_code != 0:
+            pack_failed = True
 
     if warnings:
         for w in warnings:
             print(f"[agentsgen-guard] WARN: {w}", file=sys.stderr)
 
-    if code == 0 and not problems:
+    if code == 0 and not problems and not pack_failed:
         summary = "agentsgen-guard: OK (AGENTS docs look up to date)."
         print(summary)
         _set_output("status", "ok")
         _set_output("summary", summary)
         return 0
 
-    summary = "agentsgen-guard: FAIL (AGENTS docs missing or out of date)."
+    if pack_failed and not problems:
+        summary = "agentsgen-guard: FAIL (LLMO pack is missing/out of date)."
+    elif pack_failed and problems:
+        summary = "agentsgen-guard: FAIL (AGENTS docs and LLMO pack are out of date)."
+    else:
+        summary = "agentsgen-guard: FAIL (AGENTS docs missing or out of date)."
     print(summary, file=sys.stderr)
     if problems:
         print("", file=sys.stderr)
         print("--- agentsgen check findings ---", file=sys.stderr)
         for p in problems:
             print(f"- {p}", file=sys.stderr)
+    if pack_failed:
+        print("", file=sys.stderr)
+        print("--- pack check findings ---", file=sys.stderr)
+        if pack_output:
+            print(pack_output, file=sys.stderr)
+        else:
+            print("- `agentsgen pack --autodetect --check` failed", file=sys.stderr)
 
-    fix_lines = _build_fix_lines(path, files_arg, show_commands, problems)
+    fix_lines = _build_fix_lines(
+        path, files_arg, show_commands, problems, pack_failed=pack_failed
+    )
     for ln in fix_lines:
         print(ln, file=sys.stderr)
 
@@ -187,9 +230,11 @@ def main() -> int:
                     [
                         COMMENT_MARKER,
                         "### agentsgen-guard",
-                        "This PR fails the AGENTS docs guard.",
+                        "This PR fails the AGENTS docs guard."
+                        if not pack_failed
+                        else "This PR fails the AGENTS/LLMO docs guard.",
                         "",
-                        "Required agent docs are missing/outdated for this repository.",
+                        "Required generated docs are missing/outdated for this repository.",
                         *fix_lines,
                     ]
                 ).strip()

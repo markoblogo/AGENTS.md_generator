@@ -29,6 +29,7 @@ jobs:
           path: "."
           files: "AGENTS.md,RUNBOOK.md"
           comment: "false"
+          pack: "false"
 ```
 
 ## Inputs
@@ -38,6 +39,7 @@ jobs:
 - `comment` (default: `"false"`) - post/update a short PR comment on failure (best effort)
 - `token` (default: `${{ github.token }}`) - token for comment API calls
 - `show_commands` (default: `"true"`) - include local fix commands in logs/comment
+- `pack` (default: `"false"`) - also enforce `agentsgen pack --autodetect --check`
 - `version` (default: `"repo"`) - install mode: `repo` or `pypi`
 
 ### Note about `files`
@@ -68,6 +70,15 @@ permissions:
 ```
 
 If comment write fails (common on fork PRs with restricted permissions), the action logs a warning and still enforces the check result.
+
+To also guard LLMO pack drift:
+
+```yaml
+- uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.1
+  with:
+    comment: "false"
+    pack: "true"
+```
 
 Example workflow file in this repo:
 

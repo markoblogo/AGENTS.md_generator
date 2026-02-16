@@ -103,11 +103,13 @@ jobs:
           path: "."
           files: "AGENTS.md,RUNBOOK.md"
           comment: "false"
+          pack: "true"  # optional: also enforce `agentsgen pack --check`
 ```
 
 - Optional PR comment: set `comment: "true"` and grant `pull-requests: write`.
 - Fork-safe by default: no extra secrets required.
 - `files` input is an action-level filter for reported file findings; core validation still runs through `check_repo`.
+- `pack: "true"` enforces `agentsgen pack --autodetect --check` in the same guard run.
 - Example workflow: `.github/workflows/agentsgen-guard.example.yml`
 - Full action docs: `docs/gh-action.md`
 
@@ -134,6 +136,12 @@ pipx uninstall agentsgen
 - `SECURITY_AI.md`
 - `CONTRIBUTING_AI.md`
 - `README_SNIPPETS.md`
+
+What it is:
+- a compact, agent-first context bundle for coding agents and LLM indexing.
+
+What it is not:
+- not a traffic/SEO promise, and not a full developer handbook replacement.
 
 Safety model is identical to `init`/`update`:
 

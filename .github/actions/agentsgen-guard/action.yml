@@ -23,6 +23,10 @@ inputs:
     description: "If true, print remediation commands"
     required: false
     default: "true"
+  pack:
+    description: "If true, also enforce `agentsgen pack --autodetect --check`"
+    required: false
+    default: "false"
   version:
     description: "Install mode: repo (default) or pypi"
     required: false
@@ -65,7 +69,7 @@ runs:
         INPUT_COMMENT: ${{ inputs.comment }}
         INPUT_TOKEN: ${{ inputs.token }}
         INPUT_SHOW_COMMANDS: ${{ inputs.show_commands }}
+        INPUT_PACK: ${{ inputs.pack }}
       run: |
         set -euo pipefail
         python "${GITHUB_ACTION_PATH}/guard.py"
-

@@ -20,4 +20,5 @@ jobs:
           path: "."
           files: "AGENTS.md,RUNBOOK.md"
           comment: "false"
+          pack: "true"
           show_commands: "true"
