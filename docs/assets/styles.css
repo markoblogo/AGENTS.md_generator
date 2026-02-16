@@ -213,6 +213,38 @@ h1{
   letter-spacing: -.04em;
   line-height: 1.01;
 }
+.hero-title-wrap{
+  position: relative;
+}
+.hero-badges{
+  display:flex;
+  gap:12px;
+  flex-wrap:wrap;
+  align-items:center;
+  margin: 4px 0 8px;
+}
+.hero-badges .badge{
+  display:inline-block;
+  padding:6px 10px;
+  border-radius:999px;
+  font-weight:800;
+  letter-spacing:.04em;
+  font-size:12px;
+  text-transform: uppercase;
+  border: 2px solid color-mix(in oklab, var(--text) 15%, transparent);
+  box-shadow: 0 4px 10px rgba(0,0,0,.14);
+  line-height: 1.1;
+}
+.hero-badges .badge--new{
+  background: color-mix(in oklab, var(--accent) 88%, #fff0a8);
+  color:#0b1b12;
+  transform: rotate(-2deg);
+}
+.hero-badges .badge--pack{
+  background: color-mix(in oklab, var(--accent-2) 84%, #d2f9ff);
+  color:#08111a;
+  transform: rotate(2deg);
+}
 .lede{
   margin: 0;
   max-width: 62ch;
@@ -539,6 +571,15 @@ details[open] summary::after{ transform: rotate(-135deg); }
   .card{ padding: 18px; }
   .code-card{ padding: 14px; }
   .mini-badge{ margin-left: 0; margin-top: 8px; }
+  .hero-badges{
+    gap: 8px;
+    margin: 6px 0 10px;
+  }
+  .hero-badges .badge{
+    font-size: 11px;
+    padding: 5px 9px;
+    transform: none;
+  }
 }
 
 @media (prefers-reduced-motion: reduce){
