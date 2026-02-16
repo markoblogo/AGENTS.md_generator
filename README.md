@@ -70,6 +70,36 @@ Uninstall:
 pipx uninstall agentsgen
 ```
 
+## GitHub Action: PR Guard
+
+Use the reusable `agentsgen-guard` action to fail PRs when `AGENTS.md` / `RUNBOOK.md` are missing or out of date.
+
+```yaml
+name: agentsgen-guard
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+  # pull-requests: write  # only if comment: "true"
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.0
+        with:
+          path: "."
+          files: "AGENTS.md,RUNBOOK.md"
+          comment: "false"
+```
+
+- Optional PR comment: set `comment: "true"` and grant `pull-requests: write`.
+- Fork-safe by default: no extra secrets required.
+- Full action docs: `docs/gh-action.md`
+
 ## Usage
 
 ```sh

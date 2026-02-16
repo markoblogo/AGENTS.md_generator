@@ -1,0 +1,71 @@
+name: "agentsgen-guard"
+description: "PR guard: fail if AGENTS.md/RUNBOOK.md are missing or out of date (using agentsgen check)."
+author: "abvx / markoblogo"
+
+inputs:
+  path:
+    description: "Working directory to run agentsgen in"
+    required: false
+    default: "."
+  files:
+    description: "Comma-separated list of files to check (e.g. AGENTS.md,RUNBOOK.md)"
+    required: false
+    default: "AGENTS.md,RUNBOOK.md"
+  comment:
+    description: "If true, post/update a PR comment when failing (best-effort)"
+    required: false
+    default: "false"
+  token:
+    description: "GitHub token used for PR commenting when comment=true"
+    required: false
+    default: "${{ github.token }}"
+  show_commands:
+    description: "If true, print remediation commands"
+    required: false
+    default: "true"
+  version:
+    description: "Install mode: repo (default) or pypi"
+    required: false
+    default: "repo"
+
+outputs:
+  status:
+    description: "ok or fail"
+    value: ${{ steps.guard.outputs.status }}
+  summary:
+    description: "Short summary of result"
+    value: ${{ steps.guard.outputs.summary }}
+
+runs:
+  using: "composite"
+  steps:
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Install agentsgen
+      shell: bash
+      run: |
+        set -euo pipefail
+        python -m pip install --upgrade pip
+        if [ "${{ inputs.version }}" = "pypi" ]; then
+          python -m pip install agentsgen
+        else
+          REPO_ROOT="$(cd "${GITHUB_ACTION_PATH}/../../.." && pwd)"
+          python -m pip install "${REPO_ROOT}"
+        fi
+
+    - name: Run guard
+      id: guard
+      shell: bash
+      env:
+        INPUT_PATH: ${{ inputs.path }}
+        INPUT_FILES: ${{ inputs.files }}
+        INPUT_COMMENT: ${{ inputs.comment }}
+        INPUT_TOKEN: ${{ inputs.token }}
+        INPUT_SHOW_COMMANDS: ${{ inputs.show_commands }}
+      run: |
+        set -euo pipefail
+        python "${GITHUB_ACTION_PATH}/guard.py"
+
