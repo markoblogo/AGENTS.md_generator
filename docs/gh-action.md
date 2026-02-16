@@ -24,12 +24,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.1
+      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.2
         with:
           path: "."
           files: "AGENTS.md,RUNBOOK.md"
           comment: "false"
-          pack: "false"
+          pack_check: "false"
 ```
 
 ## Inputs
@@ -39,8 +39,8 @@ jobs:
 - `comment` (default: `"false"`) - post/update a short PR comment on failure (best effort)
 - `token` (default: `${{ github.token }}`) - token for comment API calls
 - `show_commands` (default: `"true"`) - include local fix commands in logs/comment
-- `pack` (default: `"false"`) - also enforce `agentsgen pack --autodetect --check`
-- `pack_check` (default: `"false"`) - alias for `pack`
+- `pack_check` (default: `"false"`) - enforce `agentsgen pack --autodetect --check`
+- `pack` (default: `"false"`) - deprecated alias for `pack_check` (kept for backward compatibility)
 - `pack_format` (default: `"json"`) - output format for pack check (`text|json`)
 - `pack_autodetect` (default: `"true"`) - pass `--autodetect` (or `--no-autodetect`)
 - `pack_llms_format` (default: empty) - optional `--llms-format` for pack check
@@ -70,7 +70,7 @@ permissions:
 ```
 
 ```yaml
-- uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.1
+- uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.2
   with:
     comment: "true"
 ```
@@ -80,7 +80,7 @@ If comment write fails (common on fork PRs with restricted permissions), the act
 To also guard LLMO pack drift:
 
 ```yaml
-- uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.1
+- uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.2
   with:
     comment: "false"
     pack_check: "true"

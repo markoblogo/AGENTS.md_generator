@@ -388,7 +388,7 @@ def pack(
     )
 
     if format == "json":
-        console.print(
+        sys.stdout.write(
             json.dumps(
                 {
                     "status": status,
@@ -399,6 +399,7 @@ def pack(
                 },
                 indent=2,
             )
+            + "\n"
         )
     else:
         _print_results(results, print_diff=print_diff)
@@ -459,7 +460,7 @@ def detect(
     """Detect stack/tooling/commands using safe heuristics and print evidence."""
     det = detect_repo(repo)
     if format == "json":
-        console.print(json.dumps(det.to_json(), indent=2))
+        sys.stdout.write(json.dumps(det.to_json(), indent=2) + "\n")
         raise typer.Exit(code=0)
 
     console.print(f"primary_stack: {det.project.get('primary_stack')}")

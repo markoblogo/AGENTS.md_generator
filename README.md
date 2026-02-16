@@ -98,12 +98,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.1
+      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.2
         with:
           path: "."
           files: "AGENTS.md,RUNBOOK.md"
           comment: "false"
-          pack: "true"  # optional: also enforce `agentsgen pack --check`
+          pack_check: "true"  # optional: also enforce `agentsgen pack --check`
           pack_format: "json"
           # pack_autodetect: "true"
           # pack_llms_format: "md"
@@ -116,7 +116,8 @@ jobs:
 - Optional PR comment: set `comment: "true"` and grant `pull-requests: write`.
 - Fork-safe by default: no extra secrets required.
 - `files` input is an action-level filter for reported file findings; core validation still runs through `check_repo`.
-- `pack: "true"` enforces `agentsgen pack --autodetect --check` in the same guard run.
+- `pack_check: "true"` enforces `agentsgen pack --autodetect --check` in the same guard run.
+- `pack` is still supported as a backward-compatible alias (deprecated; prefer `pack_check`).
 - Example workflow: `.github/workflows/agentsgen-guard.example.yml`
 - Full action docs: `docs/gh-action.md`
 
