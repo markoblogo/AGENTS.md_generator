@@ -53,6 +53,10 @@ require_cmd() {
 }
 
 pick_python() {
+  if [ -x ".venv/bin/python" ]; then
+    PYTHON_BIN=".venv/bin/python"
+    return
+  fi
   if command -v python >/dev/null 2>&1; then
     PYTHON_BIN="python"
     return

@@ -230,6 +230,7 @@ Template PRs welcome (shared sections and stack-specific notes).
 ## Releasing
 
 - Use checklist: `docs/release-checklist.md`
+- Run releases from an activated venv (`. .venv/bin/activate`); the script also auto-prefers `.venv/bin/python` when present.
 - Write release notes: `RELEASES/template.md -> RELEASES/vX.Y.Z.md`
 - Run: `./scripts/release.sh vX.Y.Z A|B|C`
 - Shorthand: `./scripts/release.sh A` (auto-suggests next version)
