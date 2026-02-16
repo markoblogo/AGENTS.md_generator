@@ -13,3 +13,7 @@ def templates_base_dir() -> Path:
 
 def prompt_template_path(name: str) -> Path:
     return templates_base_dir() / "common" / "prompts" / name
+
+
+def pack_template_path(stack: str, name: str) -> Path:
+    return templates_base_dir() / "pack" / stack / name

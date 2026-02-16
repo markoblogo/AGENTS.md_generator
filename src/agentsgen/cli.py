@@ -10,6 +10,7 @@ from rich.table import Table
 import json
 
 from .actions import (
+    apply_pack,
     apply_config,
     check_repo,
     load_tool_config,
@@ -275,6 +276,72 @@ def update(
         err_console.print("ERROR: Missing .agentsgen.json. Run: agentsgen init")
         raise typer.Exit(code=1)
 
+    errors = [r for r in results if r.action == "error"]
+    _print_results(results, print_diff=print_diff)
+
+    if errors:
+        for e in errors:
+            err_console.print(f"ERROR: {e.path}: {e.message}")
+        raise typer.Exit(code=1)
+
+
+@app.command()
+def pack(
+    target: Path = typer.Argument(
+        Path("."), exists=True, file_okay=False, dir_okay=True
+    ),
+    autodetect: bool = typer.Option(
+        True,
+        "--autodetect/--no-autodetect",
+        help="Use read-only stack/command detection before rendering pack",
+    ),
+    stack: str | None = typer.Option(
+        None, "--stack", help="Override stack for pack templates (python|node|static)"
+    ),
+    llms_format: str | None = typer.Option(
+        None, "--llms-format", help="Manifest format: txt|md"
+    ),
+    output_dir: str | None = typer.Option(
+        None, "--output-dir", help="Where to write docs (default docs/ai)"
+    ),
+    files: str | None = typer.Option(
+        None,
+        "--files",
+        help="Comma-separated allowlist (e.g. llms,how-to-run.md,SECURITY_AI.md)",
+    ),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Do not write files"),
+    print_diff: bool = typer.Option(False, "--print-diff", help="Print unified diff"),
+):
+    """Generate/update LLMO pack files with marker-safe updates."""
+    cfg_path = target / ".agentsgen.json"
+    cfg = load_tool_config(target) if cfg_path.exists() else ToolConfig()
+
+    if autodetect:
+        det_cfg = ToolConfig.from_detect(detect_repo(target))
+        # Keep user-chosen pack settings and static config defaults.
+        existing_pack = cfg.pack
+        cfg.project = det_cfg.project
+        cfg.paths = det_cfg.paths
+        cfg.commands = det_cfg.commands
+        cfg.evidence = det_cfg.evidence
+        cfg.project_info = det_cfg.project_info
+        cfg.pack = existing_pack
+    elif not cfg_path.exists():
+        info = _interactive_init(target, defaults=True, stack_opt=stack, name_opt=None)
+        cfg = ToolConfig.from_project_info(info)
+
+    if stack:
+        cfg.project["primary_stack"] = stack.strip().lower()
+        cfg = ToolConfig.from_json(cfg.to_json())
+
+    if llms_format:
+        cfg.pack.llms_format = llms_format.strip().lower()
+    if output_dir:
+        cfg.pack.output_dir = output_dir.strip()
+    if files is not None:
+        cfg.pack.files = _parse_csv(files)
+
+    results = apply_pack(target, cfg, dry_run=dry_run, print_diff=print_diff)
     errors = [r for r in results if r.action == "error"]
     _print_results(results, print_diff=print_diff)
 

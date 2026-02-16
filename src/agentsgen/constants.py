@@ -10,6 +10,19 @@ RUNBOOK_GENERATED_FILENAME = "RUNBOOK.generated.md"
 
 PROMPTS_DIRNAME = "prompt"
 
+DEFAULT_PACK_OUTPUT_DIR = "docs/ai"
+DEFAULT_PACK_LLMS_FORMAT = "txt"
+DEFAULT_PACK_FILES = [
+    "llms",
+    "how-to-run.md",
+    "how-to-test.md",
+    "architecture.md",
+    "data-contracts.md",
+    "SECURITY_AI.md",
+    "CONTRIBUTING_AI.md",
+    "README_SNIPPETS.md",
+]
+
 SECTION_NAMES = [
     "overview",
     "rules",

@@ -5,12 +5,21 @@ from typing import Any
 
 from .model import ProjectInfo
 from .detect.model import DetectResult
+from .constants import DEFAULT_PACK_OUTPUT_DIR, DEFAULT_PACK_LLMS_FORMAT
 
 
 @dataclass(frozen=True)
 class ToolMarkers:
     start: str = "<!-- AGENTSGEN:START section={section} -->"
     end: str = "<!-- AGENTSGEN:END section={section} -->"
+
+
+@dataclass
+class ToolPack:
+    enabled: bool = True
+    llms_format: str = DEFAULT_PACK_LLMS_FORMAT  # txt|md
+    output_dir: str = DEFAULT_PACK_OUTPUT_DIR
+    files: list[str] = field(default_factory=list)
 
 
 @dataclass
@@ -44,6 +53,7 @@ class ToolConfig:
     paths: dict[str, Any] = field(default_factory=dict)
     commands: dict[str, Any] = field(default_factory=dict)
     evidence: dict[str, Any] = field(default_factory=dict)
+    pack: ToolPack = field(default_factory=ToolPack)
 
     # Back-compat + internal convenience for stack templates/summary.
     project_info: ProjectInfo = field(
@@ -66,6 +76,12 @@ class ToolConfig:
             "paths": self.paths,
             "commands": self.commands,
             "evidence": self.evidence,
+            "pack": {
+                "enabled": self.pack.enabled,
+                "llms_format": self.pack.llms_format,
+                "output_dir": self.pack.output_dir,
+                "files": list(self.pack.files),
+            },
         }
 
     @staticmethod
@@ -101,6 +117,13 @@ class ToolConfig:
         cfg.paths = dict(d.get("paths", {}) or {})
         cfg.commands = dict(d.get("commands", {}) or {})
         cfg.evidence = dict(d.get("evidence", {}) or {})
+        p = dict(d.get("pack", {}) or {})
+        cfg.pack = ToolPack(
+            enabled=bool(p.get("enabled", True)),
+            llms_format=str(p.get("llms_format", DEFAULT_PACK_LLMS_FORMAT)),
+            output_dir=str(p.get("output_dir", DEFAULT_PACK_OUTPUT_DIR)),
+            files=list(p.get("files", []) or []),
+        )
 
         # Derive internal ProjectInfo for existing render pipeline.
         project_name = str(cfg.project.get("name", "")) or ""
@@ -155,6 +178,7 @@ class ToolConfig:
             "repo_root": ".",
         }
         cfg.commands = dict(cfg.project_info.commands)
+        cfg.pack = ToolPack()
         return cfg
 
     @staticmethod
@@ -164,6 +188,7 @@ class ToolConfig:
         cfg.paths = dict(det.paths or {})
         cfg.commands = dict(det.commands or {})
         cfg.evidence = det.to_json().get("evidence", {})
+        cfg.pack = ToolPack()
         # Derive ProjectInfo using existing parser logic.
         cfg = ToolConfig.from_json(cfg.to_json())
         return cfg

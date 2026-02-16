@@ -8,6 +8,9 @@ from .constants import (
     AGENTS_FILENAME,
     AGENTS_GENERATED_FILENAME,
     CONFIG_FILENAME,
+    DEFAULT_PACK_FILES,
+    DEFAULT_PACK_LLMS_FORMAT,
+    DEFAULT_PACK_OUTPUT_DIR,
     PROMPTS_DIRNAME,
     RUNBOOK_FILENAME,
     RUNBOOK_GENERATED_FILENAME,
@@ -31,6 +34,8 @@ from .model import ProjectInfo
 from .normalize import normalize_markdown
 from .shared_sections import render_all_shared
 from .templates import prompt_template_path, templates_base_dir
+from .render import render_template, load_template
+from .templates import pack_template_path
 
 
 @dataclass(frozen=True)
@@ -167,11 +172,7 @@ def _handle_file(
 
     existing = read_text(path)
     if not has_any_agentsgen_markers(existing):
-        gen_path = path.with_name(
-            AGENTS_GENERATED_FILENAME
-            if path.name == AGENTS_FILENAME
-            else RUNBOOK_GENERATED_FILENAME
-        )
+        gen_path = _generated_sibling_path(path)
         changed, d = _write_or_diff(
             gen_path, generated_full, dry_run=dry_run, print_diff=print_diff
         )
@@ -206,6 +207,166 @@ def _handle_file(
         changed=changed,
         diff=d,
     )
+
+
+def _generated_sibling_path(path: Path) -> Path:
+    if path.name == AGENTS_FILENAME:
+        return path.with_name(AGENTS_GENERATED_FILENAME)
+    if path.name == RUNBOOK_FILENAME:
+        return path.with_name(RUNBOOK_GENERATED_FILENAME)
+    return path.with_name(f"{path.stem}.generated{path.suffix}")
+
+
+def _fmt_paths(items: list[str]) -> str:
+    vals = [x.strip() for x in items if x and x.strip()]
+    if not vals:
+        return "(not detected)"
+    return ", ".join([f"`{x}`" for x in vals])
+
+
+def _pick_stack_for_pack(cfg: ToolConfig) -> tuple[str, str]:
+    primary = str((cfg.project or {}).get("primary_stack", "")).strip().lower()
+    if primary in ("python", "node", "static"):
+        return primary, primary
+    # For mixed/unknown we render via static templates with explicit placeholders.
+    return "static", (primary or "mixed")
+
+
+def _pack_command_value(cfg: ToolConfig, key: str, is_mixed: bool) -> str:
+    if is_mixed:
+        return "(mixed repo detected - set explicit command in .agentsgen.json)"
+    v = str((cfg.commands or {}).get(key, "")).strip()
+    if not v:
+        v = str((cfg.project_info.commands or {}).get(key, "")).strip()
+    return v or "(not detected)"
+
+
+def _pack_notes(cfg: ToolConfig, stack_label: str) -> str:
+    if stack_label == "mixed":
+        return (
+            "- Mixed repository detected.\n"
+            "- Commands are intentionally conservative.\n"
+            "- Configure explicit values in `.agentsgen.json` under `commands` and `pack`."
+        )
+    return "- Keep these files concise and command-accurate. Avoid speculative guidance."
+
+
+def _render_pack_file(cfg: ToolConfig, stack_tpl: str, template_name: str) -> str:
+    primary = str((cfg.project or {}).get("primary_stack", "")).strip().lower()
+    is_mixed = primary not in ("python", "node", "static")
+    project_name = str((cfg.project or {}).get("name", "")).strip() or cfg.project_info.project_name or "repository"
+
+    paths = cfg.paths or {}
+    output_dir = (cfg.pack.output_dir or DEFAULT_PACK_OUTPUT_DIR).strip()
+    ctx = {
+        "project_name": project_name,
+        "stack": (primary or cfg.project_info.stack or "unknown"),
+        "stack_label": primary or "mixed",
+        "output_dir": output_dir,
+        "source_dirs": _fmt_paths(list(paths.get("source_dirs", []) or [])),
+        "config_locations": _fmt_paths(list(paths.get("config_locations", []) or [])),
+        "docs_paths": _fmt_paths(list(paths.get("docs", []) or [])),
+        "ci_location": str(paths.get("ci", ".github/workflows/") or ".github/workflows/"),
+        "cmd_install": _pack_command_value(cfg, "install", is_mixed),
+        "cmd_dev": _pack_command_value(cfg, "dev", is_mixed),
+        "cmd_test": _pack_command_value(cfg, "test", is_mixed),
+        "cmd_lint": _pack_command_value(cfg, "lint", is_mixed),
+        "cmd_format": _pack_command_value(cfg, "format", is_mixed),
+        "cmd_build": _pack_command_value(cfg, "build", is_mixed),
+        "cmd_fast": _pack_command_value(cfg, "fast", is_mixed),
+        "cmd_full": _pack_command_value(cfg, "full", is_mixed),
+        "pack_notes": _pack_notes(cfg, primary or "mixed"),
+    }
+
+    tpl = pack_template_path(stack_tpl, template_name)
+    return normalize_markdown(render_template(load_template(tpl), ctx))
+
+
+def _pack_output_specs(cfg: ToolConfig) -> list[tuple[Path, str, list[str]]]:
+    llms_format = (cfg.pack.llms_format or DEFAULT_PACK_LLMS_FORMAT).strip().lower()
+    if llms_format not in ("txt", "md"):
+        llms_format = DEFAULT_PACK_LLMS_FORMAT
+
+    output_dir = Path((cfg.pack.output_dir or DEFAULT_PACK_OUTPUT_DIR).strip())
+    stack_tpl, stack_label = _pick_stack_for_pack(cfg)
+    _ = stack_label  # used by context generation from cfg.project.
+
+    llms_name = "llms.txt" if llms_format == "txt" else "LLMS.md"
+    llms_tpl = "llms.txt.tpl" if llms_format == "txt" else "LLMS.md.tpl"
+
+    specs: list[tuple[Path, str, list[str]]] = [
+        (Path(llms_name), llms_tpl, ["llms"]),
+        (output_dir / "how-to-run.md", "how-to-run.md.tpl", ["how_to_run"]),
+        (output_dir / "how-to-test.md", "how-to-test.md.tpl", ["how_to_test"]),
+        (output_dir / "architecture.md", "architecture.md.tpl", ["architecture"]),
+        (output_dir / "data-contracts.md", "data-contracts.md.tpl", ["data_contracts"]),
+        (Path("SECURITY_AI.md"), "SECURITY_AI.md.tpl", ["security_ai"]),
+        (Path("CONTRIBUTING_AI.md"), "CONTRIBUTING_AI.md.tpl", ["contributing_ai"]),
+        (Path("README_SNIPPETS.md"), "README_SNIPPETS.md.tpl", ["readme_snippets"]),
+    ]
+
+    allow = [str(x).strip() for x in (cfg.pack.files or []) if str(x).strip()]
+    if not allow:
+        allow = list(DEFAULT_PACK_FILES)
+    allow_set = {x.lower() for x in allow}
+
+    filtered: list[tuple[Path, str, list[str]]] = []
+    for rel_path, tpl_name, required in specs:
+        key_path = str(rel_path).replace("\\", "/").lower()
+        key_name = rel_path.name.lower()
+        if key_path in allow_set or key_name in allow_set or ("llms" in allow_set and key_name in {"llms.txt", "llms.md"}):
+            filtered.append((rel_path, tpl_name, required))
+
+    # Always keep at least manifest file.
+    if not filtered:
+        filtered = [(Path(llms_name), llms_tpl, ["llms"])]
+
+    rendered: list[tuple[Path, str, list[str]]] = []
+    for rel_path, tpl_name, required in filtered:
+        rendered.append((rel_path, _render_pack_file(cfg, stack_tpl, tpl_name), required))
+    return rendered
+
+
+def apply_pack(
+    target: Path,
+    cfg: ToolConfig,
+    *,
+    dry_run: bool,
+    print_diff: bool,
+) -> list[FileResult]:
+    results: list[FileResult] = []
+    if not cfg.pack.enabled:
+        return [
+            FileResult(
+                path=target,
+                action="skipped",
+                message="pack.disabled in config",
+                changed=False,
+            )
+        ]
+
+    for rel_path, content, required in _pack_output_specs(cfg):
+        out_path = (target / rel_path).resolve()
+        target_resolved = target.resolve()
+        if target_resolved not in out_path.parents and out_path != target_resolved:
+            results.append(
+                FileResult(
+                    path=target / rel_path,
+                    action="error",
+                    message="pack output path escapes target directory",
+                )
+            )
+            continue
+        results.append(
+            _handle_file(
+                out_path,
+                content,
+                required=required,
+                dry_run=dry_run,
+                print_diff=print_diff,
+            )
+        )
+    return results
 
 
 def apply_config(

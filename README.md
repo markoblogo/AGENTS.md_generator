@@ -64,6 +64,13 @@ agentsgen update
 agentsgen check
 ```
 
+Generate LLMO bundle (safe marker updates, same overwrite policy):
+
+```sh
+agentsgen pack --autodetect --dry-run --print-diff
+agentsgen pack
+```
+
 Uninstall:
 
 ```sh
@@ -107,10 +114,32 @@ jobs:
 ```sh
 agentsgen init
 agentsgen update
+agentsgen pack
 agentsgen check
 agentsgen init --defaults --stack python --dry-run --print-diff
 pipx uninstall agentsgen
 ```
+
+## LLMO Pack
+
+`agentsgen pack` generates an AI/LLMO-ready documentation bundle:
+
+- `llms.txt` (or `LLMS.md` with `--llms-format md`)
+- `docs/ai/how-to-run.md`
+- `docs/ai/how-to-test.md`
+- `docs/ai/architecture.md`
+- `docs/ai/data-contracts.md`
+- `SECURITY_AI.md`
+- `CONTRIBUTING_AI.md`
+- `README_SNIPPETS.md`
+
+Safety model is identical to `init`/`update`:
+
+1. Missing file -> create with markers.
+2. Existing file with markers -> update only marker sections.
+3. Existing file without markers -> keep original and write `*.generated.*`.
+
+See full details: `docs/llmo-pack.md`.
 
 ## Known Limitations
 

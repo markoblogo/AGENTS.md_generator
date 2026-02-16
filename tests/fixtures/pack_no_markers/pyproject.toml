@@ -1,0 +1,7 @@
+[project]
+name = "pack-no-markers"
+version = "0.0.0"
+
+[tool.pytest.ini_options]
+addopts = "-q"
+
