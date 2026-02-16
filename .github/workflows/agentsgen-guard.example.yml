@@ -1,0 +1,23 @@
+name: agentsgen-guard-example
+
+on:
+  workflow_dispatch:
+  pull_request:
+
+permissions:
+  contents: read
+  # pull-requests: write  # enable only if you set comment: "true"
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: AGENTS docs guard
+        uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.1
+        with:
+          path: "."
+          files: "AGENTS.md,RUNBOOK.md"
+          comment: "false"
+          show_commands: "true"

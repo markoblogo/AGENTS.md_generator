@@ -114,16 +114,24 @@ def _quote(value: str) -> str:
     return shlex.quote(value)
 
 
-def _build_fix_lines(path: str, files_arg: str, show_commands: bool) -> list[str]:
+def _build_fix_lines(
+    path: str, files_arg: str, show_commands: bool, problems: list[str]
+) -> list[str]:
     if not show_commands:
         return []
     path_q = _quote(path)
+    has_missing = any(p.startswith("Missing ") for p in problems)
     return [
         "",
         "**How to fix (run locally):**",
-        f"- `agentsgen init {path_q}` (if files are missing)",
-        f"- `agentsgen update {path_q}` (refresh generated sections)",
+        (
+            f"- `agentsgen init {path_q}` (required: missing files/config detected)"
+            if has_missing
+            else f"- `agentsgen init {path_q}` (only if files are missing)"
+        ),
+        f"- `agentsgen update {path_q}` (apply generator updates for marker-managed sections)",
         f"- ensure `{files_arg}` exist and contain AGENTSGEN markers",
+        f"- `agentsgen check {path_q}`",
         "- commit changes and push",
     ]
 
@@ -160,7 +168,7 @@ def main() -> int:
         for p in problems:
             print(f"- {p}", file=sys.stderr)
 
-    fix_lines = _build_fix_lines(path, files_arg, show_commands)
+    fix_lines = _build_fix_lines(path, files_arg, show_commands, problems)
     for ln in fix_lines:
         print(ln, file=sys.stderr)
 

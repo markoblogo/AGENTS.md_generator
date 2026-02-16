@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.0
+      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.1
         with:
           path: "."
           files: "AGENTS.md,RUNBOOK.md"
@@ -39,6 +39,12 @@ jobs:
 - `token` (default: `${{ github.token }}`) - token for comment API calls
 - `show_commands` (default: `"true"`) - include local fix commands in logs/comment
 - `version` (default: `"repo"`) - install mode: `repo` or `pypi`
+
+### Note about `files`
+
+`agentsgen check` currently validates the repo as a whole (no native `--files` CLI flag).
+The guard still uses core `check_repo` as source of truth, then filters reported file-specific findings
+to match the `files` input. This keeps behavior compatible and conservative.
 
 ## Outputs
 
@@ -56,12 +62,16 @@ permissions:
 ```
 
 ```yaml
-- uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.0
+- uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.1
   with:
     comment: "true"
 ```
 
 If comment write fails (common on fork PRs with restricted permissions), the action logs a warning and still enforces the check result.
+
+Example workflow file in this repo:
+
+- `.github/workflows/agentsgen-guard.example.yml`
 
 ## Local remediation
 
@@ -72,4 +82,3 @@ agentsgen init .
 agentsgen update .
 agentsgen check .
 ```
-

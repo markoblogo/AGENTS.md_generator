@@ -89,7 +89,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.0
+      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.1
         with:
           path: "."
           files: "AGENTS.md,RUNBOOK.md"
@@ -98,6 +98,8 @@ jobs:
 
 - Optional PR comment: set `comment: "true"` and grant `pull-requests: write`.
 - Fork-safe by default: no extra secrets required.
+- `files` input is an action-level filter for reported file findings; core validation still runs through `check_repo`.
+- Example workflow: `.github/workflows/agentsgen-guard.example.yml`
 - Full action docs: `docs/gh-action.md`
 
 ## Usage
