@@ -38,6 +38,21 @@ jobs:
 
 ## Inputs
 
+Most users only need:
+- `comment`
+- `files`
+- `pack_check`
+
+Advanced knobs:
+- `pack_format`
+- `pack_autodetect`
+- `pack_llms_format`
+- `pack_output_dir`
+- `pack_files`
+- `token`
+- `show_commands`
+- `version`
+
 - `path` (default: `"."`) - target directory to validate
 - `files` (default: `"AGENTS.md,RUNBOOK.md"`) - comma-separated files to enforce
 - `comment` (default: `"false"`) - post/update a short PR comment on failure (best effort)

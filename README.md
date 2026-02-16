@@ -129,6 +129,8 @@ jobs:
 
 - Optional PR comment: use `comment: "false"` if you prefer log-only mode.
 - Fork-safe by default: no extra secrets required.
+- Most users only need these inputs: `comment`, `files`, `pack_check`.
+- Advanced knobs: `pack_format`, `pack_autodetect`, `pack_llms_format`, `pack_output_dir`, `pack_files`.
 - `files` input is an action-level filter for reported file findings; core validation still runs through `check_repo`.
 - `pack_check: "true"` enforces `agentsgen pack --autodetect --check` in the same guard run.
 - `pack` is still supported as a backward-compatible alias (deprecated; prefer `pack_check`).
