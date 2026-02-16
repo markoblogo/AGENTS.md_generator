@@ -1,7 +1,7 @@
 # Architecture (AI)
 
 <!-- AGENTSGEN:START section=architecture -->
-- Project: `AGENTS.md Generator`
+- Project: `AGENTS.md_generator`
 - Stack profile: python
 - Source dirs: `src`
 - Docs: `README.md`, `RUNBOOK.md`

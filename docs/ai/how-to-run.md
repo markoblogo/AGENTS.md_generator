@@ -1,7 +1,7 @@
 # How To Run (AI)
 
 <!-- AGENTSGEN:START section=how_to_run -->
-- Project: `AGENTS.md Generator`
+- Project: `AGENTS.md_generator`
 - Stack profile: python
 - Source dirs: `src`
 - Config locations: `Makefile`, `pyproject.toml`, `.github/workflows/`
