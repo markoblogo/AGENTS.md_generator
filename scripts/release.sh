@@ -5,6 +5,7 @@ set -euo pipefail
 #   ./scripts/release.sh v0.1.2 A
 #   ./scripts/release.sh v0.1.2 B
 #   ./scripts/release.sh v0.1.2 C
+#   ./scripts/release.sh A
 
 REPO="markoblogo/AGENTS.md_generator"
 VERSION="${1:-}"
@@ -15,10 +16,12 @@ usage() {
   cat <<'EOF'
 Usage:
   ./scripts/release.sh vX.Y.Z A|B|C
+  ./scripts/release.sh A|B|C
 
 Examples:
   ./scripts/release.sh v0.1.2 A
   ./scripts/release.sh v0.2.0 B
+  ./scripts/release.sh A
 EOF
 }
 
@@ -78,6 +81,80 @@ require_no_existing_tag() {
   fi
 }
 
+is_mode() {
+  case "${1:-}" in
+    A|B|C) return 0 ;;
+    *) return 1 ;;
+  esac
+}
+
+is_version() {
+  [[ "${1:-}" =~ ^v[0-9]+\.[0-9]+\.[0-9]+$ ]]
+}
+
+bump_patch() {
+  local v="${1:-}"
+  if [[ "${v}" =~ ^v([0-9]+)\.([0-9]+)\.([0-9]+)$ ]]; then
+    local major="${BASH_REMATCH[1]}"
+    local minor="${BASH_REMATCH[2]}"
+    local patch="${BASH_REMATCH[3]}"
+    echo "v${major}.${minor}.$((patch + 1))"
+    return 0
+  fi
+  return 1
+}
+
+suggest_next_version() {
+  local latest=""
+  latest="$(git tag --list 'v*' --sort=-v:refname | head -n 1 || true)"
+  if [ -z "${latest}" ]; then
+    latest="$(ls RELEASES 2>/dev/null | sed -n 's/^\(v[0-9]\+\.[0-9]\+\.[0-9]\+\)\.md$/\1/p' | sort -V | tail -n 1 || true)"
+  fi
+  if [ -n "${latest}" ] && bump_patch "${latest}" >/dev/null 2>&1; then
+    bump_patch "${latest}"
+  else
+    echo "v0.1.0"
+  fi
+}
+
+pick_version_if_missing() {
+  if [ -n "${VERSION}" ]; then
+    return
+  fi
+  local suggested
+  suggested="$(suggest_next_version)"
+  echo "Suggested next version: ${suggested}"
+  local ans
+  read -r -p "Use suggested version ${suggested}? [Y/n] " ans
+  case "${ans}" in
+    ""|y|Y) VERSION="${suggested}" ;;
+    *)
+      read -r -p "Enter version (vX.Y.Z): " VERSION
+      ;;
+  esac
+  is_version "${VERSION}" || die "Invalid version format: ${VERSION} (expected vX.Y.Z)"
+}
+
+require_notes_headings() {
+  local file="${1}"
+  local headings=(
+    "## What’s inside"
+    "## Safety model"
+    "## Quickstart"
+    "## Known limitations"
+  )
+  local missing=0
+  for h in "${headings[@]}"; do
+    if ! grep -Fq "${h}" "${file}"; then
+      warn "Missing heading in ${file}: ${h}"
+      missing=1
+    fi
+  done
+  if [ "${missing}" -ne 0 ]; then
+    die "Release notes sanity check failed."
+  fi
+}
+
 run_checks() {
   echo "== Running checks =="
   "${PYTHON_BIN}" -m agentsgen._smoke
@@ -96,14 +173,32 @@ gh_ready() {
 }
 
 main() {
-  if [ "${VERSION}" = "-h" ] || [ "${VERSION}" = "--help" ] || [ -z "${VERSION}" ]; then
+  if [ $# -eq 0 ]; then
     usage
     exit 1
   fi
-  case "${MODE}" in
-    A|B|C) ;;
-    *) usage; die "Mode must be A, B, or C." ;;
-  esac
+
+  if [ "${VERSION}" = "-h" ] || [ "${VERSION}" = "--help" ]; then
+    usage
+    exit 1
+  fi
+
+  # Support shorthand invocation: ./scripts/release.sh A|B|C
+  if is_mode "${VERSION}" && [ -z "${2:-}" ]; then
+    MODE="${VERSION}"
+    VERSION=""
+  fi
+  if is_mode "${MODE}" && [ -z "${VERSION}" ]; then
+    :
+  elif [ -n "${VERSION}" ] && [ -z "${MODE:-}" ]; then
+    MODE="A"
+  fi
+  is_mode "${MODE}" || { usage; die "Mode must be A, B, or C."; }
+
+  if [ -n "${VERSION}" ]; then
+    is_version "${VERSION}" || die "Invalid version format: ${VERSION} (expected vX.Y.Z)"
+  fi
+  pick_version_if_missing
 
   require_cmd git
   pick_python
@@ -112,6 +207,7 @@ main() {
 
   local notes_file="RELEASES/${VERSION}.md"
   [ -f "${notes_file}" ] || die "Release notes file not found: ${notes_file}"
+  require_notes_headings "${notes_file}"
 
   echo "== Pre-flight =="
   echo "Version: ${VERSION}"

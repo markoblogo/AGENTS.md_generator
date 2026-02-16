@@ -215,4 +215,5 @@ Template PRs welcome (shared sections and stack-specific notes).
 - Use checklist: `docs/release-checklist.md`
 - Write release notes: `RELEASES/template.md -> RELEASES/vX.Y.Z.md`
 - Run: `./scripts/release.sh vX.Y.Z A|B|C`
+- Shorthand: `./scripts/release.sh A` (auto-suggests next version)
 - Tags follow `vX.Y.Z` and should point to the release commit
