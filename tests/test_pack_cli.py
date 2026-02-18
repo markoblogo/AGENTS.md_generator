@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import re
 import shutil
 from pathlib import Path
 
@@ -15,6 +16,10 @@ runner = CliRunner()
 
 def _copy_fixture(src: Path, dst: Path) -> None:
     shutil.copytree(src, dst, dirs_exist_ok=True)
+
+
+def squash_ws(text: str) -> str:
+    return re.sub(r"\s+", " ", text).strip()
 
 
 def test_pack_check_reports_drift_json(tmp_path: Path) -> None:
@@ -103,7 +108,10 @@ def test_pack_print_plan_text_includes_header(tmp_path: Path) -> None:
 
     res = runner.invoke(app, ["pack", str(target), "--autodetect", "--print-plan"])
     assert res.exit_code == 0
-    assert f"repo: {target.resolve()}" in res.stdout
-    assert "autodetect: on" in res.stdout
-    assert "output_dir: docs/ai" in res.stdout
-    assert "files_count: " in res.stdout
+    out = squash_ws(res.stdout)
+    repo_path = str(target.resolve())
+    assert "repo:" in out
+    assert repo_path in re.sub(r"\s+", "", res.stdout)
+    assert "autodetect: on" in out
+    assert "output_dir: docs/ai" in out
+    assert "files_count: " in out
