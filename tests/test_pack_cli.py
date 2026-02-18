@@ -54,3 +54,18 @@ def test_pack_json_output_includes_results(tmp_path: Path) -> None:
     assert payload["dry_run"] is True
     assert isinstance(payload["results"], list)
     assert len(payload["results"]) >= 1
+
+
+def test_pack_print_plan_json_no_write(tmp_path: Path) -> None:
+    target = tmp_path / "repo"
+    _copy_fixture(FIXTURES / "python_uv", target)
+
+    res = runner.invoke(
+        app,
+        ["pack", str(target), "--autodetect", "--print-plan", "--format", "json"],
+    )
+    assert res.exit_code == 0
+    payload = json.loads(res.stdout)
+    assert payload["print_plan"] is True
+    assert any(str(row.get("path", "")).endswith("llms.txt") for row in payload["plan"])
+    assert not (target / "llms.txt").exists()

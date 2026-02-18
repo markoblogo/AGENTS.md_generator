@@ -341,6 +341,13 @@ def _pack_output_specs(cfg: ToolConfig) -> list[tuple[Path, str, list[str]]]:
     return rendered
 
 
+def pack_plan_specs(cfg: ToolConfig) -> list[tuple[Path, list[str]]]:
+    """Return deterministic pack output specs for plan rendering."""
+    specs = _pack_output_specs(cfg)
+    out = [(rel_path, list(required)) for rel_path, _content, required in specs]
+    return sorted(out, key=lambda item: str(item[0]).replace("\\", "/"))
+
+
 def apply_pack(
     target: Path,
     cfg: ToolConfig,

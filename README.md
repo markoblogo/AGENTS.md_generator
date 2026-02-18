@@ -1,4 +1,7 @@
 # AGENTS.md Generator (`agentsgen`)
+Repo Docs Guard
+AGENTS.md Generator — safe repo docs + PR Guard + LLMO Pack
+A safe-by-default repo docs toolchain for coding agents.
 
 [![CI](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/ci.yml/badge.svg)](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/ci.yml)
 [![Pages](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/pages/pages-build-deployment)
@@ -175,6 +178,7 @@ pipx uninstall agentsgen
 - `README_SNIPPETS.md`
 
 By default, pack writes AI docs into docs/ai/ (override via pack_output_dir).
+Use --print-plan to preview what pack will write.
 
 What it is:
 - a compact, agent-first context bundle for coding agents and LLM indexing.

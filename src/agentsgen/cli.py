@@ -14,6 +14,7 @@ from .actions import (
     apply_config,
     check_repo,
     load_tool_config,
+    pack_plan_specs,
     save_tool_config,
     update_from_config,
 )
@@ -79,6 +80,55 @@ def _results_payload(results) -> list[dict[str, object]]:
         }
         for r in results
     ]
+
+
+def _path_relative_to_target(path: Path, target: Path) -> str:
+    try:
+        return str(path.resolve().relative_to(target.resolve())).replace("\\", "/")
+    except ValueError:
+        return str(path).replace("\\", "/")
+
+
+def _pack_plan_payload(
+    *,
+    target: Path,
+    cfg: ToolConfig,
+    results,
+) -> list[dict[str, object]]:
+    sections_map: dict[str, list[str]] = {
+        str(rel).replace("\\", "/"): sections for rel, sections in pack_plan_specs(cfg)
+    }
+    rows: list[dict[str, object]] = []
+    for r in results:
+        if r.action not in ("created", "updated", "generated"):
+            continue
+        rel = _path_relative_to_target(r.path, target)
+        action = {"created": "create", "updated": "update", "generated": "generate"}[
+            r.action
+        ]
+        rows.append(
+            {
+                "path": rel,
+                "action": action,
+                "sections": list(sections_map.get(rel, [])),
+                "message": r.message,
+            }
+        )
+    return sorted(rows, key=lambda x: str(x["path"]))
+
+
+def _print_pack_plan(plan: list[dict[str, object]]) -> None:
+    table = Table(title="pack plan")
+    table.add_column("Action", style="bold")
+    table.add_column("Path")
+    table.add_column("Sections")
+    if not plan:
+        table.add_row("none", "-", "-")
+    else:
+        for row in plan:
+            sections = ", ".join([str(x) for x in (row.get("sections") or [])]) or "-"
+            table.add_row(str(row["action"]), str(row["path"]), sections)
+    console.print(table)
 
 
 def _interactive_init(
@@ -334,6 +384,9 @@ def pack(
     ),
     dry_run: bool = typer.Option(False, "--dry-run", help="Do not write files"),
     print_diff: bool = typer.Option(False, "--print-diff", help="Print unified diff"),
+    print_plan: bool = typer.Option(
+        False, "--print-plan", help="Print dry pack plan (no file writes)"
+    ),
 ):
     """Generate/update LLMO pack files with marker-safe updates."""
     cfg_path = target / ".agentsgen.json"
@@ -364,8 +417,13 @@ def pack(
     if files is not None:
         cfg.pack.files = _parse_csv(files)
 
-    dry_run_effective = dry_run or check
-    results = apply_pack(target, cfg, dry_run=dry_run_effective, print_diff=print_diff)
+    dry_run_effective = dry_run or check or print_plan
+    results = apply_pack(
+        target,
+        cfg,
+        dry_run=dry_run_effective,
+        print_diff=(print_diff and not print_plan),
+    )
     errors = [r for r in results if r.action == "error"]
     drift = any(
         r.action in ("created", "updated", "generated") and r.changed for r in results
@@ -384,6 +442,36 @@ def pack(
         f"generated={sum(1 for r in results if r.action == 'generated')}, "
         f"errors={len(errors)})"
     )
+
+    if print_plan:
+        plan = _pack_plan_payload(target=target, cfg=cfg, results=results)
+        if format == "json":
+            sys.stdout.write(
+                json.dumps(
+                    {
+                        "status": status,
+                        "summary": summary,
+                        "check": check,
+                        "dry_run": True,
+                        "print_plan": True,
+                        "plan": plan,
+                    },
+                    indent=2,
+                )
+                + "\n"
+            )
+        else:
+            _print_pack_plan(plan)
+            console.print(summary)
+            if check and drift:
+                err_console.print(
+                    "Pack drift detected. Run `agentsgen pack` to update generated files."
+                )
+
+        if check and (errors or drift):
+            raise typer.Exit(code=1)
+        # print-plan alone is always a dry preview with exit 0.
+        raise typer.Exit(code=0)
 
     if format == "json":
         sys.stdout.write(
