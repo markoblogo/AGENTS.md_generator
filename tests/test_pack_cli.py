@@ -66,6 +66,7 @@ def test_pack_print_plan_json_no_write(tmp_path: Path) -> None:
     )
     assert res.exit_code == 0
     payload = json.loads(res.stdout)
+    assert payload["version"] == 1
     assert payload["print_plan"] is True
     assert any(str(row.get("path", "")).endswith("llms.txt") for row in payload["plan"])
     assert not (target / "llms.txt").exists()
@@ -89,7 +90,20 @@ def test_pack_print_plan_check_reports_drift_without_writes(tmp_path: Path) -> N
     )
     assert res.exit_code == 1
     payload = json.loads(res.stdout)
+    assert payload["version"] == 1
     assert payload["check"] is True
     assert payload["print_plan"] is True
     assert payload["status"] == "drift"
     assert not (target / "llms.txt").exists()
+
+
+def test_pack_print_plan_text_includes_header(tmp_path: Path) -> None:
+    target = tmp_path / "repo"
+    _copy_fixture(FIXTURES / "python_uv", target)
+
+    res = runner.invoke(app, ["pack", str(target), "--autodetect", "--print-plan"])
+    assert res.exit_code == 0
+    assert f"repo: {target.resolve()}" in res.stdout
+    assert "autodetect: on" in res.stdout
+    assert "output_dir: docs/ai" in res.stdout
+    assert "files_count: " in res.stdout

@@ -131,6 +131,19 @@ def _print_pack_plan(plan: list[dict[str, object]]) -> None:
     console.print(table)
 
 
+def _print_pack_plan_header(
+    *,
+    target: Path,
+    autodetect: bool,
+    output_dir: str,
+    files_count: int,
+) -> None:
+    console.print(f"repo: {target.resolve()}")
+    console.print(f"autodetect: {'on' if autodetect else 'off'}")
+    console.print(f"output_dir: {output_dir}")
+    console.print(f"files_count: {files_count}")
+
+
 def _interactive_init(
     target: Path,
     defaults: bool,
@@ -449,6 +462,7 @@ def pack(
             sys.stdout.write(
                 json.dumps(
                     {
+                        "version": 1,
                         "status": status,
                         "summary": summary,
                         "check": check,
@@ -461,6 +475,12 @@ def pack(
                 + "\n"
             )
         else:
+            _print_pack_plan_header(
+                target=target,
+                autodetect=autodetect,
+                output_dir=cfg.pack.output_dir,
+                files_count=len(plan),
+            )
             _print_pack_plan(plan)
             console.print(summary)
             if check and drift:
