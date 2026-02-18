@@ -54,3 +54,7 @@ jobs:
           pack_check: "true"
           pack_format: "json"
 ```
+
+### Common tweaks
+- Replace the default `commands` in `.agentsgen.json` to match your CLI setup (Typer/Click for Python, or `node ./bin` for Node).
+- If your CLI code is not at repo root (e.g. `packages/cli`), point init/update to that folder or set a workspace path in `.agentsgen.json`.

@@ -59,3 +59,7 @@ Notes:
 
 - This recipe assumes you have root scripts like lint, test, build.
 - If your monorepo uses turbo/nx, point the scripts to those tools.
+
+### Common tweaks
+- Set the monorepo root commands in `.agentsgen.json -> commands` (often `pnpm -w lint/test/build`) to match your actual workspace tooling.
+- If you want per-package docs, run `agentsgen init` in each package folder (or set up a separate config per workspace).

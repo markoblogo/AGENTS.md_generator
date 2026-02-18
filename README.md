@@ -96,6 +96,7 @@ Deep dives:
 ## Recipes
 
 Copy-paste starter kits (each includes an example `.agentsgen.json` with explicit commands + a PR Guard workflow snippet):
+Pick one → copy .agentsgen.json → run agentsgen init.
 
 - **Python library (Poetry + pytest):** [`recipes/python-lib/`](recipes/python-lib/)
 - **Next.js app (pnpm):** [`recipes/nextjs-app/`](recipes/nextjs-app/)

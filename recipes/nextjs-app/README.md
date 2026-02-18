@@ -58,3 +58,7 @@ jobs:
           pack_check: "true"
           pack_format: "json"
 ```
+
+### Common tweaks
+- Update `.agentsgen.json -> commands` if your repo uses `npm` or `yarn` instead of `pnpm`, or if your scripts are named differently.
+- If the app lives in a subfolder (e.g. `apps/web`), set a workspace path in `.agentsgen.json` (or run `agentsgen init <path-to-app>`).

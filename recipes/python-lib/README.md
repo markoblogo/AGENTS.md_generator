@@ -63,3 +63,7 @@ Notes:
 
 - comment: "true" posts a PR comment with results (safe default).
 - pack_check: "true" enforces drift detection for pack files in the same job.
+
+### Common tweaks
+- Edit the `commands` block in `.agentsgen.json` if your project uses `uv`/`pip` instead of Poetry, or if your test command isn’t `pytest -q`.
+- If your package isn’t under `src/`, update any paths mentioned in AGENTS/RUNBOOK after the first init (the generator won’t guess your layout).
