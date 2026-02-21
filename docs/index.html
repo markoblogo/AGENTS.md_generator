@@ -130,7 +130,7 @@
         <span class="pill">agentsgen</span>
         <span class="brand-title">AGENTS.md Generator</span>
       </div>
-      <nav class="nav" aria-label="Sections">
+      <nav class="nav" data-ascii-role="nav" aria-label="Sections">
         <div class="nav-left">
           <a class="link" href="#quickstart">Quickstart</a>
           <a class="link" href="#guard">PR Guard</a>
@@ -185,12 +185,12 @@
             </p>
 
             <div class="hero-cta" role="group" aria-label="Primary actions">
-              <a class="btn primary" href="#quickstart">Get started</a>
-              <a class="btn secondary" href="https://github.com/markoblogo/AGENTS.md_generator">View on GitHub</a>
+              <a class="btn primary" data-ascii-role="cta" href="#quickstart">Get started</a>
+              <a class="btn secondary" data-ascii-role="cta-secondary" href="https://github.com/markoblogo/AGENTS.md_generator">View on GitHub</a>
               <a class="btn ghost" href="#safety">Why it’s safe</a>
             </div>
           </div>
-          <aside class="card feature-card">
+          <aside class="card feature-card" data-ascii-role="card">
             <h3>Why teams keep this</h3>
             <ul class="bullets">
               <li>Updates only inside markers; handwritten content stays yours.</li>
@@ -212,7 +212,7 @@
         </div>
 
         <div class="grid-2 quickstart-grid">
-          <div class="card quickstart-copy">
+          <div class="card quickstart-copy" data-ascii-role="card">
             <h3>What you get fast</h3>
             <ul class="bullets">
               <li>Repo-level agent contract with safe updates.</li>
@@ -220,7 +220,7 @@
               <li>Optional pack drift checks for CI.</li>
             </ul>
           </div>
-          <div class="card code-card">
+          <div class="card code-card" data-ascii-role="card">
             <div class="code-head">
               <span class="code-label">Quickstart</span>
               <button class="copy" type="button" data-copy-target="#qs-code">Copy</button>
@@ -246,25 +246,25 @@ agentsgen pack --autodetect --check</code></pre>
         </div>
 
         <div class="grid-2 use-cases-grid">
-          <div class="card">
+          <div class="card" data-ascii-role="card">
             <h3>Agent context, fast</h3>
             <ul class="bullets">
               <li>Give Codex / Claude Code / Cursor immediate repo rules.</li>
             </ul>
           </div>
-          <div class="card">
+          <div class="card" data-ascii-role="card">
             <h3>Consistent across repos</h3>
             <ul class="bullets">
               <li>Reuse the same safety model and output protocol everywhere.</li>
             </ul>
           </div>
-          <div class="card">
+          <div class="card" data-ascii-role="card">
             <h3>Safer updates</h3>
             <ul class="bullets">
               <li>Marker-only ownership plus diff-first workflow.</li>
             </ul>
           </div>
-          <div class="card">
+          <div class="card" data-ascii-role="card">
             <h3>No command guessing</h3>
             <ul class="bullets">
               <li>Makefile/scripts priority keeps commands realistic.</li>
@@ -282,7 +282,7 @@ agentsgen pack --autodetect --check</code></pre>
         </div>
 
         <div class="grid-2 guard-grid">
-          <div class="card">
+          <div class="card" data-ascii-role="card">
             <h3>Why it matters</h3>
             <ul class="bullets">
               <li>Fail PRs when generated docs drift.</li>
@@ -291,7 +291,7 @@ agentsgen pack --autodetect --check</code></pre>
             </ul>
             <div class="note">Works on forks (best-effort comments).</div>
           </div>
-          <div class="card code-card">
+          <div class="card code-card" data-ascii-role="card">
             <div class="code-head">
               <span class="code-label">Workflow</span>
               <button class="copy" type="button" data-copy-target="#guard-code">Copy</button>
@@ -334,7 +334,7 @@ jobs:
         </div>
 
         <div class="safety-row">
-          <div class="card">
+          <div class="card" data-ascii-role="card">
             <div class="step">
               <div class="num">1</div>
               <div>
@@ -343,7 +343,7 @@ jobs:
               </div>
             </div>
           </div>
-          <div class="card">
+          <div class="card" data-ascii-role="card">
             <div class="step">
               <div class="num">2</div>
               <div>
@@ -352,7 +352,7 @@ jobs:
               </div>
             </div>
           </div>
-          <div class="card">
+          <div class="card" data-ascii-role="card">
             <div class="step">
               <div class="num">3</div>
               <div>
@@ -373,7 +373,7 @@ jobs:
           <p>Priority rules. Conservative defaults.</p>
         </div>
 
-        <div class="card">
+        <div class="card" data-ascii-role="card">
           <ul class="bullets">
             <li><strong>Makefile</strong> (dominant)</li>
             <li><strong>package.json</strong> scripts</li>
@@ -394,7 +394,7 @@ jobs:
           <p>AI-readable docs bundle generated with the same safety model.</p>
         </div>
 
-        <div class="card">
+        <div class="card" data-ascii-role="card">
           <ul class="bullets">
             <li><code>llms.txt</code> (or <code>LLMS.md</code>)</li>
             <li><code>docs/ai/*</code> (<code>how-to-run</code>, <code>how-to-test</code>, <code>architecture</code>, <code>data-contracts</code>)</li>
@@ -415,9 +415,9 @@ jobs:
           <p>Everything detailed lives in docs. The landing stays short.</p>
         </div>
         <div class="docs-grid">
-          <div class="card"><a href="https://agentsmd.abvx.xyz/gh-action.html">Action docs</a></div>
-          <div class="card"><a href="https://agentsmd.abvx.xyz/llmo-pack.html">LLMO Pack docs</a></div>
-          <div class="card"><a href="https://agentsmd.abvx.xyz/release-checklist.html">Release kit</a></div>
+          <div class="card" data-ascii-role="card"><a href="https://agentsmd.abvx.xyz/gh-action.html">Action docs</a></div>
+          <div class="card" data-ascii-role="card"><a href="https://agentsmd.abvx.xyz/llmo-pack.html">LLMO Pack docs</a></div>
+          <div class="card" data-ascii-role="card"><a href="https://agentsmd.abvx.xyz/release-checklist.html">Release kit</a></div>
         </div>
       </div>
     </section>
@@ -463,7 +463,7 @@ jobs:
           <p>Conservative by design.</p>
         </div>
 
-        <div class="card">
+        <div class="card" data-ascii-role="card">
           <ul class="bullets">
             <li>Monorepos may be detected as mixed; commands can be empty by design.</li>
             <li>Unusual workflows should be set explicitly in <code>.agentsgen.json</code>.</li>

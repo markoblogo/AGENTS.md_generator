@@ -159,3 +159,62 @@
     font-size: 11px;
   }
 }
+
+/* Step 2: terminal treatment for key blocks (CTA / cards / nav) */
+:root[data-style="ascii"] [data-ascii-role="nav"]{
+  border-bottom: 2px solid currentColor;
+}
+
+:root[data-style="ascii"] [data-ascii-role="cta"],
+:root[data-style="ascii"] [data-ascii-role="cta-secondary"]{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .5rem;
+  padding: .6rem .9rem;
+  border: 2px solid currentColor !important;
+  border-radius: 2px !important;
+  background: transparent !important;
+  color: var(--ascii-fg) !important;
+  text-decoration: none;
+  transition: none !important;
+}
+
+:root[data-style="ascii"] [data-ascii-role="cta"]:hover,
+:root[data-style="ascii"] [data-ascii-role="cta-secondary"]:hover{
+  background: currentColor !important;
+  color: var(--ascii-bg) !important;
+}
+
+:root[data-style="ascii"] .btn.icon svg{
+  display: none;
+}
+
+:root[data-style="ascii"] [data-ascii-role="card"]{
+  border: 2px solid currentColor !important;
+  border-radius: 2px !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  padding: 14px;
+}
+
+:root[data-style="ascii"] [data-ascii-role="card"] h3{
+  margin-top: 0;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+}
+
+:root[data-style="ascii"] [data-ascii-role="card"] p,
+:root[data-style="ascii"] [data-ascii-role="card"] li,
+:root[data-style="ascii"] [data-ascii-role="card"] .note{
+  line-height: 1.7;
+}
+
+:root[data-style="ascii"] .pill,
+:root[data-style="ascii"] .mini-badge,
+:root[data-style="ascii"] .num{
+  border: 2px solid currentColor !important;
+  border-radius: 2px !important;
+  padding: 2px 6px;
+  background: transparent !important;
+}
