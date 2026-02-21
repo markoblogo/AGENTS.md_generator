@@ -1,22 +1,7 @@
 (() => {
-  const STORAGE_KEY = "agentsmd_style_v1";
   const root = document.documentElement;
 
   const normalizeStyle = (value) => (value === "ascii" ? "ascii" : "default");
-
-  const getStoredStyle = () => {
-    try {
-      return normalizeStyle(localStorage.getItem(STORAGE_KEY));
-    } catch {
-      return "default";
-    }
-  };
-
-  const setStoredStyle = (value) => {
-    try {
-      localStorage.setItem(STORAGE_KEY, value);
-    } catch {}
-  };
 
   const makeBox = (text) => {
     const label = String(text || "").replace(/\s+/g, " ").trim();
@@ -72,13 +57,13 @@
   const applyStyle = (style) => {
     const next = normalizeStyle(style);
     root.dataset.style = next;
-    setStoredStyle(next);
     renderStickers(next);
     updateAsciiToggleUI();
   };
 
   const init = () => {
-    const initial = normalizeStyle(root.dataset.style || getStoredStyle());
+    // ASCII is opt-in only for this landing: never auto-restore from storage.
+    const initial = "default";
     applyStyle(initial);
 
     const toggle = document.querySelector("[data-ascii-toggle]");

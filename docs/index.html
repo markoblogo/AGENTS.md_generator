@@ -107,13 +107,7 @@
   </script>
   <script>
     (() => {
-      try {
-        const stored = localStorage.getItem("agentsmd_style_v1");
-        if (stored === "default" || stored === "ascii") {
-          document.documentElement.dataset.style = stored;
-          return;
-        }
-      } catch {}
+      // ASCII should never auto-open; keep default style until user toggles it manually.
       document.documentElement.dataset.style = "default";
     })();
   </script>
