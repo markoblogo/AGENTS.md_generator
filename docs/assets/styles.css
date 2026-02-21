@@ -493,6 +493,14 @@ details[open] summary::after{ transform: rotate(-135deg); }
   justify-content:flex-end;
 }
 
+.ascii-footnote{
+  font-size: 12px;
+  line-height: 1.5;
+  opacity: .82;
+  white-space: normal;
+  word-break: normal;
+}
+
 @media (min-width: 900px){
   .grid-2{ grid-template-columns: 1fr 1fr; gap: 18px; }
   .hero-grid{ grid-template-columns: 1.2fr .8fr; align-items: start; }

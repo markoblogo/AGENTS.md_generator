@@ -216,6 +216,16 @@ This repo includes a minimal one-page landing in `docs/index.html`.
 - Branch: `main`
 - Folder: `/docs`
 
+## Experimental: ASCII theme (landing)
+
+- The landing page includes an experimental ASCII theme as a visual/UX experiment.
+- Toggle it from the header next to the light/dark switch.
+- The setting is saved in localStorage.
+- This is UI-only and does not affect the generator output.
+- Reuse pointers:
+  - `docs/ascii/ascii.css`
+  - `docs/ascii/ascii.js`
+
 ## Snapshot Commits
 
 If you want cheap “backup commits” with a green-test gate:

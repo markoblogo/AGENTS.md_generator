@@ -218,3 +218,10 @@
   padding: 2px 6px;
   background: transparent !important;
 }
+
+:root[data-style="ascii"] .ascii-footnote{
+  font-family: monospace;
+  letter-spacing: 0.02em;
+  opacity: 0.9;
+  white-space: normal;
+}
