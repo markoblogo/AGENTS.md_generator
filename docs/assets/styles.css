@@ -244,6 +244,25 @@ h1{
   gap: 10px;
   margin-top: 20px;
 }
+.lab-banner{
+  margin-top: 18px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap: 14px;
+}
+.lab-banner-title{
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+.lab-banner p{
+  margin: 0;
+  max-width: 50ch;
+  color: var(--muted);
+}
 .feature-card{
   align-self: start;
   border-color: color-mix(in oklab, var(--accent) 28%, var(--border));
