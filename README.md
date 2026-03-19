@@ -11,6 +11,7 @@ A safe-by-default repo docs toolchain for coding agents.
 
 ![AGENTS.md Generator landing page (v0.1.2)](docs/assets/agentsmd-landing-v0.1.2.png)
 Landing: https://agentsmd.abvx.xyz/
+Listed on ABVX Lab: https://lab.abvx.xyz/
 
 Small, production-grade CLI to generate and safely update:
 New: Recipes — copy-paste starter kits (explicit commands + PR Guard workflow).
