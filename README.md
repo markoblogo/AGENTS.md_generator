@@ -160,10 +160,14 @@ agentsgen init
 agentsgen update
 agentsgen pack
 agentsgen check
+agentsgen status .
 agentsgen detect . --format json
 agentsgen init --defaults --stack python --dry-run --print-diff
 pipx uninstall agentsgen
 ```
+
+agentsgen status is a read-only overview of managed files, markers, generated fallbacks, and pack drift.
+It is lighter and more diagnostic than `agentsgen check`, which focuses on repo readiness errors/warnings.
 
 ## LLMO Pack
 

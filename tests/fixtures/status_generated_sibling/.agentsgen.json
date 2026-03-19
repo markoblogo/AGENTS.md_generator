@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "mode": "safe",
+  "on_missing_markers": "write_generated",
+  "generated_suffix": ".generated",
+  "project": {"name": "fixture", "primary_stack": "static", "repo_root": "."},
+  "paths": {"docs": ["README.md"], "ci": "", "source_dirs": ["docs"], "config_locations": []},
+  "commands": {},
+  "evidence": {"python": [], "node": [], "make": [], "ci": []},
+  "pack": {"enabled": true, "llms_format": "txt", "output_dir": "docs/ai", "files": []}
+}

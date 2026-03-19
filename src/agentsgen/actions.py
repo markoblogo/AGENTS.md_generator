@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import difflib
-from dataclasses import dataclass
+from dataclasses import asdict, dataclass
 from pathlib import Path
 
 from .constants import (
@@ -24,6 +24,7 @@ from .generate import (
 from .generate import required_runbook_sections
 from .io_utils import read_json, read_text, write_json_atomic, write_text_atomic
 from .markers import (
+    count_agentsgen_marker_sections,
     extract_section_content,
     has_any_agentsgen_markers,
     replace_section_content,
@@ -45,6 +46,38 @@ class FileResult:
     message: str = ""
     changed: bool = False
     diff: str = ""
+
+
+@dataclass(frozen=True)
+class StatusFileReport:
+    present: bool
+    markers: bool
+    marker_sections: int
+    generated_sibling: bool
+
+
+@dataclass(frozen=True)
+class RepoStatusReport:
+    status: str
+    path: str
+    config: dict[str, bool]
+    agents_md: StatusFileReport
+    runbook_md: StatusFileReport
+    pack: dict[str, object]
+    generated: dict[str, object]
+    summary: dict[str, int]
+
+    def to_json(self) -> dict[str, object]:
+        return {
+            'status': self.status,
+            'path': self.path,
+            'config': dict(self.config),
+            'agents_md': asdict(self.agents_md),
+            'runbook_md': asdict(self.runbook_md),
+            'pack': dict(self.pack),
+            'generated': dict(self.generated),
+            'summary': dict(self.summary),
+        }
 
 
 def load_tool_config(target: Path) -> ToolConfig:
@@ -519,3 +552,121 @@ def check_repo(target: Path) -> tuple[int, list[str], list[str]]:
                     )
 
     return (1 if problems else 0), problems, warnings
+
+
+def _generated_sibling_path(path: Path, generated_suffix: str) -> Path:
+    return path.with_name(f"{path.stem}{generated_suffix}{path.suffix}")
+
+
+def _status_for_file(path: Path, *, generated_suffix: str) -> tuple[StatusFileReport, list[str], list[str]]:
+    findings: list[str] = []
+    errors: list[str] = []
+    generated_sibling = _generated_sibling_path(path, generated_suffix).exists()
+    if not path.exists():
+        findings.append(f"Missing {path.name}")
+        return StatusFileReport(False, False, 0, generated_sibling), findings, errors
+
+    try:
+        text = read_text(path)
+    except Exception as exc:
+        errors.append(f"Unreadable {path.name}: {exc}")
+        return StatusFileReport(True, False, 0, generated_sibling), findings, errors
+
+    markers_found = has_any_agentsgen_markers(text)
+    marker_sections = count_agentsgen_marker_sections(text) if markers_found else 0
+    if not markers_found:
+        findings.append(f"{path.name} has no AGENTSGEN markers (updates will go to generated siblings)")
+    else:
+        marker_problems = validate_markers(text)
+        for mp in marker_problems:
+            errors.append(f"{path.name}: {mp.message}")
+
+    if generated_sibling:
+        findings.append(f"Generated sibling exists for {path.name}: {_generated_sibling_path(path, generated_suffix).name}")
+
+    return StatusFileReport(True, markers_found, marker_sections, generated_sibling), findings, errors
+
+
+def status_repo(target: Path) -> RepoStatusReport:
+    findings: list[str] = []
+    errors: list[str] = []
+    target = target.resolve()
+
+    cfg_path = target / CONFIG_FILENAME
+    generated_suffix = '.generated'
+    tool_cfg: ToolConfig | None = None
+    if not cfg_path.exists():
+        findings.append(f"Missing {CONFIG_FILENAME}")
+        config = {'present': False}
+    else:
+        config = {'present': True}
+        try:
+            tool_cfg = load_tool_config(target)
+            generated_suffix = tool_cfg.generated_suffix or '.generated'
+        except Exception as exc:
+            errors.append(f"Invalid {CONFIG_FILENAME}: {exc}")
+
+    agents_report, agent_findings, agent_errors = _status_for_file(
+        target / AGENTS_FILENAME, generated_suffix=generated_suffix
+    )
+    runbook_report, runbook_findings, runbook_errors = _status_for_file(
+        target / RUNBOOK_FILENAME, generated_suffix=generated_suffix
+    )
+    findings.extend(agent_findings)
+    findings.extend(runbook_findings)
+    errors.extend(agent_errors)
+    errors.extend(runbook_errors)
+
+    generated_files = sorted(str(p.relative_to(target)) for p in target.rglob(f'*{generated_suffix}.*'))
+
+    pack_findings: list[str] = []
+    pack_errors: list[str] = []
+    pack_status = 'skipped' if tool_cfg is None and not cfg_path.exists() else 'ok'
+    if tool_cfg is not None:
+        try:
+            specs = _pack_output_specs(tool_cfg)
+            for rel_path, _content, _required in specs:
+                path = target / rel_path
+                if not path.exists():
+                    pack_findings.append(f"Missing pack file: {rel_path.as_posix()}")
+                    continue
+                try:
+                    text = read_text(path)
+                except Exception as exc:
+                    pack_errors.append(f"Unreadable pack file {rel_path.as_posix()}: {exc}")
+                    continue
+                if not has_any_agentsgen_markers(text):
+                    pack_findings.append(f"Pack file has no AGENTSGEN markers: {rel_path.as_posix()}")
+                else:
+                    marker_problems = validate_markers(text)
+                    for mp in marker_problems:
+                        pack_errors.append(f"{rel_path.as_posix()}: {mp.message}")
+                gen_path = _generated_sibling_path(path, generated_suffix)
+                if gen_path.exists():
+                    pack_findings.append(f"Generated sibling exists for pack file: {gen_path.relative_to(target).as_posix()}")
+        except Exception as exc:
+            pack_errors.append(f"Pack status error: {exc}")
+    if pack_errors:
+        pack_status = 'error'
+    elif pack_findings:
+        pack_status = 'drift'
+    elif tool_cfg is not None:
+        pack_status = 'ok'
+
+    if generated_files:
+        findings.append(f"Generated fallback files present: {len(generated_files)}")
+
+    drift_count = len(findings) + len(pack_findings)
+    error_count = len(errors) + len(pack_errors)
+    status = 'error' if error_count else ('drift' if drift_count else 'ok')
+
+    return RepoStatusReport(
+        status=status,
+        path=str(target),
+        config=config,
+        agents_md=agents_report,
+        runbook_md=runbook_report,
+        pack={'status': pack_status, 'findings': pack_findings},
+        generated={'count': len(generated_files), 'files': generated_files},
+        summary={'drift': drift_count, 'errors': error_count},
+    )

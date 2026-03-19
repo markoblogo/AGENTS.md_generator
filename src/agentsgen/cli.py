@@ -16,6 +16,7 @@ from .actions import (
     load_tool_config,
     pack_plan_specs,
     save_tool_config,
+    status_repo,
     update_from_config,
 )
 from .config import ToolConfig
@@ -25,6 +26,13 @@ from .stacks import adapter_for
 from .stacks.base import project_name_from_dir
 
 from . import __version__
+from .constants import (
+    AGENTS_FILENAME,
+    AGENTS_GENERATED_FILENAME,
+    CONFIG_FILENAME,
+    RUNBOOK_FILENAME,
+    RUNBOOK_GENERATED_FILENAME,
+)
 
 
 app = typer.Typer(
@@ -552,6 +560,63 @@ def doctor(
     if problems:
         for p in problems:
             err_console.print(f"- {p}")
+    raise typer.Exit(code=code)
+
+
+@app.command()
+def status(
+    target: Path = typer.Argument(
+        Path("."), exists=True, file_okay=False, dir_okay=True
+    ),
+    format: str = typer.Option("text", "--format", help="Output format: text|json"),
+    quiet: bool = typer.Option(False, "--quiet", help="Print only summary line in text mode"),
+):
+    """Read-only repo status overview for managed files, markers, pack, and drift."""
+    report = status_repo(target)
+    payload = report.to_json()
+    code = 0 if report.status == 'ok' else (2 if report.status == 'error' else 1)
+
+    if format == 'json':
+        sys.stdout.write(json.dumps(payload, indent=2) + "\n")
+        raise typer.Exit(code=code)
+
+    summary = f"Summary: {report.status.upper()}"
+    if quiet:
+        console.print(summary)
+        raise typer.Exit(code=code)
+
+    console.print(f"Repo: {report.path}")
+    console.print(f"Config: {'present' if report.config.get('present') else 'missing'}")
+    console.print(
+        f"AGENTS.md: {'present' if report.agents_md.present else 'missing'}, markers: {'yes' if report.agents_md.markers else 'no'}, sections: {report.agents_md.marker_sections}, generated sibling: {'yes' if report.agents_md.generated_sibling else 'no'}"
+    )
+    console.print(
+        f"RUNBOOK.md: {'present' if report.runbook_md.present else 'missing'}, markers: {'yes' if report.runbook_md.markers else 'no'}, sections: {report.runbook_md.marker_sections}, generated sibling: {'yes' if report.runbook_md.generated_sibling else 'no'}"
+    )
+    console.print(f"Pack: {report.pack['status']} ({len(report.pack['findings'])} findings)")
+    if report.generated['files']:
+        console.print(f"Generated siblings: {', '.join(report.generated['files'])}")
+    for finding in report.pack['findings']:
+        console.print(f"- {finding}")
+    if not quiet:
+        # Reconstruct high-level file findings from structured payload.
+        if not report.config.get('present'):
+            console.print(f"- Missing {CONFIG_FILENAME}")
+        if not report.agents_md.present:
+            console.print(f"- Missing {AGENTS_FILENAME}")
+        elif not report.agents_md.markers:
+            console.print(f"- {AGENTS_FILENAME} has no AGENTSGEN markers (updates will go to generated siblings)")
+        if report.agents_md.generated_sibling:
+            console.print(f"- Generated sibling exists for {AGENTS_FILENAME}: {AGENTS_GENERATED_FILENAME}")
+        if not report.runbook_md.present:
+            console.print(f"- Missing {RUNBOOK_FILENAME}")
+        elif not report.runbook_md.markers:
+            console.print(f"- {RUNBOOK_FILENAME} has no AGENTSGEN markers (updates will go to generated siblings)")
+        if report.runbook_md.generated_sibling:
+            console.print(f"- Generated sibling exists for {RUNBOOK_FILENAME}: {RUNBOOK_GENERATED_FILENAME}")
+    if report.summary['errors']:
+        console.print(f"Errors: {report.summary['errors']}")
+    console.print(summary)
     raise typer.Exit(code=code)
 
 

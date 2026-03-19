@@ -34,6 +34,10 @@ def has_any_agentsgen_markers(text: str) -> bool:
     return f"<!-- {MARKER_PREFIX}:START" in text and f"<!-- {MARKER_PREFIX}:END" in text
 
 
+def count_agentsgen_marker_sections(text: str) -> int:
+    return sum(1 for _ in _START_RE.finditer(text))
+
+
 @dataclass(frozen=True)
 class MarkerProblem:
     kind: str
