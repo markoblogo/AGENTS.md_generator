@@ -217,6 +217,7 @@
             <ul class="bullets">
               <li>Repo-level agent contract with safe updates.</li>
               <li>Reviewable diffs before writing changes.</li>
+              <li>Read-only status snapshot before writing changes.</li>
               <li>Optional pack drift checks for CI.</li>
             </ul>
           </div>
@@ -230,9 +231,10 @@ cd your-repo
 agentsgen init --autodetect
 agentsgen update --dry-run --print-diff
 agentsgen update
+agentsgen status .
 # optional
 agentsgen pack --autodetect --check</code></pre>
-            <div class="note">In CI, run <code>agentsgen check</code> (and optionally <code>pack --check</code>) to fail drift early.</div>
+            <div class="note">Use <code>agentsgen status</code> locally for a read-only repo snapshot. In CI, run <code>agentsgen check</code> (and optionally <code>pack --check</code>) to fail drift early.</div>
           </div>
         </div>
       </div>

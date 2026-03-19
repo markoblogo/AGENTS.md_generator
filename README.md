@@ -86,13 +86,19 @@ jobs:
           pack_format: "json"
 ```
 
-4. Optional LLMO bundle:
+4. Read-only repo snapshot:
+
+```sh
+agentsgen status .
+```
+
+5. Optional LLMO bundle:
 
 ```sh
 agentsgen pack . --autodetect
 ```
 
-5. Profit: fewer agent mistakes, safer updates, and better indexable repo context.
+6. Profit: fewer agent mistakes, safer updates, and better indexable repo context.
 
 Deep dives:
 - Action options: `docs/gh-action.md`
