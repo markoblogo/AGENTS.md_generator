@@ -6,14 +6,12 @@ from pathlib import Path
 
 from .constants import (
     AGENTS_FILENAME,
-    AGENTS_GENERATED_FILENAME,
     CONFIG_FILENAME,
     DEFAULT_PACK_FILES,
     DEFAULT_PACK_LLMS_FORMAT,
     DEFAULT_PACK_OUTPUT_DIR,
     PROMPTS_DIRNAME,
     RUNBOOK_FILENAME,
-    RUNBOOK_GENERATED_FILENAME,
 )
 from .generate import (
     render_agents_md,
@@ -242,12 +240,8 @@ def _handle_file(
     )
 
 
-def _generated_sibling_path(path: Path) -> Path:
-    if path.name == AGENTS_FILENAME:
-        return path.with_name(AGENTS_GENERATED_FILENAME)
-    if path.name == RUNBOOK_FILENAME:
-        return path.with_name(RUNBOOK_GENERATED_FILENAME)
-    return path.with_name(f"{path.stem}.generated{path.suffix}")
+def _generated_sibling_path(path: Path, generated_suffix: str = ".generated") -> Path:
+    return path.with_name(f"{path.stem}{generated_suffix}{path.suffix}")
 
 
 def _fmt_paths(items: list[str]) -> str:
@@ -552,10 +546,6 @@ def check_repo(target: Path) -> tuple[int, list[str], list[str]]:
                     )
 
     return (1 if problems else 0), problems, warnings
-
-
-def _generated_sibling_path(path: Path, generated_suffix: str) -> Path:
-    return path.with_name(f"{path.stem}{generated_suffix}{path.suffix}")
 
 
 def _status_for_file(
