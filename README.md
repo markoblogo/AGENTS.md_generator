@@ -14,7 +14,7 @@ Landing: https://agentsmd.abvx.xyz/
 Listed on ABVX Lab: https://lab.abvx.xyz/
 
 Small, production-grade CLI to generate and safely update:
-New: Presets + status — built-in starter configs and a read-only repo snapshot command.
+New: README Snippets — extract canonical agent-facing README blocks with drift checks, alongside presets and status.
 
 - `AGENTS.md` (strict repo contract for coding agents)
 - `RUNBOOK.md` (human-friendly command/run cheatsheet)
@@ -98,13 +98,19 @@ jobs:
 agentsgen status .
 ```
 
-5. Optional LLMO bundle:
+5. Canonical README extracts for agents and CI:
+
+```sh
+agentsgen snippets .
+```
+
+6. Optional LLMO bundle:
 
 ```sh
 agentsgen pack . --autodetect
 ```
 
-6. Profit: fewer agent mistakes, safer updates, and better indexable repo context.
+7. Profit: fewer agent mistakes, safer updates, and better indexable repo context.
 
 Deep dives:
 - Action options: `docs/gh-action.md`
@@ -114,7 +120,7 @@ Deep dives:
 ## Presets
 
 Presets are conservative starter `.agentsgen.json` templates for common repo shapes.
-Use them to get explicit commands quickly, then edit the generated config to match your real toolchain.
+Use them to get explicit commands quickly, then edit the generated config to match your real toolchain. Pair them with `agentsgen status` for a read-only snapshot and `agentsgen snippets` for canonical README extracts.
 
 ```sh
 agentsgen presets

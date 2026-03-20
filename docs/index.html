@@ -156,13 +156,13 @@
           <div class="hero-left">
             <div class="hero-title-wrap">
               <div class="hero-sticker-cluster hero-stickers" aria-label="Release highlights">
-                <div class="sticker sticker-burst" data-ascii-sticker="NEW RELEASE v0.1.2">
+                <div class="sticker sticker-burst" data-ascii-sticker="NEW RELEASE v0.1.4">
                   <span class="sticker-kicker">NEW RELEASE</span>
-                  <span class="sticker-big">v0.1.2</span>
+                  <span class="sticker-big">v0.1.4</span>
                 </div>
 
-                <div class="sticker sticker-ribbon" data-ascii-sticker="NOW: PR Guard + LLMO Pack">
-                  NOW: PR Guard + LLMO Pack
+                <div class="sticker sticker-ribbon" data-ascii-sticker="NOW: Snippets + Presets">
+                  NOW: Snippets + Presets
                 </div>
 
                 <div class="sticker sticker-micro" data-ascii-sticker="SAFE UPDATES">
@@ -173,7 +173,7 @@
             </div>
             <p class="lede">
               Generate and maintain <strong>AGENTS.md</strong> / <strong>RUNBOOK.md</strong> with marker-only safe updates.
-              Add PR Guard and optionally enforce LLMO Pack drift with <code>pack --check</code>.
+              Add presets, read-only status, and canonical README snippets with deterministic drift checks.
             </p>
 
             <div class="hero-cta" role="group" aria-label="Primary actions">
@@ -221,6 +221,7 @@
               <li>Repo-level agent contract with safe updates.</li>
               <li>Reviewable diffs before writing changes.</li>
               <li>Read-only status snapshot before writing changes.</li>
+              <li>Canonical README snippets with CI drift detection.</li>
               <li>Optional pack drift checks for CI.</li>
             </ul>
           </div>
@@ -231,13 +232,13 @@
             </div>
             <pre id="qs-code"><code>pipx install git+https://github.com/markoblogo/AGENTS.md_generator
 cd your-repo
-agentsgen init --autodetect
-agentsgen update --dry-run --print-diff
-agentsgen update
+agentsgen init --preset nextjs
 agentsgen status .
+agentsgen snippets .
+agentsgen update --dry-run --print-diff
 # optional
 agentsgen pack --autodetect --check</code></pre>
-            <div class="note">Use <code>agentsgen status</code> locally for a read-only repo snapshot. In CI, run <code>agentsgen check</code> (and optionally <code>pack --check</code>) to fail drift early.</div>
+            <div class="note">Use <code>agentsgen status</code> locally for a read-only repo snapshot and <code>agentsgen snippets --check</code> in CI to catch README snippet drift early.</div>
           </div>
         </div>
       </div>

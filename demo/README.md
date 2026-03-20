@@ -15,5 +15,6 @@ agentsgen init
 # edit AGENTS.md outside markers
 agentsgen update
 agentsgen status .
+agentsgen snippets .
 agentsgen check
 ```
