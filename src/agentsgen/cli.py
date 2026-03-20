@@ -20,7 +20,7 @@ from .actions import (
     status_repo,
     update_from_config,
 )
-from .config import ToolConfig
+from .config import ToolConfig, merge_detect_hints
 from .presets import list_presets, load_preset_config
 from .detect import detect_repo
 from .model import ProjectInfo
@@ -265,31 +265,6 @@ def _interactive_init(
     return info.normalized()
 
 
-def _merge_detect_hints(cfg: ToolConfig, det_cfg: ToolConfig) -> ToolConfig:
-    project = dict(cfg.project or {})
-    det_project = dict(det_cfg.project or {})
-    paths = dict(cfg.paths or {})
-    det_paths = dict(det_cfg.paths or {})
-    evidence = dict(cfg.evidence or {})
-
-    if not project.get("name") and det_project.get("name"):
-        project["name"] = det_project["name"]
-    if not project.get("repo_root") and det_project.get("repo_root"):
-        project["repo_root"] = det_project["repo_root"]
-
-    for key in ["source_dirs", "config_locations"]:
-        if not paths.get(key) and det_paths.get(key):
-            paths[key] = det_paths[key]
-
-    if not evidence and det_cfg.evidence:
-        evidence = dict(det_cfg.evidence)
-
-    cfg.project = project
-    cfg.paths = paths
-    cfg.evidence = evidence
-    return ToolConfig.from_json(cfg.to_json())
-
-
 @app.command()
 def presets() -> None:
     """List available init presets."""
@@ -358,7 +333,7 @@ def init(
         if autodetect:
             det = detect_repo(target)
             det_cfg = ToolConfig.from_detect(det)
-            cfg = _merge_detect_hints(cfg, det_cfg)
+            cfg = merge_detect_hints(cfg, det_cfg)
             if not dry_run:
                 save_tool_config(target, cfg)
     else:
@@ -368,7 +343,7 @@ def init(
                 det = detect_repo(target)
                 if print_detect:
                     err_console.print(json.dumps(det.to_json(), indent=2))
-                cfg = _merge_detect_hints(cfg, ToolConfig.from_detect(det))
+                cfg = merge_detect_hints(cfg, ToolConfig.from_detect(det))
             if name:
                 cfg.project["name"] = name
             if stack:
@@ -477,13 +452,8 @@ def pack(
 
     if autodetect:
         det_cfg = ToolConfig.from_detect(detect_repo(target))
-        # Keep user-chosen pack settings and static config defaults.
         existing_pack = cfg.pack
-        cfg.project = det_cfg.project
-        cfg.paths = det_cfg.paths
-        cfg.commands = det_cfg.commands
-        cfg.evidence = det_cfg.evidence
-        cfg.project_info = det_cfg.project_info
+        cfg = merge_detect_hints(cfg, det_cfg)
         cfg.pack = existing_pack
     elif not cfg_path.exists():
         info = _interactive_init(target, defaults=True, stack_opt=stack, name_opt=None)

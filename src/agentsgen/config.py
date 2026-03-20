@@ -192,3 +192,53 @@ class ToolConfig:
         # Derive ProjectInfo using existing parser logic.
         cfg = ToolConfig.from_json(cfg.to_json())
         return cfg
+
+
+def merge_detect_hints(cfg: ToolConfig, det_cfg: ToolConfig) -> ToolConfig:
+    """Keep explicit config as source of truth; use autodetect only as fallback."""
+    project = dict(cfg.project or {})
+    det_project = dict(det_cfg.project or {})
+    paths = dict(cfg.paths or {})
+    det_paths = dict(det_cfg.paths or {})
+    commands = dict(cfg.commands or {})
+    det_commands = dict(det_cfg.commands or {})
+    evidence = dict(cfg.evidence or {})
+    det_evidence = dict(det_cfg.evidence or {})
+
+    for key, value in det_project.items():
+        if project.get(key):
+            continue
+        project[key] = value
+
+    for key, value in det_paths.items():
+        if paths.get(key):
+            continue
+        paths[key] = value
+
+    for key, value in det_commands.items():
+        if commands.get(key):
+            continue
+        commands[key] = value
+
+    if det_evidence:
+        merged_evidence: dict[str, list[str]] = {}
+        for key in set(evidence) | set(det_evidence):
+            seen: set[str] = set()
+            merged_values: list[str] = []
+            for raw in list(evidence.get(key, []) or []) + list(
+                det_evidence.get(key, []) or []
+            ):
+                value = str(raw).strip()
+                if not value or value in seen:
+                    continue
+                seen.add(value)
+                merged_values.append(value)
+            if merged_values:
+                merged_evidence[key] = merged_values
+        evidence = merged_evidence
+
+    cfg.project = project
+    cfg.paths = paths
+    cfg.commands = commands
+    cfg.evidence = evidence
+    return ToolConfig.from_json(cfg.to_json())

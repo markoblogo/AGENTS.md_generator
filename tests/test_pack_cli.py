@@ -50,6 +50,50 @@ def test_pack_check_passes_after_pack(tmp_path: Path) -> None:
     assert payload["status"] == "ok"
 
 
+def test_pack_autodetect_keeps_explicit_config_values(tmp_path: Path) -> None:
+    target = tmp_path / "repo"
+    _copy_fixture(FIXTURES / "python_uv", target)
+    (target / ".agentsgen.json").write_text(
+        """{
+  "version": 1,
+  "project": {"name": "python-uv", "primary_stack": "python", "repo_root": "."},
+  "paths": {
+    "docs": ["README.md", "RUNBOOK.md"],
+    "source_dirs": ["src"],
+    "config_locations": ["pyproject.toml"]
+  },
+  "commands": {
+    "test": "custom test",
+    "lint": "custom lint",
+    "format": "custom format"
+  },
+  "pack": {
+    "enabled": true,
+    "llms_format": "txt",
+    "output_dir": "docs/ai"
+  }
+}
+""",
+        encoding="utf-8",
+    )
+
+    res = runner.invoke(app, ["pack", str(target), "--autodetect"])
+    assert res.exit_code == 0
+
+    llms = (target / "llms.txt").read_text(encoding="utf-8")
+    how_to_test = (target / "docs" / "ai" / "how-to-test.md").read_text(
+        encoding="utf-8"
+    )
+    architecture = (target / "docs" / "ai" / "architecture.md").read_text(
+        encoding="utf-8"
+    )
+
+    assert "custom test" in llms
+    assert "custom lint" in llms
+    assert "custom format" in how_to_test
+    assert "`README.md`, `RUNBOOK.md`" in architecture
+
+
 def test_pack_json_output_includes_results(tmp_path: Path) -> None:
     target = tmp_path / "repo"
     _copy_fixture(FIXTURES / "python_uv", target)

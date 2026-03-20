@@ -31,7 +31,7 @@ from .markers import (
     replace_section_content,
     validate_markers,
 )
-from .config import ToolConfig
+from .config import ToolConfig, merge_detect_hints
 from .model import ProjectInfo
 from .normalize import normalize_markdown
 from .shared_sections import render_all_shared
@@ -1059,11 +1059,7 @@ def run_pack_check(target: Path) -> dict[str, object]:
         cfg = load_tool_config(target) if cfg_path.exists() else ToolConfig()
         det_cfg = ToolConfig.from_detect(detect_repo(target))
         existing_pack = cfg.pack
-        cfg.project = det_cfg.project
-        cfg.paths = det_cfg.paths
-        cfg.commands = det_cfg.commands
-        cfg.evidence = det_cfg.evidence
-        cfg.project_info = det_cfg.project_info
+        cfg = merge_detect_hints(cfg, det_cfg)
         cfg.pack = existing_pack
         results = apply_pack(
             target, cfg, autodetect=True, dry_run=True, print_diff=False

@@ -4,7 +4,7 @@
 - Project: `AGENTS.md Generator`
 - Stack profile: python
 - Source dirs: `src`
-- Docs: `README.md`, `RUNBOOK.md`
+- Docs: `README.md`
 
 ## Agent guidance
 - Prefer localized edits near existing modules.
