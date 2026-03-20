@@ -205,7 +205,7 @@ def _handle_file(
 
     existing = read_text(path)
     if not has_any_agentsgen_markers(existing):
-        gen_path = _generated_sibling_path(path)
+        gen_path = _generated_sibling_path(path, ".generated")
         changed, d = _write_or_diff(
             gen_path, generated_full, dry_run=dry_run, print_diff=print_diff
         )
@@ -240,14 +240,6 @@ def _handle_file(
         changed=changed,
         diff=d,
     )
-
-
-def _generated_sibling_path(path: Path) -> Path:
-    if path.name == AGENTS_FILENAME:
-        return path.with_name(AGENTS_GENERATED_FILENAME)
-    if path.name == RUNBOOK_FILENAME:
-        return path.with_name(RUNBOOK_GENERATED_FILENAME)
-    return path.with_name(f"{path.stem}.generated{path.suffix}")
 
 
 def _fmt_paths(items: list[str]) -> str:
