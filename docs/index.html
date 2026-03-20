@@ -222,7 +222,7 @@
               <li>Reviewable diffs before writing changes.</li>
               <li>Read-only status snapshot before writing changes.</li>
               <li>Canonical README snippets with CI drift detection.</li>
-              <li>Optional pack drift checks for CI.</li>
+              <li>Aggregated check summaries for core, pack, and snippets drift in CI.</li>
             </ul>
           </div>
           <div class="card code-card" data-ascii-role="card">
@@ -236,9 +236,8 @@ agentsgen init --preset nextjs
 agentsgen status .
 agentsgen snippets .
 agentsgen update --dry-run --print-diff
-# optional
-agentsgen pack --autodetect --check</code></pre>
-            <div class="note">Use <code>agentsgen status</code> locally for a read-only repo snapshot and <code>agentsgen snippets --check</code> in CI to catch README snippet drift early.</div>
+agentsgen check . --all --ci</code></pre>
+            <div class="note">Use <code>agentsgen status</code> locally for a read-only repo snapshot, then run <code>agentsgen check . --all --ci</code> in CI for one compact drift summary.</div>
           </div>
         </div>
       </div>
