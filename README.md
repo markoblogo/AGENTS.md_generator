@@ -193,6 +193,9 @@ agentsgen pack
 agentsgen snippets .
 agentsgen snippets . --check
 agentsgen check
+agentsgen check . --pack-check
+agentsgen check . --all --ci
+agentsgen check . --format json
 agentsgen status .
 agentsgen detect . --format json
 agentsgen init --defaults --stack python --dry-run --print-diff
@@ -201,6 +204,12 @@ pipx uninstall agentsgen
 
 agentsgen status is a read-only overview of managed files, markers, generated fallbacks, and pack drift.
 It is lighter and more diagnostic than `agentsgen check`, which focuses on repo readiness errors/warnings.
+
+`agentsgen check` can also aggregate optional drift checks:
+- `agentsgen check . --pack-check` adds `pack --check`
+- `agentsgen check . --all` enables both pack and snippets checks
+- `agentsgen check . --format json` emits a stable machine-readable payload
+- `agentsgen check . --ci` prints a compact CI summary without path-heavy log noise
 
 ## README Snippets (mini-validator)
 

@@ -4,6 +4,7 @@
 - <1-3 bullets: user-visible changes>
 - <optional: internal refactor / tests / docs>
 - Recipes gallery: copy-paste starter kits (configs + CI) for common stacks so you can bootstrap AGENTS/RUNBOOK + PR Guard + Pack checks in minutes.
+- Matrix-friendly check output: agentsgen check --ci --format json aggregates core + pack/snippets drift for clean CI summaries.
 
 ## Safety model (why it won't wreck your repo)
 - Marker-only updates: if `AGENTS.md` / `RUNBOOK.md` have `<!-- AGENTSGEN:START ... -->`, agentsgen updates only inside marker blocks.

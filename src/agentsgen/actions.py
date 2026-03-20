@@ -80,6 +80,26 @@ class RepoStatusReport:
 
 
 @dataclass(frozen=True)
+class AggregatedCheckReport:
+    version: int
+    command: str
+    path: str
+    status: str
+    checks: dict[str, object]
+    summary: dict[str, object]
+
+    def to_json(self) -> dict[str, object]:
+        return {
+            "version": self.version,
+            "command": self.command,
+            "path": self.path,
+            "status": self.status,
+            "checks": self.checks,
+            "summary": self.summary,
+        }
+
+
+@dataclass(frozen=True)
 class ReadmeSnippet:
     name: str
     start_line: int
@@ -751,6 +771,193 @@ def check_repo(target: Path) -> tuple[int, list[str], list[str]]:
                     )
 
     return (1 if problems else 0), problems, warnings
+
+
+def run_core_check(target: Path) -> dict[str, object]:
+    code, problems, warnings = check_repo(target)
+    status = "ok"
+    if code == 2:
+        status = "error"
+    elif code == 1:
+        status = "drift"
+
+    results: list[dict[str, str]] = []
+    for item in problems:
+        results.append({"level": "problem", "message": item})
+    for item in warnings:
+        results.append({"level": "warning", "message": item})
+
+    return {
+        "status": status,
+        "drift_count": len(problems) if status == "drift" else 0,
+        "error_count": len(problems) if status == "error" else 0,
+        "warnings_count": len(warnings),
+        "results": results,
+        "raw": {
+            "exit_code": code,
+            "problems": list(problems),
+            "warnings": list(warnings),
+        },
+    }
+
+
+def run_pack_check(target: Path) -> dict[str, object]:
+    try:
+        from .detect import detect_repo
+    except Exception as exc:
+        return {
+            "status": "error",
+            "drift_count": 0,
+            "error_count": 1,
+            "raw": {"status": "error", "summary": f"pack:error ({exc})", "results": []},
+            "reason": f"pack_check_unavailable: {exc}",
+        }
+
+    cfg_path = target / CONFIG_FILENAME
+    try:
+        cfg = load_tool_config(target) if cfg_path.exists() else ToolConfig()
+        det_cfg = ToolConfig.from_detect(detect_repo(target))
+        existing_pack = cfg.pack
+        cfg.project = det_cfg.project
+        cfg.paths = det_cfg.paths
+        cfg.commands = det_cfg.commands
+        cfg.evidence = det_cfg.evidence
+        cfg.project_info = det_cfg.project_info
+        cfg.pack = existing_pack
+        results = apply_pack(target, cfg, dry_run=True, print_diff=False)
+    except Exception as exc:
+        return {
+            "status": "error",
+            "drift_count": 0,
+            "error_count": 1,
+            "raw": {"status": "error", "summary": f"pack:error ({exc})", "results": []},
+            "reason": str(exc),
+        }
+
+    errors = [r for r in results if r.action == "error"]
+    drift_results = [
+        r
+        for r in results
+        if r.action in ("created", "updated", "generated") and r.changed
+    ]
+
+    status = "ok"
+    if errors:
+        status = "error"
+    elif drift_results:
+        status = "drift"
+
+    raw = {
+        "status": status,
+        "summary": (
+            f"pack:{status} "
+            f"(created={sum(1 for r in results if r.action == 'created')}, "
+            f"updated={sum(1 for r in results if r.action == 'updated')}, "
+            f"generated={sum(1 for r in results if r.action == 'generated')}, "
+            f"errors={len(errors)})"
+        ),
+        "check": True,
+        "dry_run": True,
+        "results": [
+            {
+                "path": str(r.path),
+                "action": r.action,
+                "message": r.message,
+                "changed": bool(r.changed),
+                "diff": r.diff or "",
+            }
+            for r in results
+        ],
+    }
+    return {
+        "status": status,
+        "drift_count": len(drift_results),
+        "error_count": len(errors),
+        "raw": raw,
+    }
+
+
+def run_snippets_check(target: Path) -> dict[str, object]:
+    # TODO: keep a safe fallback here if snippets are split into an optional module later.
+    if "generate_readme_snippets" not in globals():
+        return {"status": "skipped", "reason": "snippets_check_not_implemented"}
+
+    readme_path = target / "README.md"
+    output_path = target / "README_SNIPPETS.generated.md"
+    report = generate_readme_snippets(
+        target,
+        readme_path=readme_path,
+        output_path=output_path,
+        check=True,
+        dry_run=True,
+        print_diff=False,
+    )
+    return {
+        "status": report.status,
+        "drift_count": 1 if report.status == "drift" else 0,
+        "error_count": 1 if report.status == "error" else 0,
+        "raw": report.to_json(),
+    }
+
+
+def aggregate_check(
+    target: Path,
+    *,
+    pack_check: bool,
+    snippets_check: bool,
+) -> AggregatedCheckReport:
+    target_path = str(target.resolve())
+    checks: dict[str, object] = {
+        "core": run_core_check(target),
+        "pack": None,
+        "snippets": None,
+    }
+
+    if pack_check:
+        checks["pack"] = run_pack_check(target)
+    if snippets_check:
+        checks["snippets"] = run_snippets_check(target)
+
+    enabled_checks = [checks["core"]]
+    for name in ("pack", "snippets"):
+        if checks[name] is not None:
+            enabled_checks.append(checks[name])
+
+    statuses = [
+        str(block.get("status", "ok"))
+        for block in enabled_checks
+        if isinstance(block, dict)
+    ]
+    summary = {
+        "ok": True,
+        "drift_count": 0,
+        "error_count": 0,
+        "skipped_count": 0,
+    }
+    for block in enabled_checks:
+        if not isinstance(block, dict):
+            continue
+        status = str(block.get("status", "ok"))
+        summary["drift_count"] += int(block.get("drift_count", 0))
+        summary["error_count"] += int(block.get("error_count", 0))
+        if status == "skipped":
+            summary["skipped_count"] += 1
+
+    overall = "ok"
+    if "error" in statuses:
+        overall = "error"
+    elif "drift" in statuses:
+        overall = "drift"
+
+    summary["ok"] = overall == "ok"
+    return AggregatedCheckReport(
+        version=1,
+        command="check",
+        path=target_path,
+        status=overall,
+        checks=checks,
+        summary=summary,
+    )
 
 
 def _status_for_file(

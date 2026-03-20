@@ -10,9 +10,9 @@ from rich.table import Table
 import json
 
 from .actions import (
+    aggregate_check,
     apply_pack,
     apply_config,
-    check_repo,
     generate_readme_snippets,
     load_tool_config,
     pack_plan_specs,
@@ -596,15 +596,87 @@ def check_cmd(
     target: Path = typer.Argument(
         Path("."), exists=True, file_okay=False, dir_okay=True
     ),
+    format: str = typer.Option("text", "--format", help="Output format: text|json"),
+    ci: bool = typer.Option(
+        False, "--ci", help="Print compact CI-friendly text output"
+    ),
+    pack_check: bool = typer.Option(
+        False, "--pack-check", help="Run pack --check as part of check"
+    ),
+    snippets_check: bool = typer.Option(
+        False, "--snippets-check", help="Run snippets --check as part of check"
+    ),
+    run_all: bool = typer.Option(
+        False, "--all", help="Enable both --pack-check and --snippets-check"
+    ),
 ):
     """Validate that repo is agentsgen-ready. Non-zero exit code on problems."""
-    code, problems, warnings = check_repo(target)
-    for w in warnings:
-        err_console.print(f"WARN: {w}")
-    if problems:
-        for p in problems:
-            err_console.print(f"- {p}")
-    raise typer.Exit(code=code)
+    effective_pack_check = pack_check or run_all
+    effective_snippets_check = snippets_check or run_all
+    report = aggregate_check(
+        target,
+        pack_check=effective_pack_check,
+        snippets_check=effective_snippets_check,
+    )
+
+    if format == "json":
+        sys.stdout.write(json.dumps(report.to_json(), indent=2) + "\n")
+    else:
+        core = report.checks["core"]
+        pack = report.checks["pack"]
+        snippets = report.checks["snippets"]
+
+        if ci:
+            # CI mode avoids absolute paths to keep logs compact and wrapping-stable.
+            status_line = report.status.upper()
+            print(f"agentsgen check: {status_line}")
+
+            def _ci_line(label: str, block: dict[str, object] | None) -> None:
+                if block is None:
+                    print(f"{label}: skipped")
+                    return
+                block_status = str(block.get("status", "ok"))
+                count = int(block.get("drift_count", 0)) + int(
+                    block.get("error_count", 0)
+                )
+                suffix = f" ({count})" if count else ""
+                print(f"{label}: {block_status}{suffix}")
+
+            _ci_line("core", core)
+            _ci_line("pack", pack if isinstance(pack, dict) else None)
+            _ci_line("snippets", snippets if isinstance(snippets, dict) else None)
+
+            if report.status == "drift":
+                print("remediation:")
+                if str(core.get("status")) == "drift":
+                    print("  agentsgen update .")
+                if isinstance(pack, dict) and str(pack.get("status")) == "drift":
+                    print("  agentsgen pack . --autodetect")
+                if (
+                    isinstance(snippets, dict)
+                    and str(snippets.get("status")) == "drift"
+                ):
+                    print("  agentsgen snippets .")
+        else:
+            for item in core.get("results", []):
+                if item["level"] == "warning":
+                    err_console.print(f"WARN: {item['message']}")
+                else:
+                    err_console.print(f"- {item['message']}")
+
+            if isinstance(pack, dict):
+                console.print(f"Pack check: {pack['status']}")
+            if isinstance(snippets, dict):
+                if snippets.get("status") == "skipped":
+                    console.print(
+                        f"Snippets check: skipped ({snippets.get('reason', 'n/a')})"
+                    )
+                else:
+                    console.print(f"Snippets check: {snippets['status']}")
+            console.print(f"Summary: {report.status.upper()}")
+
+    exit_code = 0 if report.status == "ok" else (2 if report.status == "error" else 1)
+    raise typer.Exit(code=exit_code)
 
 
 @app.command()
@@ -612,15 +684,31 @@ def doctor(
     target: Path = typer.Argument(
         Path("."), exists=True, file_okay=False, dir_okay=True
     ),
+    format: str = typer.Option("text", "--format", help="Output format: text|json"),
+    ci: bool = typer.Option(
+        False, "--ci", help="Print compact CI-friendly text output"
+    ),
+    pack_check: bool = typer.Option(
+        False, "--pack-check", help="Run pack --check as part of check"
+    ),
+    snippets_check: bool = typer.Option(
+        False, "--snippets-check", help="Run snippets --check as part of check"
+    ),
+    run_all: bool = typer.Option(
+        False, "--all", help="Enable both --pack-check and --snippets-check"
+    ),
 ):
     """Alias for check."""
-    code, problems, warnings = check_repo(target)
-    for w in warnings:
-        err_console.print(f"WARN: {w}")
-    if problems:
-        for p in problems:
-            err_console.print(f"- {p}")
-    raise typer.Exit(code=code)
+    ctx = typer.get_current_context()
+    ctx.invoke(
+        check_cmd,
+        target=target,
+        format=format,
+        ci=ci,
+        pack_check=pack_check,
+        snippets_check=snippets_check,
+        run_all=run_all,
+    )
 
 
 @app.command()
