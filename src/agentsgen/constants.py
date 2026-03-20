@@ -14,6 +14,7 @@ DEFAULT_PACK_OUTPUT_DIR = "docs/ai"
 DEFAULT_PACK_LLMS_FORMAT = "txt"
 DEFAULT_PACK_FILES = [
     "llms",
+    "agents.entrypoints.json",
     "how-to-run.md",
     "how-to-test.md",
     "architecture.md",

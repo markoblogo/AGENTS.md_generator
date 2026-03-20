@@ -109,10 +109,12 @@ def _pack_plan_payload(
     *,
     target: Path,
     cfg: ToolConfig,
+    autodetect: bool,
     results,
 ) -> list[dict[str, object]]:
     sections_map: dict[str, list[str]] = {
-        str(rel).replace("\\", "/"): sections for rel, sections in pack_plan_specs(cfg)
+        str(rel).replace("\\", "/"): sections
+        for rel, sections in pack_plan_specs(target, cfg, autodetect=autodetect)
     }
     rows: list[dict[str, object]] = []
     for r in results:
@@ -502,6 +504,7 @@ def pack(
     results = apply_pack(
         target,
         cfg,
+        autodetect=autodetect,
         dry_run=dry_run_effective,
         print_diff=(print_diff and not print_plan),
     )
@@ -525,7 +528,9 @@ def pack(
     )
 
     if print_plan:
-        plan = _pack_plan_payload(target=target, cfg=cfg, results=results)
+        plan = _pack_plan_payload(
+            target=target, cfg=cfg, autodetect=autodetect, results=results
+        )
         if format == "json":
             sys.stdout.write(
                 json.dumps(

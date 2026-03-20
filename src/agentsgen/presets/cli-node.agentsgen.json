@@ -38,6 +38,7 @@
       "llms_format": "txt",
       "files": [
         "llms",
+        "agents.entrypoints.json",
         "docs/ai/how-to-run.md",
         "docs/ai/how-to-test.md",
         "docs/ai/architecture.md",

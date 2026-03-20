@@ -240,6 +240,7 @@ agentsgen snippets . --check
 `agentsgen pack` generates an AI/LLMO-ready documentation bundle:
 
 - `llms.txt` (or `LLMS.md` with `--llms-format md`)
+- `agents.entrypoints.json` (machine-readable command manifest for agents/CI)
 - `docs/ai/how-to-run.md`
 - `docs/ai/how-to-test.md`
 - `docs/ai/architecture.md`

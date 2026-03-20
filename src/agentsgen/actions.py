@@ -1,7 +1,9 @@
 from __future__ import annotations
 
 import difflib
+import json
 import re
+from datetime import datetime, timezone
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
@@ -505,6 +507,211 @@ def _pack_notes(cfg: ToolConfig, stack_label: str) -> str:
     )
 
 
+def _entrypoint_title(command_id: str) -> str:
+    labels = {
+        "install": "Install",
+        "dev": "Dev",
+        "test": "Test",
+        "lint": "Lint",
+        "build": "Build",
+        "format": "Format",
+        "typecheck": "Typecheck",
+        "run": "Run",
+    }
+    return labels.get(
+        command_id, command_id.replace("_", " ").replace("-", " ").title()
+    )
+
+
+def _entrypoint_source_for_command(
+    command_id: str,
+    command: str,
+    *,
+    explicit: bool,
+    evidence: dict[str, object],
+) -> dict[str, str]:
+    if explicit:
+        return {"kind": "config", "hint": f".agentsgen.json:commands.{command_id}"}
+
+    cmd = command.strip()
+    if cmd.startswith("make "):
+        target = cmd.split(maxsplit=1)[1].strip() if " " in cmd else ""
+        return {"kind": "makefile", "hint": target or "Makefile"}
+
+    if any(token in cmd for token in ("npm ", "pnpm ", "yarn ")):
+        hint = ""
+        if " run " in cmd:
+            hint = cmd.split(" run ", 1)[1].split()[0]
+        elif " test" in cmd:
+            hint = "test"
+        elif " install" in cmd:
+            hint = "install"
+        return {"kind": "package.json", "hint": hint}
+
+    python_evidence = [str(x) for x in (evidence.get("python") or [])]
+    if cmd.startswith(("uv ", "poetry ", "python ", "python3 ")):
+        hint = next((x for x in python_evidence if "pyproject.toml" in x), "")
+        return {"kind": "pyproject", "hint": hint}
+
+    return {"kind": "detected", "hint": ""}
+
+
+def _stable_payload_without_timestamp(payload: dict[str, object]) -> str:
+    clone = json.loads(json.dumps(payload))
+    clone["generated_at"] = ""
+    return json.dumps(clone, sort_keys=True, separators=(",", ":"))
+
+
+def _utc_now_iso() -> str:
+    return (
+        datetime.now(timezone.utc)
+        .replace(microsecond=0)
+        .isoformat()
+        .replace("+00:00", "Z")
+    )
+
+
+def _pack_entrypoints_json(
+    target: Path,
+    cfg: ToolConfig,
+    *,
+    autodetect: bool,
+) -> str:
+    config_commands: dict[str, object] = {}
+    if (target / CONFIG_FILENAME).exists():
+        try:
+            config_commands = load_tool_config(target).commands
+        except Exception:
+            config_commands = {}
+
+    detected_commands = dict(cfg.commands or {})
+    stack = (
+        str((cfg.project or {}).get("primary_stack", "")).strip().lower()
+        or str(cfg.project_info.stack or "").strip().lower()
+        or "unknown"
+    )
+    if stack not in {"python", "node", "static", "mixed", "unknown"}:
+        stack = "unknown"
+
+    stable_ids = [
+        "install",
+        "dev",
+        "test",
+        "lint",
+        "build",
+        "format",
+        "typecheck",
+        "run",
+    ]
+    extra_ids = [
+        key
+        for key in sorted(config_commands.keys())
+        if key not in stable_ids and str(config_commands.get(key, "")).strip()
+    ]
+
+    commands: list[dict[str, object]] = []
+    evidence = dict(cfg.evidence or {})
+    for command_id in stable_ids + extra_ids:
+        explicit_command = str(config_commands.get(command_id, "") or "").strip()
+        detected_command = str(detected_commands.get(command_id, "") or "").strip()
+        command = explicit_command or detected_command
+        if not command:
+            continue
+        explicit = bool(explicit_command)
+        commands.append(
+            {
+                "id": command_id,
+                "title": _entrypoint_title(command_id),
+                "command": command,
+                "cwd": ".",
+                "source": _entrypoint_source_for_command(
+                    command_id,
+                    command,
+                    explicit=explicit,
+                    evidence=evidence,
+                ),
+                "notes": "",
+            }
+        )
+
+    payload: dict[str, object] = {
+        "version": 1,
+        "generated_by": "agentsgen",
+        "generated_at": "",
+        "repo": {
+            "path": ".",
+            "stack": stack,
+            "autodetect": autodetect,
+        },
+        "commands": commands,
+    }
+
+    existing_path = target / "agents.entrypoints.json"
+    if existing_path.exists():
+        try:
+            existing = read_json(existing_path)
+            if str(
+                existing.get("generated_by", "")
+            ) == "agentsgen" and _stable_payload_without_timestamp(
+                existing
+            ) == _stable_payload_without_timestamp(payload):
+                payload["generated_at"] = str(existing.get("generated_at", "") or "")
+            else:
+                payload["generated_at"] = _utc_now_iso()
+        except Exception:
+            payload["generated_at"] = _utc_now_iso()
+    else:
+        payload["generated_at"] = _utc_now_iso()
+
+    return json.dumps(payload, indent=2) + "\n"
+
+
+def _handle_generated_json_file(
+    path: Path,
+    generated_full: str,
+    *,
+    dry_run: bool,
+    print_diff: bool,
+) -> FileResult:
+    if not path.exists():
+        changed, d = _write_or_diff(
+            path, generated_full, dry_run=dry_run, print_diff=print_diff
+        )
+        return FileResult(
+            path=path, action="created", message="created", changed=changed, diff=d
+        )
+
+    existing = read_text(path)
+    try:
+        parsed = json.loads(existing)
+    except Exception:
+        parsed = None
+
+    if isinstance(parsed, dict) and str(parsed.get("generated_by", "")) == "agentsgen":
+        changed, d = _write_or_diff(
+            path, generated_full, dry_run=dry_run, print_diff=print_diff
+        )
+        return FileResult(
+            path=path,
+            action="updated" if changed else "skipped",
+            message="updated" if changed else "no changes",
+            changed=changed,
+            diff=d,
+        )
+
+    gen_path = _generated_sibling_path(path)
+    changed, d = _write_or_diff(
+        gen_path, generated_full, dry_run=dry_run, print_diff=print_diff
+    )
+    return FileResult(
+        path=gen_path,
+        action="generated",
+        message=f"{path.name} has no markers; wrote {gen_path.name} instead",
+        changed=changed,
+        diff=d,
+    )
+
+
 def _render_pack_file(cfg: ToolConfig, stack_tpl: str, template_name: str) -> str:
     primary = str((cfg.project or {}).get("primary_stack", "")).strip().lower()
     is_mixed = primary not in ("python", "node", "static")
@@ -542,7 +749,12 @@ def _render_pack_file(cfg: ToolConfig, stack_tpl: str, template_name: str) -> st
     return normalize_markdown(render_template(load_template(tpl), ctx))
 
 
-def _pack_output_specs(cfg: ToolConfig) -> list[tuple[Path, str, list[str]]]:
+def _pack_output_specs(
+    target: Path,
+    cfg: ToolConfig,
+    *,
+    autodetect: bool,
+) -> list[tuple[Path, str, list[str]]]:
     llms_format = (cfg.pack.llms_format or DEFAULT_PACK_LLMS_FORMAT).strip().lower()
     if llms_format not in ("txt", "md"):
         llms_format = DEFAULT_PACK_LLMS_FORMAT
@@ -556,6 +768,7 @@ def _pack_output_specs(cfg: ToolConfig) -> list[tuple[Path, str, list[str]]]:
 
     specs: list[tuple[Path, str, list[str]]] = [
         (Path(llms_name), llms_tpl, ["llms"]),
+        (Path("agents.entrypoints.json"), "__generated_entrypoints_json__", []),
         (output_dir / "how-to-run.md", "how-to-run.md.tpl", ["how_to_run"]),
         (output_dir / "how-to-test.md", "how-to-test.md.tpl", ["how_to_test"]),
         (output_dir / "architecture.md", "architecture.md.tpl", ["architecture"]),
@@ -577,6 +790,7 @@ def _pack_output_specs(cfg: ToolConfig) -> list[tuple[Path, str, list[str]]]:
         if (
             key_path in allow_set
             or key_name in allow_set
+            or ("entrypoints" in allow_set and key_name == "agents.entrypoints.json")
             or ("llms" in allow_set and key_name in {"llms.txt", "llms.md"})
         ):
             filtered.append((rel_path, tpl_name, required))
@@ -587,15 +801,29 @@ def _pack_output_specs(cfg: ToolConfig) -> list[tuple[Path, str, list[str]]]:
 
     rendered: list[tuple[Path, str, list[str]]] = []
     for rel_path, tpl_name, required in filtered:
+        if tpl_name == "__generated_entrypoints_json__":
+            rendered.append(
+                (
+                    rel_path,
+                    _pack_entrypoints_json(target, cfg, autodetect=autodetect),
+                    required,
+                )
+            )
+            continue
         rendered.append(
             (rel_path, _render_pack_file(cfg, stack_tpl, tpl_name), required)
         )
     return rendered
 
 
-def pack_plan_specs(cfg: ToolConfig) -> list[tuple[Path, list[str]]]:
+def pack_plan_specs(
+    target: Path,
+    cfg: ToolConfig,
+    *,
+    autodetect: bool,
+) -> list[tuple[Path, list[str]]]:
     """Return deterministic pack output specs for plan rendering."""
-    specs = _pack_output_specs(cfg)
+    specs = _pack_output_specs(target, cfg, autodetect=autodetect)
     out = [(rel_path, list(required)) for rel_path, _content, required in specs]
     return sorted(out, key=lambda item: str(item[0]).replace("\\", "/"))
 
@@ -604,6 +832,7 @@ def apply_pack(
     target: Path,
     cfg: ToolConfig,
     *,
+    autodetect: bool,
     dry_run: bool,
     print_diff: bool,
 ) -> list[FileResult]:
@@ -618,7 +847,9 @@ def apply_pack(
             )
         ]
 
-    for rel_path, content, required in _pack_output_specs(cfg):
+    for rel_path, content, required in _pack_output_specs(
+        target, cfg, autodetect=autodetect
+    ):
         out_path = (target / rel_path).resolve()
         target_resolved = target.resolve()
         if target_resolved not in out_path.parents and out_path != target_resolved:
@@ -627,6 +858,16 @@ def apply_pack(
                     path=target / rel_path,
                     action="error",
                     message="pack output path escapes target directory",
+                )
+            )
+            continue
+        if rel_path.name == "agents.entrypoints.json":
+            results.append(
+                _handle_generated_json_file(
+                    out_path,
+                    content,
+                    dry_run=dry_run,
+                    print_diff=print_diff,
                 )
             )
             continue
@@ -824,7 +1065,9 @@ def run_pack_check(target: Path) -> dict[str, object]:
         cfg.evidence = det_cfg.evidence
         cfg.project_info = det_cfg.project_info
         cfg.pack = existing_pack
-        results = apply_pack(target, cfg, dry_run=True, print_diff=False)
+        results = apply_pack(
+            target, cfg, autodetect=True, dry_run=True, print_diff=False
+        )
     except Exception as exc:
         return {
             "status": "error",
@@ -1038,7 +1281,7 @@ def status_repo(target: Path) -> RepoStatusReport:
     pack_status = "skipped" if tool_cfg is None and not cfg_path.exists() else "ok"
     if tool_cfg is not None:
         try:
-            specs = _pack_output_specs(tool_cfg)
+            specs = _pack_output_specs(target, tool_cfg, autodetect=False)
             for rel_path, _content, _required in specs:
                 path = target / rel_path
                 if not path.exists():

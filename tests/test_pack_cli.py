@@ -31,6 +31,10 @@ def test_pack_check_reports_drift_json(tmp_path: Path) -> None:
     payload = json.loads(res.stdout)
     assert payload["status"] == "drift"
     assert any(r["action"] == "created" for r in payload["results"])
+    assert any(
+        str(r.get("path", "")).endswith("agents.entrypoints.json")
+        for r in payload["results"]
+    )
 
 
 def test_pack_check_passes_after_pack(tmp_path: Path) -> None:

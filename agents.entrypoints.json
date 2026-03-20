@@ -1,0 +1,45 @@
+{
+  "version": 1,
+  "generated_by": "agentsgen",
+  "generated_at": "2026-03-20T16:20:19Z",
+  "repo": {
+    "path": ".",
+    "stack": "python",
+    "autodetect": true
+  },
+  "commands": [
+    {
+      "id": "test",
+      "title": "Test",
+      "command": "make test",
+      "cwd": ".",
+      "source": {
+        "kind": "config",
+        "hint": ".agentsgen.json:commands.test"
+      },
+      "notes": ""
+    },
+    {
+      "id": "lint",
+      "title": "Lint",
+      "command": "make lint",
+      "cwd": ".",
+      "source": {
+        "kind": "config",
+        "hint": ".agentsgen.json:commands.lint"
+      },
+      "notes": ""
+    },
+    {
+      "id": "format",
+      "title": "Format",
+      "command": "make format",
+      "cwd": ".",
+      "source": {
+        "kind": "config",
+        "hint": ".agentsgen.json:commands.format"
+      },
+      "notes": ""
+    }
+  ]
+}

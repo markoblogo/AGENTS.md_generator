@@ -1,7 +1,7 @@
 # How To Test (AI)
 
 <!-- AGENTSGEN:START section=how_to_test -->
-- Project: `AGENTS.md_generator`
+- Project: `AGENTS.md Generator`
 - Stack profile: python
 
 ## Commands

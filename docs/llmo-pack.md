@@ -5,6 +5,7 @@
 ## Generated files (MVP)
 
 - `llms.txt` (default) or `LLMS.md` (`--llms-format md` or config)
+- `agents.entrypoints.json`
 - `docs/ai/how-to-run.md`
 - `docs/ai/how-to-test.md`
 - `docs/ai/architecture.md`
@@ -12,6 +13,10 @@
 - `SECURITY_AI.md`
 - `CONTRIBUTING_AI.md`
 - `README_SNIPPETS.md`
+
+**New file: agents.entrypoints.json**
+
+A machine-readable list of canonical repo commands (install/test/lint/build/run). It’s derived from `.agentsgen.json` and conservative autodetect evidence. Useful for CI summaries and agent tooling.
 
 ## Pack file map
 

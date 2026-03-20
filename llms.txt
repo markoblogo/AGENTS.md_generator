@@ -1,5 +1,5 @@
 <!-- AGENTSGEN:START section=llms -->
-Project: AGENTS.md_generator
+Project: AGENTS.md Generator
 Stack: python
 
 Agent context bundle (LLMO Pack):
