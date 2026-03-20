@@ -182,6 +182,12 @@
               <a class="btn ghost" href="#safety">Why it’s safe</a>
             </div>
 
+            <aside class="card manifest-card" data-ascii-role="card">
+              <h3>Manifest</h3>
+              <p>Minimal, maintained, verifiable repo context beats auto-generated “context files” that bloat tokens and bias agents.</p>
+              <a class="btn secondary" href="https://github.com/markoblogo/AGENTS.md_generator/blob/main/docs/manifest.md">Read the Manifest</a>
+            </aside>
+
           </div>
           <div class="hero-side">
             <aside class="card feature-card" data-ascii-role="card">
@@ -331,20 +337,21 @@ jobs:
       </div>
     </section>
 
-    <section id="manifest">
+    <section id="manifest" class="manifest-section">
       <div class="container">
         <div class="section-head">
-          <h2>Manifest</h2>
-          <p>Why this tool stays small, strict, and cheap.</p>
+          <h2>The philosophy</h2>
+          <p>Agentsgen is built for one goal: less babysitting, fewer hallucinations, lower token burn.</p>
         </div>
 
         <div class="card" data-ascii-role="card">
           <ul class="bullets">
-            <li>No text for the sake of text; only context that reduces mistakes or speeds up decisions.</li>
-            <li>Minimal, maintained, verifiable artifacts beat sprawling context files.</li>
-            <li>Safe-by-default updates and layered context scale better than one giant AGENTS.md.</li>
+            <li><strong>No text for the sake of text.</strong> If it doesn’t prevent mistakes, it doesn’t belong in always-loaded context.</li>
+            <li><strong>Instrumented truth beats prose.</strong> Prefer <code>check/status/pack --check</code> over “hope this CLAUDE.md stays true”.</li>
+            <li><strong>Progressive disclosure scales.</strong> Keep global rules small; pull deeper docs only when the task needs them.</li>
           </ul>
-          <a class="btn secondary" href="https://github.com/markoblogo/AGENTS.md_generator/blob/main/docs/manifest.md">Read the Manifest</a>
+          <div class="note">Rooted in: ETH “Do Context Files Help?” + Codified Context (layered memory).</div>
+          <a class="btn secondary" href="https://github.com/markoblogo/AGENTS.md_generator/blob/main/docs/manifest.md">Read the full Manifest</a>
         </div>
       </div>
     </section>
