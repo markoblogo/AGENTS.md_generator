@@ -18,6 +18,8 @@ It gives you:
 
 ## Quickstart
 
+If built-in presets are enough, start with `agentsgen presets` and `agentsgen init . --preset monorepo-js` before copying this recipe.
+
 1) Copy `.agentsgen.json` from this folder to your monorepo root.
 2) Run:
 ```bash

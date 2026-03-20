@@ -14,7 +14,7 @@ Landing: https://agentsmd.abvx.xyz/
 Listed on ABVX Lab: https://lab.abvx.xyz/
 
 Small, production-grade CLI to generate and safely update:
-New: Recipes — copy-paste starter kits (explicit commands + PR Guard workflow).
+New: Presets + status — built-in starter configs and a read-only repo snapshot command.
 
 - `AGENTS.md` (strict repo contract for coding agents)
 - `RUNBOOK.md` (human-friendly command/run cheatsheet)
@@ -181,6 +181,7 @@ jobs:
 ```sh
 agentsgen init
 agentsgen presets
+agentsgen init . --preset nextjs
 agentsgen update
 agentsgen pack
 agentsgen check

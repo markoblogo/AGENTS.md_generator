@@ -18,6 +18,8 @@ It gives you:
 
 ## Quickstart
 
+If built-in presets are enough, start with `agentsgen presets` and `agentsgen init . --preset python-lib` before copying this recipe.
+
 1) Copy `.agentsgen.json` from this folder to your repo root.
 
 2) Run:
