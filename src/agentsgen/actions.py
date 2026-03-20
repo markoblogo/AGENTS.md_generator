@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import difflib
+import re
 from dataclasses import asdict, dataclass
 from pathlib import Path
 
@@ -76,6 +77,51 @@ class RepoStatusReport:
             "generated": dict(self.generated),
             "summary": dict(self.summary),
         }
+
+
+@dataclass(frozen=True)
+class ReadmeSnippet:
+    name: str
+    start_line: int
+    end_line: int
+    content: str
+
+
+@dataclass(frozen=True)
+class ReadmeSnippetsReport:
+    status: str
+    check: bool
+    dry_run: bool
+    format_version: int
+    readme_path: str
+    output_path: str
+    snippets_count: int
+    snippets: list[ReadmeSnippet]
+    diff: str = ""
+    message: str = ""
+
+    def to_json(self) -> dict[str, object]:
+        payload: dict[str, object] = {
+            "status": self.status,
+            "check": self.check,
+            "dry_run": self.dry_run,
+            "format_version": self.format_version,
+            "readme_path": self.readme_path,
+            "output_path": self.output_path,
+            "snippets_count": self.snippets_count,
+            "snippets": [asdict(s) for s in self.snippets],
+        }
+        if self.diff:
+            payload["diff"] = self.diff
+        if self.message:
+            payload["message"] = self.message
+        return payload
+
+
+_SNIPPET_START_RE = re.compile(
+    r"<!--\s*AGENTSGEN:SNIPPET\s+name=([a-zA-Z0-9_\-]+)\s*-->"
+)
+_SNIPPET_END_RE = re.compile(r"<!--\s*AGENTSGEN:ENDSNIPPET\s*-->")
 
 
 def load_tool_config(target: Path) -> ToolConfig:
@@ -242,6 +288,165 @@ def _handle_file(
 
 def _generated_sibling_path(path: Path, generated_suffix: str = ".generated") -> Path:
     return path.with_name(f"{path.stem}{generated_suffix}{path.suffix}")
+
+
+def _extract_readme_snippets(readme_text: str) -> list[ReadmeSnippet]:
+    snippets: list[ReadmeSnippet] = []
+    seen: set[str] = set()
+    active_name: str | None = None
+    active_start_line: int | None = None
+    active_lines: list[str] = []
+
+    for line_no, line in enumerate(readme_text.splitlines(keepends=True), start=1):
+        start_m = _SNIPPET_START_RE.fullmatch(line.strip())
+        end_m = _SNIPPET_END_RE.fullmatch(line.strip())
+
+        if start_m:
+            if active_name is not None:
+                raise ValueError(
+                    f"Nested snippet '{start_m.group(1)}' inside '{active_name}' is not allowed (line {line_no})."
+                )
+            name = start_m.group(1)
+            if name in seen:
+                raise ValueError(f"Duplicate snippet name '{name}' (line {line_no}).")
+            seen.add(name)
+            active_name = name
+            active_start_line = line_no
+            active_lines = []
+            continue
+
+        if end_m:
+            if active_name is None:
+                raise ValueError(f"ENDSNIPPET without matching start (line {line_no}).")
+            snippets.append(
+                ReadmeSnippet(
+                    name=active_name,
+                    start_line=active_start_line or line_no,
+                    end_line=line_no,
+                    content="".join(active_lines),
+                )
+            )
+            active_name = None
+            active_start_line = None
+            active_lines = []
+            continue
+
+        if active_name is not None:
+            active_lines.append(line)
+
+    if active_name is not None:
+        raise ValueError(
+            f"Snippet '{active_name}' starting on line {active_start_line} has no matching ENDSNIPPET."
+        )
+
+    return snippets
+
+
+def _render_readme_snippets(snippets: list[ReadmeSnippet], source_name: str) -> str:
+    toc = "\n".join(f"- [{s.name}](#{s.name})" for s in snippets)
+    parts = [
+        "# README Snippets (generated)",
+        "",
+        "This file is generated from README.md snippet markers. Do not edit by hand.",
+        "",
+        "## Contents",
+        toc,
+    ]
+    for snippet in snippets:
+        parts.extend(
+            [
+                "",
+                f"## {snippet.name}",
+                "",
+                f"Source: {source_name} (snippet: {snippet.name})",
+                "",
+                snippet.content.rstrip("\n"),
+            ]
+        )
+    return "\n".join(parts).rstrip() + "\n"
+
+
+def generate_readme_snippets(
+    target: Path,
+    *,
+    readme_path: Path,
+    output_path: Path,
+    check: bool,
+    dry_run: bool,
+    print_diff: bool,
+) -> ReadmeSnippetsReport:
+    try:
+        readme_text = read_text(readme_path)
+        snippets = _extract_readme_snippets(readme_text)
+    except Exception as exc:
+        return ReadmeSnippetsReport(
+            status="error",
+            check=check,
+            dry_run=dry_run,
+            format_version=1,
+            readme_path=str(readme_path),
+            output_path=str(output_path),
+            snippets_count=0,
+            snippets=[],
+            message=str(exc),
+        )
+
+    if not snippets:
+        diff = ""
+        status = "ok"
+        message = "no snippets found"
+        if check and output_path.exists():
+            status = "drift"
+            if print_diff:
+                diff = _unified_diff(output_path, read_text(output_path), "")
+        return ReadmeSnippetsReport(
+            status=status,
+            check=check,
+            dry_run=dry_run,
+            format_version=1,
+            readme_path=str(readme_path),
+            output_path=str(output_path),
+            snippets_count=0,
+            snippets=[],
+            diff=diff,
+            message=message,
+        )
+
+    new_content = _render_readme_snippets(snippets, readme_path.name)
+    diff = ""
+    status = "ok"
+
+    if output_path.exists():
+        current = read_text(output_path)
+        if current != new_content:
+            status = "drift" if check else "ok"
+            if print_diff:
+                diff = _unified_diff(output_path, current, new_content)
+            if not check and not dry_run:
+                write_text_atomic(output_path, new_content)
+        elif print_diff:
+            diff = ""
+    else:
+        if check:
+            status = "drift"
+            if print_diff:
+                diff = _unified_diff(output_path, "", new_content)
+        elif not dry_run:
+            write_text_atomic(output_path, new_content)
+        elif print_diff:
+            diff = _unified_diff(output_path, "", new_content)
+
+    return ReadmeSnippetsReport(
+        status=status,
+        check=check,
+        dry_run=dry_run,
+        format_version=1,
+        readme_path=str(readme_path),
+        output_path=str(output_path),
+        snippets_count=len(snippets),
+        snippets=snippets,
+        diff=diff,
+    )
 
 
 def _fmt_paths(items: list[str]) -> str:

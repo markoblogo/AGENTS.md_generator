@@ -13,6 +13,7 @@ from .actions import (
     apply_pack,
     apply_config,
     check_repo,
+    generate_readme_snippets,
     load_tool_config,
     pack_plan_specs,
     save_tool_config,
@@ -61,6 +62,12 @@ err_console = Console(stderr=True)
 
 def _parse_csv(s: str) -> list[str]:
     return [x.strip() for x in (s or "").split(",") if x and x.strip()]
+
+
+def _resolve_repo_file(target: Path, supplied: Path | None, default_name: str) -> Path:
+    if supplied is None:
+        return target / default_name
+    return supplied if supplied.is_absolute() else target / supplied
 
 
 def _print_results(results, print_diff: bool) -> None:
@@ -681,6 +688,70 @@ def status(
             )
     if report.summary["errors"]:
         console.print(f"Errors: {report.summary['errors']}")
+    console.print(summary)
+    raise typer.Exit(code=code)
+
+
+@app.command()
+def snippets(
+    target: Path = typer.Argument(
+        Path("."), exists=True, file_okay=False, dir_okay=True
+    ),
+    readme: Path | None = typer.Option(
+        None, "--readme", help="README source file (default README.md)"
+    ),
+    output: Path | None = typer.Option(
+        None,
+        "--output",
+        help="Generated output file (default README_SNIPPETS.generated.md)",
+    ),
+    check: bool = typer.Option(
+        False, "--check", help="Validate generated snippets output without writing"
+    ),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Do not write files"),
+    print_diff: bool = typer.Option(False, "--print-diff", help="Print unified diff"),
+    format: str = typer.Option("text", "--format", help="Output format: text|json"),
+):
+    """Generate or validate README snippet extracts from AGENTSGEN snippet markers."""
+    readme_path = _resolve_repo_file(target, readme, "README.md")
+    output_path = _resolve_repo_file(target, output, "README_SNIPPETS.generated.md")
+
+    report = generate_readme_snippets(
+        target,
+        readme_path=readme_path,
+        output_path=output_path,
+        check=check,
+        dry_run=dry_run or check,
+        print_diff=print_diff,
+    )
+
+    code = 0 if report.status == "ok" else (2 if report.status == "error" else 1)
+
+    if format == "json":
+        sys.stdout.write(json.dumps(report.to_json(), indent=2) + "\n")
+        raise typer.Exit(code=code)
+
+    if report.message == "no snippets found":
+        console.print("no snippets found")
+        if report.diff:
+            console.print(report.diff)
+        raise typer.Exit(code=code)
+
+    if report.status == "error":
+        err_console.print(f"ERROR: {report.message}")
+        raise typer.Exit(code=code)
+
+    console.print(f"README: {report.readme_path}")
+    console.print(f"Output: {report.output_path}")
+    console.print(f"Snippets: {report.snippets_count}")
+    for snippet in report.snippets:
+        console.print(
+            f"- {snippet.name} (lines {snippet.start_line}-{snippet.end_line})"
+        )
+    if report.diff:
+        console.print(report.diff)
+
+    summary = "Summary: OK" if report.status == "ok" else "Summary: DRIFT"
     console.print(summary)
     raise typer.Exit(code=code)
 

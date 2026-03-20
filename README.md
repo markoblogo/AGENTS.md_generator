@@ -184,6 +184,8 @@ agentsgen presets
 agentsgen init . --preset nextjs
 agentsgen update
 agentsgen pack
+agentsgen snippets .
+agentsgen snippets . --check
 agentsgen check
 agentsgen status .
 agentsgen detect . --format json
@@ -193,6 +195,24 @@ pipx uninstall agentsgen
 
 agentsgen status is a read-only overview of managed files, markers, generated fallbacks, and pack drift.
 It is lighter and more diagnostic than `agentsgen check`, which focuses on repo readiness errors/warnings.
+
+## README Snippets (mini-validator)
+
+Use snippet markers in `README.md` to define canonical agent-facing extracts without editing generated output by hand.
+The command writes `README_SNIPPETS.generated.md`.
+
+Marker format:
+
+```md
+<!-- AGENTSGEN:SNIPPET name=install -->
+python -m pip install -e ".[dev]"
+<!-- AGENTSGEN:ENDSNIPPET -->
+```
+
+```sh
+agentsgen snippets .
+agentsgen snippets . --check
+```
 
 ## LLMO Pack
 
