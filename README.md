@@ -11,6 +11,7 @@ A safe-by-default repo docs toolchain for coding agents.
 
 ![AGENTS.md Generator landing page (v0.1.2)](docs/assets/agentsmd-landing-v0.1.2.png)
 Landing: https://agentsmd.abvx.xyz/
+Manifest: https://github.com/markoblogo/AGENTS.md_generator/blob/main/docs/manifest.md
 Listed on ABVX Lab: https://lab.abvx.xyz/
 
 Small, production-grade CLI to generate and safely update:
@@ -18,6 +19,11 @@ New: README Snippets — extract canonical agent-facing README blocks with drift
 
 - `AGENTS.md` (strict repo contract for coding agents)
 - `RUNBOOK.md` (human-friendly command/run cheatsheet)
+
+## References
+
+- https://arxiv.org/abs/2602.11988
+- https://arxiv.org/abs/2602.20478
 
 ## Safety Model
 
