@@ -20,6 +20,7 @@ from .actions import (
     update_from_config,
 )
 from .config import ToolConfig
+from .presets import list_presets, load_preset_config
 from .detect import detect_repo
 from .model import ProjectInfo
 from .stacks import adapter_for
@@ -255,6 +256,44 @@ def _interactive_init(
     return info.normalized()
 
 
+def _merge_detect_hints(cfg: ToolConfig, det_cfg: ToolConfig) -> ToolConfig:
+    project = dict(cfg.project or {})
+    det_project = dict(det_cfg.project or {})
+    paths = dict(cfg.paths or {})
+    det_paths = dict(det_cfg.paths or {})
+    evidence = dict(cfg.evidence or {})
+
+    if not project.get("name") and det_project.get("name"):
+        project["name"] = det_project["name"]
+    if not project.get("repo_root") and det_project.get("repo_root"):
+        project["repo_root"] = det_project["repo_root"]
+
+    for key in ["source_dirs", "config_locations"]:
+        if not paths.get(key) and det_paths.get(key):
+            paths[key] = det_paths[key]
+
+    if not evidence and det_cfg.evidence:
+        evidence = dict(det_cfg.evidence)
+
+    cfg.project = project
+    cfg.paths = paths
+    cfg.evidence = evidence
+    return ToolConfig.from_json(cfg.to_json())
+
+
+@app.command()
+def presets() -> None:
+    """List available init presets."""
+    rows = list_presets()
+    if not rows:
+        console.print("No presets available.")
+        raise typer.Exit(code=1)
+
+    for row in rows:
+        console.print(f"- {row.name}: {row.description}")
+        console.print(f"  example: {row.example}")
+
+
 @app.command()
 def init(
     target: Path = typer.Argument(
@@ -268,6 +307,9 @@ def init(
     ),
     name: str | None = typer.Option(
         None, "--name", help="Override project name in --defaults mode"
+    ),
+    preset: str | None = typer.Option(
+        None, "--preset", help="Start from a built-in preset config"
     ),
     autodetect: bool = typer.Option(
         True,
@@ -289,30 +331,41 @@ def init(
     """Initialize a repo: write .agentsgen.json and create/update AGENTS.md + RUNBOOK.md safely."""
     cfg_path = target / ".agentsgen.json"
     cfg: ToolConfig
+    preset_cfg: ToolConfig | None = None
+
+    if preset:
+        try:
+            preset_cfg = load_preset_config(preset)
+        except KeyError:
+            console.print(f"ERROR: Unknown preset '{preset}'. Run: agentsgen presets")
+            raise typer.Exit(code=1)
 
     if cfg_path.exists() and not force_config:
         cfg = load_tool_config(target)
+        if preset:
+            console.print(
+                f"Using existing {CONFIG_FILENAME}; preset '{preset}' not applied. Use --force-config to replace it."
+            )
         if autodetect:
-            # Conservative refresh: only fill missing structure hints so `structure` isn't a placeholder.
             det = detect_repo(target)
             det_cfg = ToolConfig.from_detect(det)
-            paths = dict(cfg.paths or {})
-            det_paths = dict(det_cfg.paths or {})
-
-            changed = False
-            for k in ["source_dirs", "config_locations"]:
-                cur = paths.get(k)
-                if not cur:
-                    if det_paths.get(k):
-                        paths[k] = det_paths[k]
-                        changed = True
-            if changed:
-                cfg.paths = paths
-                cfg = ToolConfig.from_json(cfg.to_json())
-                if not dry_run:
-                    save_tool_config(target, cfg)
+            cfg = _merge_detect_hints(cfg, det_cfg)
+            if not dry_run:
+                save_tool_config(target, cfg)
     else:
-        if autodetect:
+        if preset:
+            cfg = preset_cfg
+            if autodetect:
+                det = detect_repo(target)
+                if print_detect:
+                    err_console.print(json.dumps(det.to_json(), indent=2))
+                cfg = _merge_detect_hints(cfg, ToolConfig.from_detect(det))
+            if name:
+                cfg.project["name"] = name
+            if stack:
+                cfg.project["primary_stack"] = stack
+            cfg = ToolConfig.from_json(cfg.to_json())
+        elif autodetect:
             det = detect_repo(target)
             if print_detect:
                 err_console.print(json.dumps(det.to_json(), indent=2))

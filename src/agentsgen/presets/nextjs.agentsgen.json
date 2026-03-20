@@ -1,0 +1,52 @@
+{
+  "description": "Next.js preset with pnpm-first, npm-fallback commands.",
+  "example": "agentsgen init . --preset nextjs",
+  "config": {
+    "version": 1,
+    "presets": {
+      "selected": "nextjs"
+    },
+    "project": {
+      "name": "nextjs",
+      "primary_stack": "node",
+      "repo_root": ".",
+      "node_package_manager": "pnpm"
+    },
+    "defaults": {
+      "project_type": "nextjs"
+    },
+    "commands": {
+      "install": "pnpm install || npm install",
+      "dev": "pnpm dev || npm run dev",
+      "build": "pnpm build || npm run build",
+      "lint": "pnpm lint || npm run lint",
+      "test": "pnpm test || npm test",
+      "start": "pnpm start || npm run start"
+    },
+    "notes": {
+      "assumptions": [
+        "Prefers pnpm but falls back to npm if pnpm is not used.",
+        "If you use yarn, replace the pnpm/npm lines with yarn equivalents."
+      ],
+      "where_to_edit": [
+        "If your repo uses only one package manager, simplify commands to that one.",
+        "If tests are not configured, update commands.test to your test runner (vitest/jest/playwright)."
+      ]
+    },
+    "pack": {
+      "enabled": true,
+      "output_dir": "docs/ai",
+      "llms_format": "txt",
+      "files": [
+        "llms",
+        "docs/ai/how-to-run.md",
+        "docs/ai/how-to-test.md",
+        "docs/ai/architecture.md",
+        "docs/ai/data-contracts.md",
+        "SECURITY_AI.md",
+        "CONTRIBUTING_AI.md",
+        "README_SNIPPETS.md"
+      ]
+    }
+  }
+}

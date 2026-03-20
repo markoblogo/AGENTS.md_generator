@@ -1,0 +1,51 @@
+{
+  "description": "Node CLI preset with explicit bin-entry placeholders.",
+  "example": "agentsgen init . --preset cli-node",
+  "config": {
+    "version": 1,
+    "presets": {
+      "selected": "cli-node"
+    },
+    "project": {
+      "name": "cli-node",
+      "primary_stack": "node",
+      "repo_root": ".",
+      "node_package_manager": "pnpm"
+    },
+    "defaults": {
+      "project_type": "cli-node"
+    },
+    "commands": {
+      "install": "pnpm install || npm install",
+      "run": "node ./bin/cli.js --help",
+      "lint": "pnpm lint || npm run lint",
+      "test": "pnpm test || npm test",
+      "build": "pnpm build || npm run build"
+    },
+    "notes": {
+      "assumptions": [
+        "Replace './bin/cli.js' with your actual CLI entrypoint (bin script or dist entry).",
+        "If your CLI is TypeScript, set run to 'node dist/cli.js --help' and make build compile it."
+      ],
+      "where_to_edit": [
+        "Update commands.run to your real CLI entrypoint.",
+        "If you don\u2019t have tests/lint yet, keep commands but expect them to fail until configured."
+      ]
+    },
+    "pack": {
+      "enabled": true,
+      "output_dir": "docs/ai",
+      "llms_format": "txt",
+      "files": [
+        "llms",
+        "docs/ai/how-to-run.md",
+        "docs/ai/how-to-test.md",
+        "docs/ai/architecture.md",
+        "docs/ai/data-contracts.md",
+        "SECURITY_AI.md",
+        "CONTRIBUTING_AI.md",
+        "README_SNIPPETS.md"
+      ]
+    }
+  }
+}

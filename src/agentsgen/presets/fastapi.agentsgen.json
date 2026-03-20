@@ -1,0 +1,51 @@
+{
+  "description": "FastAPI preset with conservative app.main:app defaults.",
+  "example": "agentsgen init . --preset fastapi",
+  "config": {
+    "version": 1,
+    "presets": {
+      "selected": "fastapi"
+    },
+    "project": {
+      "name": "fastapi",
+      "primary_stack": "python",
+      "repo_root": ".",
+      "python_toolchain": "pip"
+    },
+    "defaults": {
+      "project_type": "fastapi"
+    },
+    "commands": {
+      "install": "python -m pip install -U pip && python -m pip install -e \".[dev]\"",
+      "run": "uvicorn app.main:app --reload --host 127.0.0.1 --port 8000",
+      "test": "pytest -q",
+      "lint": "ruff check .",
+      "format": "ruff format .",
+      "typecheck": "python -m compileall -q ."
+    },
+    "notes": {
+      "assumptions": [
+        "Assumes FastAPI entrypoint at app.main:app (edit if different).",
+        "If you use a different layout (src/), update the uvicorn module path."
+      ],
+      "where_to_edit": [
+        "Update commands.run to match your actual ASGI app import path."
+      ]
+    },
+    "pack": {
+      "enabled": true,
+      "output_dir": "docs/ai",
+      "llms_format": "txt",
+      "files": [
+        "llms",
+        "docs/ai/how-to-run.md",
+        "docs/ai/how-to-test.md",
+        "docs/ai/architecture.md",
+        "docs/ai/data-contracts.md",
+        "SECURITY_AI.md",
+        "CONTRIBUTING_AI.md",
+        "README_SNIPPETS.md"
+      ]
+    }
+  }
+}

@@ -59,6 +59,12 @@ pipx install git+https://github.com/markoblogo/AGENTS.md_generator.git
 agentsgen init . --defaults --autodetect
 ```
 
+Or start from a built-in preset:
+
+```sh
+agentsgen init . --preset nextjs
+```
+
 3. Add PR guard workflow (`.github/workflows/agentsgen-ci.yml`):
 
 ```yaml
@@ -104,6 +110,17 @@ Deep dives:
 - Action options: `docs/gh-action.md`
 - LLMO pack details: `docs/llmo-pack.md`
 - Release process: `docs/release-checklist.md`
+
+## Presets
+
+Presets are conservative starter `.agentsgen.json` templates for common repo shapes.
+Use them to get explicit commands quickly, then edit the generated config to match your real toolchain.
+
+```sh
+agentsgen presets
+agentsgen init . --preset nextjs
+agentsgen init . --preset cli-python
+```
 
 ## Recipes
 
@@ -163,6 +180,7 @@ jobs:
 
 ```sh
 agentsgen init
+agentsgen presets
 agentsgen update
 agentsgen pack
 agentsgen check

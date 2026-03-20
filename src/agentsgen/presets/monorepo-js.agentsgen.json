@@ -1,0 +1,52 @@
+{
+  "description": "JavaScript monorepo preset with workspace-safe defaults.",
+  "example": "agentsgen init . --preset monorepo-js",
+  "config": {
+    "version": 1,
+    "presets": {
+      "selected": "monorepo-js"
+    },
+    "project": {
+      "name": "monorepo-js",
+      "primary_stack": "node",
+      "repo_root": ".",
+      "node_package_manager": "pnpm"
+    },
+    "defaults": {
+      "project_type": "monorepo-js"
+    },
+    "commands": {
+      "install": "pnpm install || npm install",
+      "dev": "pnpm -r dev || npm run -ws dev",
+      "build": "pnpm -r build || npm run -ws build",
+      "lint": "pnpm -r lint || npm run -ws lint",
+      "test": "pnpm -r test || npm test",
+      "typecheck": "pnpm -r typecheck || npm run -ws typecheck"
+    },
+    "notes": {
+      "assumptions": [
+        "Targets workspaces-style monorepos. pnpm is preferred; npm uses workspaces (-ws).",
+        "If your monorepo has a root Makefile, consider using make targets instead."
+      ],
+      "where_to_edit": [
+        "If you have a specific workspace, add a 'workspace_root' note and replace -r with '--filter <pkg>'.",
+        "If you use turborepo/nx, replace the recursive commands with 'turbo run ...' or 'nx run-many ...'."
+      ]
+    },
+    "pack": {
+      "enabled": true,
+      "output_dir": "docs/ai",
+      "llms_format": "txt",
+      "files": [
+        "llms",
+        "docs/ai/how-to-run.md",
+        "docs/ai/how-to-test.md",
+        "docs/ai/architecture.md",
+        "docs/ai/data-contracts.md",
+        "SECURITY_AI.md",
+        "CONTRIBUTING_AI.md",
+        "README_SNIPPETS.md"
+      ]
+    }
+  }
+}

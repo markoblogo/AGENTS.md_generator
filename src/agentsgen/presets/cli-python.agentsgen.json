@@ -1,0 +1,52 @@
+{
+  "description": "Python CLI preset with explicit module-entry placeholders.",
+  "example": "agentsgen init . --preset cli-python",
+  "config": {
+    "version": 1,
+    "presets": {
+      "selected": "cli-python"
+    },
+    "project": {
+      "name": "cli-python",
+      "primary_stack": "python",
+      "repo_root": ".",
+      "python_toolchain": "pip"
+    },
+    "defaults": {
+      "project_type": "cli-python"
+    },
+    "commands": {
+      "install": "python -m pip install -U pip && python -m pip install -e \".[dev]\"",
+      "run": "python -m your_cli_module --help",
+      "test": "pytest -q",
+      "lint": "ruff check .",
+      "format": "ruff format .",
+      "typecheck": "python -m compileall -q ."
+    },
+    "notes": {
+      "assumptions": [
+        "Replace 'your_cli_module' with your actual module entrypoint.",
+        "If you expose console_scripts entrypoint, you can set run to '<your-cli> --help'."
+      ],
+      "where_to_edit": [
+        "Update commands.run to your real CLI entrypoint.",
+        "If you do not use pytest/ruff, swap commands accordingly."
+      ]
+    },
+    "pack": {
+      "enabled": true,
+      "output_dir": "docs/ai",
+      "llms_format": "txt",
+      "files": [
+        "llms",
+        "docs/ai/how-to-run.md",
+        "docs/ai/how-to-test.md",
+        "docs/ai/architecture.md",
+        "docs/ai/data-contracts.md",
+        "SECURITY_AI.md",
+        "CONTRIBUTING_AI.md",
+        "README_SNIPPETS.md"
+      ]
+    }
+  }
+}

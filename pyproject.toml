@@ -33,7 +33,7 @@ required-version = "0.6.9"
 package-dir = {"" = "src"}
 
 [tool.setuptools.package-data]
-agentsgen = ["templates/**/*.tpl", "templates/**/*.md", "templates/**/*.j2"]
+agentsgen = ["templates/**/*.tpl", "templates/**/*.md", "templates/**/*.j2", "presets/*.agentsgen.json"]
 
 [build-system]
 requires = ["setuptools>=68", "wheel"]
