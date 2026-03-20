@@ -244,24 +244,55 @@ h1{
   gap: 10px;
   margin-top: 20px;
 }
+.hero-side{
+  display:flex;
+  flex-direction:column;
+  gap: 16px;
+  align-self:start;
+}
 .lab-banner{
-  margin-top: 18px;
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap: 14px;
 }
+.lab-banner--priority{
+  border-color: color-mix(in oklab, var(--accent) 52%, var(--border));
+  background:
+    radial-gradient(120% 120% at 100% 0%, color-mix(in oklab, var(--accent) 18%, transparent), transparent 54%),
+    linear-gradient(180deg, color-mix(in oklab, var(--card) 84%, #eafff1), color-mix(in oklab, var(--card) 94%, #dffbe8));
+  box-shadow: 0 20px 48px rgba(12,23,18,.14);
+}
+.lab-banner-kicker{
+  display:inline-flex;
+  align-items:center;
+  width: fit-content;
+  margin-bottom: 8px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  border: 1px solid color-mix(in oklab, var(--accent) 44%, var(--border));
+  background: color-mix(in oklab, var(--accent) 16%, var(--card));
+  color: color-mix(in oklab, var(--accent-ink) 72%, var(--text));
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
 .lab-banner-title{
-  font-size: 14px;
-  font-weight: 700;
+  font-size: 16px;
+  font-weight: 800;
   letter-spacing: .08em;
   text-transform: uppercase;
   margin-bottom: 6px;
 }
 .lab-banner p{
   margin: 0;
-  max-width: 50ch;
+  max-width: 40ch;
   color: var(--muted);
+}
+.lab-banner--priority .btn{
+  flex: 0 0 auto;
+  white-space: nowrap;
 }
 .feature-card{
   align-self: start;
@@ -529,6 +560,7 @@ details[open] summary::after{ transform: rotate(-135deg); }
 
 @media (max-width: 820px){
   .topbar-inner{ min-height: 60px; gap: 12px; }
+  .hero-side{ gap: 14px; }
   .brand{ min-width: 220px; }
   .nav{ gap: 8px; }
   .nav-left{ gap: 6px; }
