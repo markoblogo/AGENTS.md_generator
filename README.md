@@ -114,6 +114,7 @@ agentsgen snippets .
 
 ```sh
 agentsgen pack . --autodetect
+cat agents.entrypoints.json
 ```
 
 7. Profit: fewer agent mistakes, safer updates, and better indexable repo context.
@@ -248,6 +249,8 @@ agentsgen snippets . --check
 - `SECURITY_AI.md`
 - `CONTRIBUTING_AI.md`
 - `README_SNIPPETS.md`
+
+New: `agents.entrypoints.json` — a machine-readable manifest of repo commands (install/test/lint/build/run) derived from `.agentsgen.json` / autodetect.
 
 By default, pack writes AI docs into docs/ai/ (override via pack_output_dir).
 Use --print-plan to preview what pack will write.
