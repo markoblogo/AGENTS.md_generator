@@ -13,6 +13,7 @@ A safe-by-default repo docs toolchain for coding agents.
 Landing: https://agentsmd.abvx.xyz/
 Manifest: https://github.com/markoblogo/AGENTS.md_generator/blob/main/docs/manifest.md
 Listed on ABVX Lab: https://lab.abvx.xyz/
+More tools like this: https://lab.abvx.xyz/
 
 Small, production-grade CLI to generate and safely update:
 New: README Snippets — extract canonical agent-facing README blocks with drift checks, alongside presets and status.
