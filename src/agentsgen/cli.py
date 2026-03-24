@@ -26,6 +26,7 @@ from .detect import detect_repo
 from .model import ProjectInfo
 from .stacks import adapter_for
 from .stacks.base import project_name_from_dir
+from .understand import apply_understanding
 
 from . import __version__
 from .constants import (
@@ -817,6 +818,49 @@ def snippets(
     summary = "Summary: OK" if report.status == "ok" else "Summary: DRIFT"
     console.print(summary)
     raise typer.Exit(code=code)
+
+
+@app.command()
+def understand(
+    target: Path = typer.Argument(
+        Path("."), exists=True, file_okay=False, dir_okay=True
+    ),
+    format: str = typer.Option("text", "--format", help="Output format: text|json"),
+    output_dir: str = typer.Option(
+        "docs/ai", "--output-dir", help="Where to write repomap.md and graph.mmd"
+    ),
+):
+    """Generate deterministic repo understanding artifacts."""
+    out_dir = Path(output_dir)
+    if not out_dir.is_absolute():
+        out_dir = target / out_dir
+
+    results, payload = apply_understanding(target, output_dir=out_dir)
+    errors = [row for row in results if row.action == "error"]
+    response = {
+        "version": 1,
+        "command": "understand",
+        "path": str(target),
+        "output_dir": str(out_dir),
+        "stack": payload["stack"],
+        "summary": payload["summary"],
+        "results": _results_payload(results),
+    }
+
+    if format == "json":
+        sys.stdout.write(json.dumps(response, indent=2) + "\n")
+    else:
+        _print_results(results, print_diff=False)
+        console.print(f"stack: {payload['stack']}")
+        console.print(
+            "summary: "
+            f"files={payload['summary']['files_count']} "
+            f"edges={payload['summary']['edges_count']} "
+            f"entrypoints={payload['summary']['entrypoints_count']}"
+        )
+
+    if errors:
+        raise typer.Exit(code=1)
 
 
 @app.command()

@@ -260,6 +260,14 @@ Use --print-plan to preview what pack will write.
 What it is:
 - a compact, agent-first context bundle for coding agents and LLM indexing.
 
+## Repo understanding artifacts
+
+`agentsgen understand` generates a deterministic repo map, import graph, and machine-readable knowledge file.
+It uses local heuristics only: no network calls, no LLM calls.
+Artifacts are written with the same safe update policy used elsewhere in `agentsgen`.
+
+`agentsgen understand .`
+
 What it is not:
 - not a traffic/SEO promise, and not a full developer handbook replacement.
 
