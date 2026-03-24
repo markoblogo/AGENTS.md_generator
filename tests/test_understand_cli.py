@@ -86,7 +86,9 @@ def test_understand_node_only_writes_expected_artifacts(tmp_path: Path) -> None:
         "docs/ai/graph.mmd",
     }
 
-    knowledge = json.loads((target / "agents.knowledge.json").read_text(encoding="utf-8"))
+    knowledge = json.loads(
+        (target / "agents.knowledge.json").read_text(encoding="utf-8")
+    )
     assert any(item["label"] == "dev" for item in knowledge["entrypoints"])
     assert any(item["source"] == "package.json" for item in knowledge["entrypoints"])
 
@@ -121,6 +123,8 @@ def test_understand_mixed_monorepo_emits_compact_outputs(tmp_path: Path) -> None
     assert "graph TD" in graph
     assert "apps/web/index.ts" in graph or "services/api/src/core.py" in graph
 
-    knowledge = json.loads((target / "agents.knowledge.json").read_text(encoding="utf-8"))
+    knowledge = json.loads(
+        (target / "agents.knowledge.json").read_text(encoding="utf-8")
+    )
     assert knowledge["version"] == 1
     assert len(knowledge["edges"]) <= 30

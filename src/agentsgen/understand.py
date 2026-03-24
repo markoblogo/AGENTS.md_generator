@@ -139,7 +139,9 @@ def _should_skip(path: Path, root: Path, output_dir: Path) -> bool:
     rel_parts = path.relative_to(root).parts
     if any(part in _EXCLUDED_DIRS for part in rel_parts):
         return True
-    if any(part.startswith(".") and part not in _VISIBLE_HIDDEN_NAMES for part in rel_parts):
+    if any(
+        part.startswith(".") and part not in _VISIBLE_HIDDEN_NAMES for part in rel_parts
+    ):
         return True
     if path.name in {"agents.knowledge.json", "agents.knowledge.generated.json"}:
         return True
@@ -178,7 +180,9 @@ def _source_roots(root: Path, detected_paths: dict[str, object]) -> list[Path]:
     return roots
 
 
-def _python_module_candidates(path: Path, root: Path, source_roots: list[Path]) -> list[str]:
+def _python_module_candidates(
+    path: Path, root: Path, source_roots: list[Path]
+) -> list[str]:
     candidates: list[str] = []
     for source_root in source_roots:
         try:
@@ -211,7 +215,9 @@ def _python_module_candidates(path: Path, root: Path, source_roots: list[Path]) 
     return sorted(set(candidates))
 
 
-def _build_python_module_map(files: list[Path], root: Path, source_roots: list[Path]) -> dict[str, str]:
+def _build_python_module_map(
+    files: list[Path], root: Path, source_roots: list[Path]
+) -> dict[str, str]:
     module_map: dict[str, str] = {}
     for path in files:
         if path.suffix != ".py":
@@ -233,7 +239,9 @@ def _resolve_python_import(
     current_candidates = _python_module_candidates(current_path, root, source_roots)
     current_module = current_candidates[0] if current_candidates else ""
     current_parts = current_module.split(".") if current_module else []
-    package_parts = current_parts[:-1] if current_path.name != "__init__.py" else current_parts
+    package_parts = (
+        current_parts[:-1] if current_path.name != "__init__.py" else current_parts
+    )
 
     if level > 0:
         if level - 1 > len(package_parts):
@@ -345,7 +353,9 @@ def _scan_imports(
 
 def _top_level_structure(root: Path) -> list[str]:
     rows: list[str] = []
-    for path in sorted(root.iterdir(), key=lambda item: (not item.is_dir(), item.name.lower())):
+    for path in sorted(
+        root.iterdir(), key=lambda item: (not item.is_dir(), item.name.lower())
+    ):
         if path.name in _EXCLUDED_DIRS or path.name.startswith(".git"):
             continue
         if path.name.startswith(".") and path.name not in _VISIBLE_HIDDEN_NAMES:
@@ -403,7 +413,9 @@ def _entrypoints_from_package_json(root: Path) -> list[RepoEntrypoint]:
             shell = "yarn install" if key == "install" else f"yarn {key}"
         else:
             shell = "npm install" if key == "install" else f"npm run {key}"
-        rows.append(RepoEntrypoint(label=str(key), command=shell, source="package.json"))
+        rows.append(
+            RepoEntrypoint(label=str(key), command=shell, source="package.json")
+        )
     return rows
 
 
@@ -421,7 +433,9 @@ def _entrypoints_from_makefile(root: Path) -> list[RepoEntrypoint]:
             if target.startswith("."):
                 continue
             targets.append(
-                RepoEntrypoint(label=target, command=f"make {target}", source="makefile")
+                RepoEntrypoint(
+                    label=target, command=f"make {target}", source="makefile"
+                )
             )
         dedup = {(item.label, item.command, item.source): item for item in targets}
         return [dedup[key] for key in sorted(dedup)]
@@ -436,15 +450,16 @@ def _entrypoints_from_pyproject(root: Path) -> list[RepoEntrypoint]:
         payload = tomllib.loads(path.read_text(encoding="utf-8"))
     except Exception:
         return []
-    scripts = (
-        payload.get("project", {}).get("scripts", {})
-        or payload.get("tool", {}).get("poetry", {}).get("scripts", {})
-    )
+    scripts = payload.get("project", {}).get("scripts", {}) or payload.get(
+        "tool", {}
+    ).get("poetry", {}).get("scripts", {})
     if not isinstance(scripts, dict):
         return []
     rows: list[RepoEntrypoint] = []
     for label in sorted(scripts):
-        rows.append(RepoEntrypoint(label=str(label), command=str(label), source="pyproject"))
+        rows.append(
+            RepoEntrypoint(label=str(label), command=str(label), source="pyproject")
+        )
     return rows
 
 
@@ -474,7 +489,10 @@ def _key_modules(file_infos: list[RepoFileInfo], edges: list[ImportEdge]) -> lis
         key=lambda item: (-item.size, item.path),
     )[:5]
     popular_paths = [
-        path for path, _count in sorted(inbound.items(), key=lambda item: (-item[1], item[0]))
+        path
+        for path, _count in sorted(
+            inbound.items(), key=lambda item: (-item[1], item[0])
+        )
     ][:5]
     rows: list[str] = []
     seen: set[str] = set()
@@ -543,7 +561,11 @@ def _select_graph_nodes(
     stack: str,
 ) -> tuple[list[RepoFileInfo], list[ImportEdge]]:
     inbound = Counter(edge.to_path for edge in edges)
-    file_by_path = {item.path: item for item in file_infos if item.language in {"python", "javascript", "typescript"}}
+    file_by_path = {
+        item.path: item
+        for item in file_infos
+        if item.language in {"python", "javascript", "typescript"}
+    }
     limit = 20 if stack == "mixed" else 30
     ranked = sorted(
         file_by_path.values(),
@@ -594,10 +616,14 @@ def _write_or_diff_raw(path: Path, new_content: str, dry_run: bool) -> tuple[boo
     return True, ""
 
 
-def _handle_mermaid_file(path: Path, generated_full: str, *, dry_run: bool) -> FileResult:
+def _handle_mermaid_file(
+    path: Path, generated_full: str, *, dry_run: bool
+) -> FileResult:
     if not path.exists():
         changed, diff = _write_or_diff_raw(path, generated_full, dry_run=dry_run)
-        return FileResult(path=path, action="created", message="created", changed=changed, diff=diff)
+        return FileResult(
+            path=path, action="created", message="created", changed=changed, diff=diff
+        )
 
     existing = read_text(path)
     if _MERMAID_START not in existing or _MERMAID_END not in existing:
@@ -613,8 +639,16 @@ def _handle_mermaid_file(path: Path, generated_full: str, *, dry_run: bool) -> F
 
     start = existing.index(_MERMAID_START)
     end = existing.index(_MERMAID_END) + len(_MERMAID_END)
-    patched = existing[:start] + generated_full[: generated_full.index(_MERMAID_END) + len(_MERMAID_END)] + existing[end:]
-    problems = validate_markers(existing.replace(_MERMAID_START, "<!-- AGENTSGEN:START section=graph -->").replace(_MERMAID_END, "<!-- AGENTSGEN:END section=graph -->"))
+    patched = (
+        existing[:start]
+        + generated_full[: generated_full.index(_MERMAID_END) + len(_MERMAID_END)]
+        + existing[end:]
+    )
+    problems = validate_markers(
+        existing.replace(
+            _MERMAID_START, "<!-- AGENTSGEN:START section=graph -->"
+        ).replace(_MERMAID_END, "<!-- AGENTSGEN:END section=graph -->")
+    )
     if problems:
         return FileResult(path=path, action="error", message="invalid graph markers")
     changed, diff = _write_or_diff_raw(path, patched, dry_run=dry_run)
@@ -627,10 +661,14 @@ def _handle_mermaid_file(path: Path, generated_full: str, *, dry_run: bool) -> F
     )
 
 
-def _handle_knowledge_json_file(path: Path, generated_full: str, *, dry_run: bool) -> FileResult:
+def _handle_knowledge_json_file(
+    path: Path, generated_full: str, *, dry_run: bool
+) -> FileResult:
     if not path.exists():
         changed, diff = _write_or_diff_raw(path, generated_full, dry_run=dry_run)
-        return FileResult(path=path, action="created", message="created", changed=changed, diff=diff)
+        return FileResult(
+            path=path, action="created", message="created", changed=changed, diff=diff
+        )
 
     existing = read_text(path)
     try:
@@ -641,7 +679,10 @@ def _handle_knowledge_json_file(path: Path, generated_full: str, *, dry_run: boo
     if (
         isinstance(parsed, dict)
         and int(parsed.get("version", 0) or 0) == 1
-        and all(key in parsed for key in ("repo_path", "generated_at", "files", "edges", "entrypoints"))
+        and all(
+            key in parsed
+            for key in ("repo_path", "generated_at", "files", "edges", "entrypoints")
+        )
     ):
         changed, diff = _write_or_diff_raw(path, generated_full, dry_run=dry_run)
         return FileResult(
@@ -670,9 +711,10 @@ def _repo_files(root: Path, output_dir: Path) -> list[Path]:
             continue
         if _should_skip(path, root, output_dir):
             continue
-        if path.name not in _TEXT_FILENAMES and path.suffix.lower() not in set(
-            _LANGUAGE_BY_SUFFIX
-        ) | _CODE_EXTENSIONS:
+        if (
+            path.name not in _TEXT_FILENAMES
+            and path.suffix.lower() not in set(_LANGUAGE_BY_SUFFIX) | _CODE_EXTENSIONS
+        ):
             continue
         files.append(path)
     return sorted(files, key=lambda item: _rel(item, root))
@@ -680,7 +722,10 @@ def _repo_files(root: Path, output_dir: Path) -> list[Path]:
 
 def build_understanding_payload(root: Path, *, output_dir: Path) -> dict[str, object]:
     det = detect_repo(root)
-    stack = str(det.project.get("primary_stack", "") or "unknown").strip().lower() or "unknown"
+    stack = (
+        str(det.project.get("primary_stack", "") or "unknown").strip().lower()
+        or "unknown"
+    )
     files = _repo_files(root, output_dir)
     source_roots = _source_roots(root, det.paths)
     file_infos, edges = _scan_imports(files, root=root, source_roots=source_roots)
@@ -722,15 +767,17 @@ def build_understanding_payload(root: Path, *, output_dir: Path) -> dict[str, ob
     existing_knowledge = root / "agents.knowledge.json"
     if existing_knowledge.exists():
         try:
-            existing_payload = json.loads(existing_knowledge.read_text(encoding="utf-8"))
+            existing_payload = json.loads(
+                existing_knowledge.read_text(encoding="utf-8")
+            )
         except Exception:
             existing_payload = None
-        if (
-            isinstance(existing_payload, dict)
-            and _stable_knowledge_payload(existing_payload)
-            == _stable_knowledge_payload(knowledge)
-        ):
-            knowledge["generated_at"] = str(existing_payload.get("generated_at", "") or "")
+        if isinstance(existing_payload, dict) and _stable_knowledge_payload(
+            existing_payload
+        ) == _stable_knowledge_payload(knowledge):
+            knowledge["generated_at"] = str(
+                existing_payload.get("generated_at", "") or ""
+            )
         else:
             knowledge["generated_at"] = _utc_now_iso()
     else:
