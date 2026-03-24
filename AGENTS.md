@@ -68,6 +68,7 @@ make test
 - Keep diffs small (target: <300 lines unless unavoidable).
 - Never rewrite whole files when a patch will do.
 - Preserve formatting, naming patterns, and local conventions.
+- Follow the optional review guideline here: `docs/agent-guidelines.md`.
 
 #### 2) No destructive operations
 - Do not delete data, migrations, buckets, or user files.

@@ -33,6 +33,8 @@ The tool is safe-by-default and follows a strict 3-mode policy per file:
 2. File exists and markers exist: update only content inside markers.
 3. File exists but markers missing: do not modify it; write `*.generated.md` instead.
 
+- Optional review guideline for coding agents: `docs/agent-guidelines.md`.
+
 Marker format:
 
 ```md
