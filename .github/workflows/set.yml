@@ -21,3 +21,5 @@ jobs:
           snippets: "true"
           repomap_compact_budget: "4000"
           repomap_focus: "understand"
+          proof_loop: "true"
+          proof_task_id: "proof-loop-v0"

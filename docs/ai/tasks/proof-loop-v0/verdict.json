@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "generated_by": "agentsgen",
+  "generated_at": "2026-03-25T17:03:26Z",
+  "task_id": "proof-loop-v0",
+  "status": "needs-review",
+  "summary": "Proof-loop v0 is implemented; ecosystem review is still pending.",
+  "blocking_items": []
+}

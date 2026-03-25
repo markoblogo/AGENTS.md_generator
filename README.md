@@ -20,6 +20,7 @@ Small, production-grade CLI to generate and safely update:
 
 - `AGENTS.md` (strict repo contract for coding agents)
 - `RUNBOOK.md` (human-friendly command/run cheatsheet)
+- proof-loop task artifacts under `docs/ai/tasks/`
 
 ## References
 
@@ -219,6 +220,9 @@ agentsgen status .
 agentsgen detect . --format json
 agentsgen analyze https://example.com
 agentsgen meta https://example.com
+agentsgen task init proof-loop-v0 . --summary "Capture proof artifacts for this task"
+agentsgen task evidence proof-loop-v0 . --check "pytest=passed"
+agentsgen task verdict proof-loop-v0 . --status needs-review --summary "Manual review still pending"
 agentsgen init --defaults --stack python --dry-run --print-diff
 pipx uninstall agentsgen
 ```
@@ -249,6 +253,20 @@ python -m pip install -e ".[dev]"
 ```sh
 agentsgen snippets .
 agentsgen snippets . --check
+```
+
+## Proof-loop v0
+
+For larger tasks, `agentsgen` can keep a lightweight proof bundle in-repo:
+
+- `docs/ai/tasks/<task-id>/contract.md`
+- `docs/ai/tasks/<task-id>/evidence.json`
+- `docs/ai/tasks/<task-id>/verdict.json`
+
+```sh
+agentsgen task init proof-loop-v0 . --summary "Capture proof artifacts for this task"
+agentsgen task evidence proof-loop-v0 . --check "pytest=passed"
+agentsgen task verdict proof-loop-v0 . --status needs-review --summary "Manual review still pending"
 ```
 
 ## Pack bundle

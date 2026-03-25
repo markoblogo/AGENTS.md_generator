@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "generated_by": "agentsgen",
+  "generated_at": "2026-03-25T17:03:26Z",
+  "task_id": "proof-loop-v0",
+  "checks": [
+    {
+      "name": "pytest",
+      "status": "passed"
+    },
+    {
+      "name": "ruff",
+      "status": "passed"
+    }
+  ],
+  "changed_files": [
+    ".github/workflows/set.yml",
+    "README.md",
+    "docs/ai/tasks/proof-loop-v0/contract.md",
+    "drafts/proof-loop-v0.md",
+    "src/agentsgen/cli.py",
+    "src/agentsgen/task_loop.py",
+    "tests/test_task_cli.py"
+  ],
+  "artifacts": [
+    "agents.knowledge.json",
+    "docs/ai/repomap.compact.md"
+  ],
+  "notes": [
+    "Initial proof-loop v0 rollout captured in-repo."
+  ]
+}
