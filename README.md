@@ -14,7 +14,6 @@ Landing: https://agentsmd.abvx.xyz/
 Manifest: https://github.com/markoblogo/AGENTS.md_generator/blob/main/docs/manifest.md
 Listed on ABVX Lab: https://lab.abvx.xyz/
 More tools like this: https://lab.abvx.xyz/
-Free guide (PDF): https://agentsmd.abvx.xyz/assets/llmo-quick-start.pdf
 
 Small, production-grade CLI to generate and safely update:
 New: README Snippets — extract canonical agent-facing README blocks with drift checks, alongside presets and status.
@@ -126,6 +125,8 @@ For public website mode:
 ```sh
 agentsgen pack . --site https://example.com
 ```
+
+Companion guide for site-oriented AI visibility work: `docs/assets/llmo-quick-start.pdf`
 
 7. Profit: fewer agent mistakes, safer updates, and better indexable repo context.
 
@@ -287,6 +288,8 @@ What it is not:
 It uses deterministic heuristics by default and can add an optional advisory AI review with `--use-ai`.
 
 `agentsgen meta` generates `docs/ai/llmo-meta.json` with AI-oriented title, description, keywords, and short description suggestions for a public URL.
+
+Companion guide for these public-site workflows: `docs/assets/llmo-quick-start.pdf`.
 
 ### Why it matters
 - **Less agent babysitting.** Repos with `AGENTS.md` + `docs/ai/` reduce back-and-forth and "where is X?" questions for Codex/Claude.
