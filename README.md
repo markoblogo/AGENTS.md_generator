@@ -221,7 +221,7 @@ agentsgen detect . --format json
 agentsgen analyze https://example.com
 agentsgen meta https://example.com
 agentsgen task init proof-loop-v0 . --summary "Capture proof artifacts for this task"
-agentsgen task evidence proof-loop-v0 . --check "pytest=passed"
+agentsgen task evidence proof-loop-v0 . --check "pytest=passed" --check "ruff=passed"
 agentsgen task verdict proof-loop-v0 . --status needs-review --summary "Manual review still pending"
 agentsgen init --defaults --stack python --dry-run --print-diff
 pipx uninstall agentsgen
@@ -229,6 +229,7 @@ pipx uninstall agentsgen
 
 agentsgen status is a read-only overview of managed files, markers, generated fallbacks, and pack drift.
 It is lighter and more diagnostic than `agentsgen check`, which focuses on repo readiness errors/warnings.
+`agentsgen task evidence` and `agentsgen task verdict` now write richer summaries for checks, artifacts, decision state, and review readiness under `docs/ai/tasks/<task-id>/`.
 
 `agentsgen check` can also aggregate optional drift checks:
 - `agentsgen check . --pack-check` adds `pack --check`

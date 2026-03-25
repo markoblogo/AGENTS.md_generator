@@ -73,6 +73,9 @@ def test_task_evidence_writes_json_and_tracks_changed_files(tmp_path: Path) -> N
         capture_output=True,
     )
     (target / "README.md").write_text("changed\n", encoding="utf-8")
+    artifact_path = target / "docs" / "ai" / "repomap.compact.md"
+    artifact_path.parent.mkdir(parents=True)
+    artifact_path.write_text("compact\n", encoding="utf-8")
 
     res = runner.invoke(
         app,
@@ -98,6 +101,10 @@ def test_task_evidence_writes_json_and_tracks_changed_files(tmp_path: Path) -> N
     assert evidence_path.is_file()
     written = json.loads(evidence_path.read_text(encoding="utf-8"))
     assert written["checks"][0]["name"] == "pytest"
+    assert written["checks"][0]["status"] == "passed"
+    assert written["check_summary"]["passed"] == 1
+    assert written["artifact_summary"]["present"] == 1
+    assert written["evidence_status"] == "complete"
     assert "README.md" in written["changed_files"]
     assert written["artifacts"] == ["docs/ai/repomap.compact.md"]
 
@@ -131,3 +138,53 @@ def test_task_verdict_preserves_user_json_and_writes_generated_sibling(
     generated = json.loads(generated_path.read_text(encoding="utf-8"))
     assert generated["generated_by"] == "agentsgen"
     assert generated["status"] == "needs-review"
+
+
+def test_task_verdict_reads_evidence_summary(tmp_path: Path) -> None:
+    target = tmp_path / "repo"
+    task_output = target / "docs" / "ai" / "tasks" / "proof-loop-v0"
+    task_output.mkdir(parents=True)
+    (task_output / "evidence.json").write_text(
+        json.dumps(
+            {
+                "version": 2,
+                "generated_by": "agentsgen",
+                "generated_at": "2026-03-25T00:00:00Z",
+                "task_id": "proof-loop-v0",
+                "check_summary": {
+                    "total": 2,
+                    "passed": 2,
+                    "failed": 0,
+                    "pending": 0,
+                    "recorded": 0,
+                },
+                "artifact_summary": {"total": 2, "present": 2, "missing": 0},
+                "evidence_status": "complete",
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    res = runner.invoke(
+        app,
+        [
+            "task",
+            "verdict",
+            "proof-loop-v0",
+            str(target),
+            "--status",
+            "needs-review",
+            "--summary",
+            "Manual review still pending.",
+            "--format",
+            "json",
+        ],
+    )
+    assert res.exit_code == 0
+    payload = json.loads(res.stdout)["result"]
+    assert payload["evidence_status"] == "complete"
+    assert payload["check_summary"]["passed"] == 2
+    assert payload["decision"] == "review-ready"
+    assert payload["ready_for_apply"] is False
+    assert "Review the captured evidence bundle" in payload["recommendation"]

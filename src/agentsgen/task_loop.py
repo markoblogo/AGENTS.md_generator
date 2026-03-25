@@ -15,6 +15,17 @@ _DEFAULT_ACCEPTANCE = (
     "Relevant checks ran or are explicitly documented.",
     "Diff remains minimal and reviewable.",
 )
+_PASSED_CHECK_STATUSES = {"pass", "passed", "ok", "success", "succeeded"}
+_FAILED_CHECK_STATUSES = {"fail", "failed", "error", "errored"}
+_PENDING_CHECK_STATUSES = {
+    "pending",
+    "scheduled",
+    "queued",
+    "skipped",
+    "not-run",
+    "needs-review",
+}
+_BLOCKING_SEVERITIES = {"low", "medium", "high"}
 
 
 def _utc_now_iso() -> str:
@@ -171,6 +182,161 @@ def _preserve_generated_timestamp(
     return clone
 
 
+def _normalize_check_status(status: str) -> str:
+    value = (status or "").strip().lower()
+    if value in _PASSED_CHECK_STATUSES:
+        return "passed"
+    if value in _FAILED_CHECK_STATUSES:
+        return "failed"
+    if value in _PENDING_CHECK_STATUSES:
+        return "pending"
+    return value or "recorded"
+
+
+def _parse_check_rows(checks: list[str]) -> list[dict[str, object]]:
+    rows: list[dict[str, object]] = []
+    for item in checks:
+        raw = item.strip()
+        if not raw:
+            continue
+        if "=" in raw:
+            name, status = raw.split("=", 1)
+        elif ":" in raw:
+            name, status = raw.split(":", 1)
+        else:
+            name, status = raw, "recorded"
+        status_value = _normalize_check_status(status)
+        rows.append(
+            {
+                "name": name.strip(),
+                "status": status_value,
+                "required": True,
+                "kind": "check",
+            }
+        )
+    return rows
+
+
+def _summarize_checks(check_rows: list[dict[str, object]]) -> dict[str, int]:
+    summary = {
+        "total": len(check_rows),
+        "passed": 0,
+        "failed": 0,
+        "pending": 0,
+        "recorded": 0,
+    }
+    for row in check_rows:
+        status = str(row.get("status", "recorded"))
+        if status == "passed":
+            summary["passed"] += 1
+        elif status == "failed":
+            summary["failed"] += 1
+        elif status == "pending":
+            summary["pending"] += 1
+        else:
+            summary["recorded"] += 1
+    return summary
+
+
+def _artifact_kind(path_value: str) -> str:
+    if path_value.endswith(".json"):
+        return "json"
+    if path_value.endswith(".md"):
+        return "markdown"
+    if path_value.endswith(".txt"):
+        return "text"
+    return "file"
+
+
+def _artifact_details(root: Path, artifacts: list[str]) -> list[dict[str, object]]:
+    rows: list[dict[str, object]] = []
+    for item in sorted({value.strip() for value in artifacts if value.strip()}):
+        artifact_path = root / item
+        rows.append(
+            {
+                "path": item,
+                "kind": _artifact_kind(item),
+                "present": artifact_path.exists(),
+            }
+        )
+    return rows
+
+
+def _summarize_artifacts(
+    artifact_details: list[dict[str, object]],
+) -> dict[str, int]:
+    present = sum(1 for item in artifact_details if item.get("present"))
+    total = len(artifact_details)
+    return {
+        "total": total,
+        "present": present,
+        "missing": total - present,
+    }
+
+
+def _evidence_status(
+    check_summary: dict[str, int],
+    artifact_summary: dict[str, int],
+) -> str:
+    if check_summary["failed"] > 0:
+        return "failed"
+    if check_summary["pending"] > 0 or artifact_summary["missing"] > 0:
+        return "incomplete"
+    return "complete"
+
+
+def _load_task_json(path: Path) -> dict[str, object] | None:
+    if not path.exists():
+        return None
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return None
+    return payload if isinstance(payload, dict) else None
+
+
+def _parse_blocking_items(
+    status: str, blocking_items: list[str]
+) -> list[dict[str, object]]:
+    rows: list[dict[str, object]] = []
+    default_severity = "high" if status == "fail" else "medium"
+    for item in blocking_items:
+        raw = item.strip()
+        if not raw:
+            continue
+        severity = default_severity
+        message = raw
+        if ":" in raw:
+            maybe_severity, rest = raw.split(":", 1)
+            if maybe_severity.strip().lower() in _BLOCKING_SEVERITIES:
+                severity = maybe_severity.strip().lower()
+                message = rest.strip()
+        rows.append(
+            {
+                "message": message,
+                "severity": severity,
+                "blocks_apply": True,
+            }
+        )
+    return rows
+
+
+def _recommendation_for_verdict(
+    *, status: str, evidence_status: str, blocking_details: list[dict[str, object]]
+) -> str:
+    if status == "pass":
+        return "Ready to mark complete and merge once final human review is done."
+    if status == "fail":
+        return "Fix the blocking items before continuing the task."
+    if blocking_details:
+        return "Resolve blockers, refresh evidence, then re-run verdict."
+    if evidence_status == "incomplete":
+        return "Run or record the missing checks and artifacts, then refresh the verdict."
+    if evidence_status == "failed":
+        return "Fix failing checks before advancing this task."
+    return "Review the captured evidence bundle before marking the task as pass."
+
+
 def apply_task_evidence(
     root: Path,
     *,
@@ -182,29 +348,32 @@ def apply_task_evidence(
     dry_run: bool = False,
 ) -> tuple[list[FileResult], dict[str, object]]:
     normalized_task_id = normalize_task_id(task_id)
-    check_rows = []
-    for item in checks:
-        raw = item.strip()
-        if not raw:
-            continue
-        if "=" in raw:
-            name, status = raw.split("=", 1)
-        elif ":" in raw:
-            name, status = raw.split(":", 1)
-        else:
-            name, status = raw, "recorded"
-        check_rows.append(
-            {"name": name.strip(), "status": status.strip() or "recorded"}
-        )
+    check_rows = _parse_check_rows(checks)
+    artifact_rows = sorted({item.strip() for item in artifacts if item.strip()})
+    artifact_details = _artifact_details(root, artifact_rows)
+    check_summary = _summarize_checks(check_rows)
+    artifact_summary = _summarize_artifacts(artifact_details)
+    contract_path = task_dir(root, normalized_task_id) / "contract.md"
+    changed_files = _git_changed_files(root)
 
     payload = {
-        "version": 1,
+        "version": 2,
         "generated_by": "agentsgen",
         "generated_at": _utc_now_iso(),
         "task_id": normalized_task_id,
         "checks": check_rows,
-        "changed_files": _git_changed_files(root),
-        "artifacts": sorted({item.strip() for item in artifacts if item.strip()}),
+        "check_summary": check_summary,
+        "changed_files": changed_files,
+        "changed_files_count": len(changed_files),
+        "artifacts": artifact_rows,
+        "artifact_details": artifact_details,
+        "artifact_summary": artifact_summary,
+        "contract_present": contract_path.exists(),
+        "evidence_status": _evidence_status(check_summary, artifact_summary),
+        "repo_state": {
+            "git_available": (root / ".git").exists(),
+            "working_tree_dirty": bool(changed_files),
+        },
         "notes": [item.strip() for item in notes if item.strip()],
     }
     payload = _preserve_generated_timestamp(payload, output_path)
@@ -227,20 +396,72 @@ def apply_task_verdict(
     output_path: Path,
     dry_run: bool = False,
 ) -> tuple[list[FileResult], dict[str, object]]:
-    del root
     normalized_task_id = normalize_task_id(task_id)
     status_value = (status or "").strip().lower()
     if status_value not in {"pass", "fail", "needs-review"}:
         raise ValueError("status must be one of: pass, fail, needs-review")
+    evidence_path = task_dir(root, normalized_task_id) / "evidence.json"
+    evidence_generated_path = task_dir(root, normalized_task_id) / "evidence.generated.json"
+    evidence_payload = _load_task_json(evidence_path) or _load_task_json(
+        evidence_generated_path
+    )
+    check_summary = (
+        dict(evidence_payload.get("check_summary", {}))
+        if isinstance(evidence_payload, dict)
+        and isinstance(evidence_payload.get("check_summary"), dict)
+        else {}
+    )
+    artifact_summary = (
+        dict(evidence_payload.get("artifact_summary", {}))
+        if isinstance(evidence_payload, dict)
+        and isinstance(evidence_payload.get("artifact_summary"), dict)
+        else {}
+    )
+    evidence_status = (
+        str(evidence_payload.get("evidence_status", "unknown"))
+        if isinstance(evidence_payload, dict)
+        else "unknown"
+    )
+    blocking_details = _parse_blocking_items(status_value, blocking_items)
+    review_ready = (
+        status_value == "needs-review"
+        and not blocking_details
+        and evidence_status == "complete"
+    )
+    ready_for_apply = (
+        status_value == "pass"
+        and not blocking_details
+        and evidence_status == "complete"
+    )
+    if status_value == "fail":
+        decision = "failed"
+    elif ready_for_apply:
+        decision = "approved"
+    elif review_ready:
+        decision = "review-ready"
+    else:
+        decision = "blocked"
 
     payload = {
-        "version": 1,
+        "version": 2,
         "generated_by": "agentsgen",
         "generated_at": _utc_now_iso(),
         "task_id": normalized_task_id,
         "status": status_value,
         "summary": summary.strip() or "No verdict summary provided.",
         "blocking_items": [item.strip() for item in blocking_items if item.strip()],
+        "blocking_details": blocking_details,
+        "evidence_status": evidence_status,
+        "check_summary": check_summary,
+        "artifact_summary": artifact_summary,
+        "review_ready": review_ready,
+        "ready_for_apply": ready_for_apply,
+        "decision": decision,
+        "recommendation": _recommendation_for_verdict(
+            status=status_value,
+            evidence_status=evidence_status,
+            blocking_details=blocking_details,
+        ),
     }
     payload = _preserve_generated_timestamp(payload, output_path)
     result = _handle_generated_json_file(

@@ -1,9 +1,27 @@
 {
-  "version": 1,
+  "version": 2,
   "generated_by": "agentsgen",
-  "generated_at": "2026-03-25T17:03:26Z",
+  "generated_at": "2026-03-25T17:39:10Z",
   "task_id": "proof-loop-v0",
   "status": "needs-review",
-  "summary": "Proof-loop v0 is implemented; ecosystem review is still pending.",
-  "blocking_items": []
+  "summary": "Proof-loop v0.2 is implemented; human review is still required before pass.",
+  "blocking_items": [],
+  "blocking_details": [],
+  "evidence_status": "complete",
+  "check_summary": {
+    "total": 1,
+    "passed": 1,
+    "failed": 0,
+    "pending": 0,
+    "recorded": 0
+  },
+  "artifact_summary": {
+    "total": 2,
+    "present": 2,
+    "missing": 0
+  },
+  "review_ready": true,
+  "ready_for_apply": false,
+  "decision": "review-ready",
+  "recommendation": "Review the captured evidence bundle before marking the task as pass."
 }

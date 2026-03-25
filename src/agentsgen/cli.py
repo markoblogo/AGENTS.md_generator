@@ -1147,6 +1147,7 @@ def task_evidence(
         console.print(f"task_id: {payload['task_id']}")
         console.print(f"checks: {len(payload['checks'])}")
         console.print(f"changed_files: {len(payload['changed_files'])}")
+        console.print(f"evidence_status: {payload.get('evidence_status', 'unknown')}")
     if errors:
         raise typer.Exit(code=1)
 
@@ -1209,6 +1210,8 @@ def task_verdict(
         _print_results(results, print_diff=False)
         console.print(f"task_id: {payload['task_id']}")
         console.print(f"status: {payload['status']}")
+        console.print(f"decision: {payload.get('decision', 'unknown')}")
+        console.print(f"ready_for_apply: {payload.get('ready_for_apply', False)}")
         if payload["blocking_items"]:
             console.print(f"blocking_items: {len(payload['blocking_items'])}")
     if errors:
