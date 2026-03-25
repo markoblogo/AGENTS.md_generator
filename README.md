@@ -14,6 +14,7 @@ Landing: https://agentsmd.abvx.xyz/
 Manifest: https://github.com/markoblogo/AGENTS.md_generator/blob/main/docs/manifest.md
 Listed on ABVX Lab: https://lab.abvx.xyz/
 More tools like this: https://lab.abvx.xyz/
+Free guide (PDF): https://agentsmd.abvx.xyz/assets/llmo-quick-start.pdf
 
 Small, production-grade CLI to generate and safely update:
 New: README Snippets — extract canonical agent-facing README blocks with drift checks, alongside presets and status.
@@ -131,6 +132,7 @@ agentsgen pack . --site https://example.com
 Deep dives:
 - Action options: `docs/gh-action.md`
 - Pack bundle details: `docs/llmo-pack.md`
+- Free AI visibility guide (PDF): `docs/assets/llmo-quick-start.pdf`
 - Release process: `docs/release-checklist.md`
 
 ## Presets
