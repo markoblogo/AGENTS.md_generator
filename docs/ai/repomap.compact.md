@@ -4,17 +4,18 @@
 - Repo: `AGENTS.md Generator`
 - Detected stack: `python`
 - Budget: `~4000` tokens
-- Changed files detected: `5`
+- Changed files detected: `3`
+- Mode: `full`
 
 ## Priority files
-- `src/agentsgen/cli.py` — score 75; git-changed, inbound:9, outbound:12, symbols:26, size:35110
-- `src/agentsgen/understand.py` — score 51; git-changed, inbound:1, outbound:5, symbols:40, size:34836
+- `src/agentsgen/cli.py` — score 45; inbound:9, outbound:12, symbols:26, size:35850
+- `tests/test_understand_cli.py` — score 45; git-changed, outbound:1, symbols:8, size:11436
 - `src/agentsgen/actions.py` — score 42; inbound:8, outbound:12, symbols:45, size:42282
-- `tests/test_understand_cli.py` — score 40; git-changed, outbound:1, symbols:5, size:6749
-- `README.md` — score 36; git-changed, size:12880
 - `src/agentsgen/config.py` — score 34; inbound:6, outbound:3, symbols:8, size:8755
 - `src/agentsgen/model.py` — score 34; inbound:9, symbols:5, size:3187
+- `docs/ai/repomap.compact.md` — score 31; git-changed, size:1830
 - `src/agentsgen/analyze.py` — score 24; inbound:3, outbound:1, symbols:21, size:11539
+- `src/agentsgen/understand.py` — score 21; inbound:1, outbound:5, symbols:43, size:38814
 - `src/agentsgen/detect/__init__.py` — score 20; inbound:6, outbound:2
 - `src/agentsgen/stacks/base.py` — score 19; inbound:5, outbound:1, symbols:3
 - `src/agentsgen/markers.py` — score 18; inbound:2, outbound:1, symbols:8, size:4835
@@ -40,5 +41,4 @@
 - `src/`
 - `tests/`
 - `.agentsgen.json`
-<!-- AGENTSGEN:END section=repomap_compact -->
 <!-- AGENTSGEN:END section=repomap_compact -->

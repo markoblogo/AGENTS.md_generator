@@ -295,3 +295,46 @@ def test_understand_changed_mode_limits_to_changed_neighborhood(tmp_path: Path) 
         encoding="utf-8"
     )
     assert "Mode: `changed`" in compact
+
+
+def test_understand_updates_existing_compact_repomap_without_duplicate_end_marker(
+    tmp_path: Path,
+) -> None:
+    target = tmp_path / "repo"
+    _copy_fixture(FIXTURES / "python_uv", target)
+    (target / "src" / "app").mkdir(parents=True, exist_ok=True)
+    (target / "src" / "app" / "__init__.py").write_text("", encoding="utf-8")
+    (target / "src" / "app" / "core.py").write_text(
+        "from .utils import helper\n\n\ndef run():\n    return helper()\n",
+        encoding="utf-8",
+    )
+    (target / "src" / "app" / "utils.py").write_text(
+        "def helper():\n    return 'ok'\n",
+        encoding="utf-8",
+    )
+    compact_path = target / "docs" / "ai" / "repomap.compact.md"
+    compact_path.parent.mkdir(parents=True, exist_ok=True)
+    compact_path.write_text(
+        "\n".join(
+            [
+                "# Repo Map (Compact)",
+                "",
+                "<!-- AGENTSGEN:START section=repomap_compact -->",
+                "- stale",
+                "<!-- AGENTSGEN:END section=repomap_compact -->",
+                "",
+            ]
+        ),
+        encoding="utf-8",
+    )
+
+    res = runner.invoke(
+        app,
+        ["understand", str(target), "--format", "json", "--focus", "helper"],
+    )
+    assert res.exit_code == 0
+
+    compact = compact_path.read_text(encoding="utf-8")
+    assert compact.count("<!-- AGENTSGEN:START section=repomap_compact -->") == 1
+    assert compact.count("<!-- AGENTSGEN:END section=repomap_compact -->") == 1
+    assert "Focus: `helper`" in compact

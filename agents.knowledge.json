@@ -1,7 +1,7 @@
 {
   "version": 1,
   "repo_path": ".",
-  "generated_at": "2026-03-25T16:02:00Z",
+  "generated_at": "2026-03-25T16:03:11Z",
   "files": [
     {
       "path": ".agentsgen.json",
@@ -173,7 +173,7 @@
     },
     {
       "path": "docs/ai/repomap.compact.md",
-      "size": 1871,
+      "size": 1830,
       "language": "markdown",
       "symbols_count": 0
     },
@@ -1181,9 +1181,9 @@
     },
     {
       "path": "tests/test_understand_cli.py",
-      "size": 9911,
+      "size": 11436,
       "language": "python",
-      "symbols_count": 7
+      "symbols_count": 8
     }
   ],
   "edges": [
@@ -1631,11 +1631,8 @@
     }
   ],
   "changed_files": [
-    "README.md",
     "agents.knowledge.json",
-    "docs/ai/repomap.md",
-    "src/agentsgen/cli.py",
-    "src/agentsgen/understand.py",
+    "docs/ai/repomap.compact.md",
     "tests/test_understand_cli.py"
   ],
   "entrypoint_files": [],
@@ -1644,49 +1641,32 @@
     "focus_matches": [],
     "changed_only": false,
     "changed_matches": [
-      "README.md",
-      "src/agentsgen/cli.py",
-      "src/agentsgen/understand.py",
+      "docs/ai/repomap.compact.md",
       "tests/test_understand_cli.py"
     ]
   },
   "relevance": [
     {
       "path": "src/agentsgen/cli.py",
-      "score": 75,
+      "score": 45,
       "signals": [
-        "git-changed",
         "inbound:9",
         "outbound:12",
         "symbols:26",
         "size:35850"
       ],
       "distance_from_entrypoint": null,
-      "changed": true,
-      "entrypoint": false
-    },
-    {
-      "path": "src/agentsgen/understand.py",
-      "score": 51,
-      "signals": [
-        "git-changed",
-        "inbound:1",
-        "outbound:5",
-        "symbols:43",
-        "size:38814"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
+      "changed": false,
       "entrypoint": false
     },
     {
       "path": "tests/test_understand_cli.py",
-      "score": 44,
+      "score": 45,
       "signals": [
         "git-changed",
         "outbound:1",
-        "symbols:7",
-        "size:9911"
+        "symbols:8",
+        "size:11436"
       ],
       "distance_from_entrypoint": null,
       "changed": true,
@@ -1703,17 +1683,6 @@
       ],
       "distance_from_entrypoint": null,
       "changed": false,
-      "entrypoint": false
-    },
-    {
-      "path": "README.md",
-      "score": 36,
-      "signals": [
-        "git-changed",
-        "size:13106"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
       "entrypoint": false
     },
     {
@@ -1742,6 +1711,17 @@
       "entrypoint": false
     },
     {
+      "path": "docs/ai/repomap.compact.md",
+      "score": 31,
+      "signals": [
+        "git-changed",
+        "size:1830"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": true,
+      "entrypoint": false
+    },
+    {
       "path": "src/agentsgen/analyze.py",
       "score": 24,
       "signals": [
@@ -1749,6 +1729,19 @@
         "outbound:1",
         "symbols:21",
         "size:11539"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/understand.py",
+      "score": 21,
+      "signals": [
+        "inbound:1",
+        "outbound:5",
+        "symbols:43",
+        "size:38814"
       ],
       "distance_from_entrypoint": null,
       "changed": false,
