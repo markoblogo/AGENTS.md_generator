@@ -1,7 +1,7 @@
 {
   "version": 1,
   "repo_path": ".",
-  "generated_at": "2026-03-25T16:03:11Z",
+  "generated_at": "2026-03-25T16:26:16Z",
   "files": [
     {
       "path": ".agentsgen.json",
@@ -41,7 +41,7 @@
     },
     {
       "path": ".github/workflows/set.yml",
-      "size": 450,
+      "size": 488,
       "language": "yaml",
       "symbols_count": 0
     },
@@ -173,7 +173,7 @@
     },
     {
       "path": "docs/ai/repomap.compact.md",
-      "size": 1830,
+      "size": 1923,
       "language": "markdown",
       "symbols_count": 0
     },
@@ -1631,25 +1631,36 @@
     }
   ],
   "changed_files": [
+    ".github/workflows/set.yml",
     "agents.knowledge.json",
-    "docs/ai/repomap.compact.md",
-    "tests/test_understand_cli.py"
+    "docs/ai/repomap.compact.md"
   ],
   "entrypoint_files": [],
   "slice": {
-    "focus": null,
-    "focus_matches": [],
+    "focus": "understand",
+    "focus_matches": [
+      ".github/workflows/set.yml",
+      "CONTRIBUTING_AI.md",
+      "README.md",
+      "docs/ai/repomap.compact.md",
+      "drafts/abvx-ecosystem.md",
+      "drafts/tool-contract.md",
+      "src/agentsgen/cli.py",
+      "src/agentsgen/understand.py",
+      "tests/test_understand_cli.py"
+    ],
     "changed_only": false,
     "changed_matches": [
-      "docs/ai/repomap.compact.md",
-      "tests/test_understand_cli.py"
+      ".github/workflows/set.yml",
+      "docs/ai/repomap.compact.md"
     ]
   },
   "relevance": [
     {
       "path": "src/agentsgen/cli.py",
-      "score": 45,
+      "score": 85,
       "signals": [
+        "focus:understand",
         "inbound:9",
         "outbound:12",
         "symbols:26",
@@ -1660,22 +1671,60 @@
       "entrypoint": false
     },
     {
-      "path": "tests/test_understand_cli.py",
-      "score": 45,
+      "path": "docs/ai/repomap.compact.md",
+      "score": 71,
       "signals": [
+        "focus:understand",
         "git-changed",
-        "outbound:1",
-        "symbols:8",
-        "size:11436"
+        "size:1923"
       ],
       "distance_from_entrypoint": null,
       "changed": true,
       "entrypoint": false
     },
     {
-      "path": "src/agentsgen/actions.py",
-      "score": 42,
+      "path": ".github/workflows/set.yml",
+      "score": 70,
       "signals": [
+        "focus:understand",
+        "git-changed"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": true,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/understand.py",
+      "score": 61,
+      "signals": [
+        "focus:understand",
+        "inbound:1",
+        "outbound:5",
+        "symbols:43",
+        "size:38814"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "tests/test_understand_cli.py",
+      "score": 55,
+      "signals": [
+        "focus:understand",
+        "outbound:1",
+        "symbols:8",
+        "size:11436"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/actions.py",
+      "score": 54,
+      "signals": [
+        "focus-neighbor",
         "inbound:8",
         "outbound:12",
         "symbols:45",
@@ -1686,9 +1735,21 @@
       "entrypoint": false
     },
     {
-      "path": "src/agentsgen/config.py",
-      "score": 34,
+      "path": "README.md",
+      "score": 46,
       "signals": [
+        "focus:understand",
+        "size:13106"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/config.py",
+      "score": 46,
+      "signals": [
+        "focus-neighbor",
         "inbound:6",
         "outbound:3",
         "symbols:8",
@@ -1700,8 +1761,9 @@
     },
     {
       "path": "src/agentsgen/model.py",
-      "score": 34,
+      "score": 46,
       "signals": [
+        "focus-neighbor",
         "inbound:9",
         "symbols:5",
         "size:3187"
@@ -1711,20 +1773,42 @@
       "entrypoint": false
     },
     {
-      "path": "docs/ai/repomap.compact.md",
-      "score": 31,
+      "path": "drafts/abvx-ecosystem.md",
+      "score": 43,
       "signals": [
-        "git-changed",
-        "size:1830"
+        "focus:understand",
+        "size:5702"
       ],
       "distance_from_entrypoint": null,
-      "changed": true,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "drafts/tool-contract.md",
+      "score": 42,
+      "signals": [
+        "focus:understand",
+        "size:3923"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "CONTRIBUTING_AI.md",
+      "score": 40,
+      "signals": [
+        "focus:understand"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
       "entrypoint": false
     },
     {
       "path": "src/agentsgen/analyze.py",
-      "score": 24,
+      "score": 36,
       "signals": [
+        "focus-neighbor",
         "inbound:3",
         "outbound:1",
         "symbols:21",
@@ -1735,22 +1819,10 @@
       "entrypoint": false
     },
     {
-      "path": "src/agentsgen/understand.py",
-      "score": 21,
-      "signals": [
-        "inbound:1",
-        "outbound:5",
-        "symbols:43",
-        "size:38814"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": false,
-      "entrypoint": false
-    },
-    {
       "path": "src/agentsgen/detect/__init__.py",
-      "score": 20,
+      "score": 32,
       "signals": [
+        "focus-neighbor",
         "inbound:6",
         "outbound:2"
       ],
@@ -1760,8 +1832,9 @@
     },
     {
       "path": "src/agentsgen/stacks/base.py",
-      "score": 19,
+      "score": 31,
       "signals": [
+        "focus-neighbor",
         "inbound:5",
         "outbound:1",
         "symbols:3"
@@ -1772,8 +1845,9 @@
     },
     {
       "path": "src/agentsgen/markers.py",
-      "score": 18,
+      "score": 30,
       "signals": [
+        "focus-neighbor",
         "inbound:2",
         "outbound:1",
         "symbols:8",
@@ -1785,8 +1859,9 @@
     },
     {
       "path": "src/agentsgen/constants.py",
-      "score": 17,
+      "score": 29,
       "signals": [
+        "focus-neighbor",
         "inbound:5",
         "symbols:2"
       ],
@@ -1795,81 +1870,10 @@
       "entrypoint": false
     },
     {
-      "path": "src/agentsgen/generate.py",
-      "score": 17,
-      "signals": [
-        "inbound:1",
-        "outbound:2",
-        "symbols:7",
-        "size:8366"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": false,
-      "entrypoint": false
-    },
-    {
-      "path": "src/agentsgen/shared_sections.py",
-      "score": 17,
-      "signals": [
-        "inbound:1",
-        "symbols:8",
-        "size:12303"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": false,
-      "entrypoint": false
-    },
-    {
-      "path": ".github/actions/agentsgen-guard/guard.py",
-      "score": 15,
-      "signals": [
-        "outbound:1",
-        "symbols:15",
-        "size:13233"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": false,
-      "entrypoint": false
-    },
-    {
-      "path": "git-tweet/lib/services/github-ingestion.ts",
-      "score": 14,
-      "signals": [
-        "symbols:8",
-        "size:10191"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": false,
-      "entrypoint": false
-    },
-    {
-      "path": "scripts/scan_repos.py",
-      "score": 14,
-      "signals": [
-        "outbound:3",
-        "symbols:7",
-        "size:6827"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": false,
-      "entrypoint": false
-    },
-    {
-      "path": "src/agentsgen/site_pack.py",
-      "score": 14,
-      "signals": [
-        "inbound:1",
-        "symbols:10",
-        "size:4710"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": false,
-      "entrypoint": false
-    },
-    {
       "path": "tests/test_pack_cli.py",
-      "score": 14,
+      "score": 26,
       "signals": [
+        "focus-neighbor",
         "outbound:2",
         "symbols:11",
         "size:6463"
@@ -1879,13 +1883,25 @@
       "entrypoint": false
     },
     {
-      "path": "src/agentsgen/detect/detect.py",
-      "score": 13,
+      "path": "src/agentsgen/__init__.py",
+      "score": 24,
       "signals": [
+        "focus-neighbor",
+        "inbound:4"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/meta.py",
+      "score": 23,
+      "signals": [
+        "focus-neighbor",
         "inbound:1",
-        "outbound:5",
-        "symbols:2",
-        "size:6968"
+        "outbound:2",
+        "symbols:4",
+        "size:3394"
       ],
       "distance_from_entrypoint": null,
       "changed": false,

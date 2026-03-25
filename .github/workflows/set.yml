@@ -20,3 +20,4 @@ jobs:
           repomap: "true"
           snippets: "true"
           repomap_compact_budget: "4000"
+          repomap_focus: "understand"

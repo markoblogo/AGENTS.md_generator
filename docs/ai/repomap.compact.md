@@ -5,25 +5,26 @@
 - Detected stack: `python`
 - Budget: `~4000` tokens
 - Changed files detected: `3`
+- Focus: `understand`
 - Mode: `full`
 
 ## Priority files
-- `src/agentsgen/cli.py` — score 45; inbound:9, outbound:12, symbols:26, size:35850
-- `tests/test_understand_cli.py` — score 45; git-changed, outbound:1, symbols:8, size:11436
-- `src/agentsgen/actions.py` — score 42; inbound:8, outbound:12, symbols:45, size:42282
-- `src/agentsgen/config.py` — score 34; inbound:6, outbound:3, symbols:8, size:8755
-- `src/agentsgen/model.py` — score 34; inbound:9, symbols:5, size:3187
-- `docs/ai/repomap.compact.md` — score 31; git-changed, size:1830
-- `src/agentsgen/analyze.py` — score 24; inbound:3, outbound:1, symbols:21, size:11539
-- `src/agentsgen/understand.py` — score 21; inbound:1, outbound:5, symbols:43, size:38814
-- `src/agentsgen/detect/__init__.py` — score 20; inbound:6, outbound:2
-- `src/agentsgen/stacks/base.py` — score 19; inbound:5, outbound:1, symbols:3
-- `src/agentsgen/markers.py` — score 18; inbound:2, outbound:1, symbols:8, size:4835
-- `src/agentsgen/constants.py` — score 17; inbound:5, symbols:2
-- `src/agentsgen/generate.py` — score 17; inbound:1, outbound:2, symbols:7, size:8366
-- `src/agentsgen/shared_sections.py` — score 17; inbound:1, symbols:8, size:12303
-- `.github/actions/agentsgen-guard/guard.py` — score 15; outbound:1, symbols:15, size:13233
-- `git-tweet/lib/services/github-ingestion.ts` — score 14; symbols:8, size:10191
+- `src/agentsgen/cli.py` — score 85; focus:understand, inbound:9, outbound:12, symbols:26, size:35850
+- `docs/ai/repomap.compact.md` — score 71; focus:understand, git-changed, size:1923
+- `.github/workflows/set.yml` — score 70; focus:understand, git-changed
+- `src/agentsgen/understand.py` — score 61; focus:understand, inbound:1, outbound:5, symbols:43, size:38814
+- `tests/test_understand_cli.py` — score 55; focus:understand, outbound:1, symbols:8, size:11436
+- `src/agentsgen/actions.py` — score 54; focus-neighbor, inbound:8, outbound:12, symbols:45, size:42282
+- `README.md` — score 46; focus:understand, size:13106
+- `src/agentsgen/config.py` — score 46; focus-neighbor, inbound:6, outbound:3, symbols:8, size:8755
+- `src/agentsgen/model.py` — score 46; focus-neighbor, inbound:9, symbols:5, size:3187
+- `drafts/abvx-ecosystem.md` — score 43; focus:understand, size:5702
+- `drafts/tool-contract.md` — score 42; focus:understand, size:3923
+- `CONTRIBUTING_AI.md` — score 40; focus:understand
+- `src/agentsgen/analyze.py` — score 36; focus-neighbor, inbound:3, outbound:1, symbols:21, size:11539
+- `src/agentsgen/detect/__init__.py` — score 32; focus-neighbor, inbound:6, outbound:2
+- `src/agentsgen/stacks/base.py` — score 31; focus-neighbor, inbound:5, outbound:1, symbols:3
+- `src/agentsgen/markers.py` — score 30; focus-neighbor, inbound:2, outbound:1, symbols:8, size:4835
 
 ## Entrypoints
 - `format` -> `make format`
