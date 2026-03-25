@@ -1,6 +1,6 @@
 # AGENTS.md Generator (`agentsgen`)
 Repo Docs Guard
-AGENTS.md Generator — safe repo docs + PR Guard + LLMO Pack
+AGENTS.md Generator — safe repo docs + PR Guard + AI docs bundle
 A safe-by-default repo docs toolchain for coding agents.
 
 [![CI](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/ci.yml/badge.svg)](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/ci.yml)
@@ -113,7 +113,7 @@ agentsgen status .
 agentsgen snippets .
 ```
 
-6. Optional LLMO bundle:
+6. Optional AI docs bundle:
 
 ```sh
 agentsgen pack . --autodetect
@@ -130,7 +130,7 @@ agentsgen pack . --site https://example.com
 
 Deep dives:
 - Action options: `docs/gh-action.md`
-- LLMO pack details: `docs/llmo-pack.md`
+- Pack bundle details: `docs/llmo-pack.md`
 - Release process: `docs/release-checklist.md`
 
 ## Presets
@@ -248,9 +248,9 @@ agentsgen snippets .
 agentsgen snippets . --check
 ```
 
-## LLMO Pack
+## Pack bundle
 
-`agentsgen pack` generates an AI/LLMO-ready documentation bundle:
+`agentsgen pack` generates an AI-readable documentation bundle:
 
 - `llms.txt` (or `LLMS.md` with `--llms-format md`)
 - `agents.entrypoints.json` (machine-readable command manifest for agents/CI)
