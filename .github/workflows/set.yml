@@ -1,0 +1,21 @@
+name: SET
+
+on:
+  workflow_dispatch:
+
+jobs:
+  set:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: markoblogo/SET@main
+        with:
+          agentsgen: "true"
+          autodetect: "true"
+          path: "."
+          workflow_preset: "repo-docs"
+          init: "true"
+          pack: "true"
+          check: "true"
+          repomap: "true"
+          snippets: "true"
