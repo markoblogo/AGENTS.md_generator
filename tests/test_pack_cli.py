@@ -7,6 +7,7 @@ from pathlib import Path
 
 from typer.testing import CliRunner
 
+from agentsgen import actions as actions_module
 from agentsgen.cli import app
 
 
@@ -163,3 +164,60 @@ def test_pack_print_plan_text_includes_header(tmp_path: Path) -> None:
     assert "autodetect: on" in out
     assert "output_dir: docs/ai" in out
     assert "files_count: " in out
+
+
+def test_pack_site_writes_site_llms_manifest(monkeypatch, tmp_path: Path) -> None:
+    target = tmp_path / "repo"
+    _copy_fixture(FIXTURES / "python_uv", target)
+    monkeypatch.setattr(
+        actions_module,
+        "build_site_llms_manifest",
+        lambda site_url: (
+            "# Example site\n\n"
+            f"Source: {site_url}\n"
+            "## Representative pages\n"
+            "- /\n"
+        ),
+    )
+
+    res = runner.invoke(
+        app,
+        ["pack", str(target), "--site", "https://example.com", "--files", "llms"],
+    )
+    assert res.exit_code == 0
+
+    llms = (target / "llms.txt").read_text(encoding="utf-8")
+    assert "# Example site" in llms
+    assert "Source: https://example.com" in llms
+    assert "- /" in llms
+
+
+def test_pack_site_check_reports_drift_when_manifest_missing(
+    monkeypatch, tmp_path: Path
+) -> None:
+    target = tmp_path / "repo"
+    _copy_fixture(FIXTURES / "python_uv", target)
+    monkeypatch.setattr(
+        actions_module,
+        "build_site_llms_manifest",
+        lambda site_url: f"# Site manifest\n\nSource: {site_url}\n",
+    )
+
+    res = runner.invoke(
+        app,
+        [
+            "pack",
+            str(target),
+            "--site",
+            "https://example.com",
+            "--files",
+            "llms",
+            "--check",
+            "--format",
+            "json",
+        ],
+    )
+    assert res.exit_code == 1
+    payload = json.loads(res.stdout)
+    assert payload["status"] == "drift"
+    assert any(str(r.get("path", "")).endswith("llms.txt") for r in payload["results"])

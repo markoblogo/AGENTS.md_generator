@@ -38,6 +38,7 @@ from .shared_sections import render_all_shared
 from .templates import prompt_template_path, templates_base_dir
 from .render import render_template, load_template
 from .templates import pack_template_path
+from .site_pack import build_site_llms_manifest
 
 
 @dataclass(frozen=True)
@@ -754,6 +755,7 @@ def _pack_output_specs(
     cfg: ToolConfig,
     *,
     autodetect: bool,
+    site_url: str | None = None,
 ) -> list[tuple[Path, str, list[str]]]:
     llms_format = (cfg.pack.llms_format or DEFAULT_PACK_LLMS_FORMAT).strip().lower()
     if llms_format not in ("txt", "md"):
@@ -801,6 +803,9 @@ def _pack_output_specs(
 
     rendered: list[tuple[Path, str, list[str]]] = []
     for rel_path, tpl_name, required in filtered:
+        if site_url and rel_path.name.lower() in {"llms.txt", "llms.md"}:
+            rendered.append((rel_path, build_site_llms_manifest(site_url), required))
+            continue
         if tpl_name == "__generated_entrypoints_json__":
             rendered.append(
                 (
@@ -821,9 +826,10 @@ def pack_plan_specs(
     cfg: ToolConfig,
     *,
     autodetect: bool,
+    site_url: str | None = None,
 ) -> list[tuple[Path, list[str]]]:
     """Return deterministic pack output specs for plan rendering."""
-    specs = _pack_output_specs(target, cfg, autodetect=autodetect)
+    specs = _pack_output_specs(target, cfg, autodetect=autodetect, site_url=site_url)
     out = [(rel_path, list(required)) for rel_path, _content, required in specs]
     return sorted(out, key=lambda item: str(item[0]).replace("\\", "/"))
 
@@ -833,6 +839,7 @@ def apply_pack(
     cfg: ToolConfig,
     *,
     autodetect: bool,
+    site_url: str | None = None,
     dry_run: bool,
     print_diff: bool,
 ) -> list[FileResult]:
@@ -848,7 +855,7 @@ def apply_pack(
         ]
 
     for rel_path, content, required in _pack_output_specs(
-        target, cfg, autodetect=autodetect
+        target, cfg, autodetect=autodetect, site_url=site_url
     ):
         out_path = (target / rel_path).resolve()
         target_resolved = target.resolve()

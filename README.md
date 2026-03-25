@@ -120,6 +120,12 @@ agentsgen pack . --autodetect
 cat agents.entrypoints.json
 ```
 
+For public website mode:
+
+```sh
+agentsgen pack . --site https://example.com
+```
+
 7. Profit: fewer agent mistakes, safer updates, and better indexable repo context.
 
 Deep dives:
@@ -222,6 +228,7 @@ It is lighter and more diagnostic than `agentsgen check`, which focuses on repo 
 - `agentsgen check . --all` enables both pack and snippets checks
 - `agentsgen check . --format json` emits a stable machine-readable payload
 - `agentsgen check . --ci` prints a compact CI summary without path-heavy log noise
+- `agentsgen pack . --site https://example.com` generates a site-oriented `llms.txt` from the homepage and sitemap
 
 ## README Snippets (mini-validator)
 

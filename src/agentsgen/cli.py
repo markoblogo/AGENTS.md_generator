@@ -433,6 +433,11 @@ def pack(
         "--files",
         help="Comma-separated allowlist (e.g. llms,how-to-run.md,SECURITY_AI.md)",
     ),
+    site: str | None = typer.Option(
+        None,
+        "--site",
+        help="Generate llms.txt from a public site URL instead of repo heuristics",
+    ),
     check: bool = typer.Option(
         False,
         "--check",
@@ -478,6 +483,7 @@ def pack(
         target,
         cfg,
         autodetect=autodetect,
+        site_url=site,
         dry_run=dry_run_effective,
         print_diff=(print_diff and not print_plan),
     )
@@ -502,7 +508,10 @@ def pack(
 
     if print_plan:
         plan = _pack_plan_payload(
-            target=target, cfg=cfg, autodetect=autodetect, results=results
+            target=target,
+            cfg=cfg,
+            autodetect=autodetect,
+            results=results,
         )
         if format == "json":
             sys.stdout.write(
