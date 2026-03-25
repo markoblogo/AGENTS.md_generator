@@ -208,6 +208,7 @@ agentsgen check . --all --ci
 agentsgen check . --format json
 agentsgen status .
 agentsgen detect . --format json
+agentsgen analyze https://example.com
 agentsgen init --defaults --stack python --dry-run --print-diff
 pipx uninstall agentsgen
 ```
@@ -271,6 +272,9 @@ Artifacts are written with the same safe update policy used elsewhere in `agents
 
 What it is not:
 - not a traffic/SEO promise, and not a full developer handbook replacement.
+
+`agentsgen analyze` audits a public URL and writes `docs/ai/llmo-score.json`.
+It uses deterministic heuristics by default and can add an optional advisory AI review with `--use-ai`.
 
 ### Why it matters
 - **Less agent babysitting.** Repos with `AGENTS.md` + `docs/ai/` reduce back-and-forth and "where is X?" questions for Codex/Claude.

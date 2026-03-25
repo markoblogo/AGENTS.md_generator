@@ -26,6 +26,7 @@ from .detect import detect_repo
 from .model import ProjectInfo
 from .stacks import adapter_for
 from .stacks.base import project_name_from_dir
+from .analyze import apply_analysis
 from .understand import apply_understanding
 
 from . import __version__
@@ -858,6 +859,68 @@ def understand(
             f"edges={payload['summary']['edges_count']} "
             f"entrypoints={payload['summary']['entrypoints_count']}"
         )
+
+    if errors:
+        raise typer.Exit(code=1)
+
+
+@app.command()
+def analyze(
+    url: str = typer.Argument(..., help="Website URL to analyze"),
+    target: Path = typer.Argument(
+        Path("."), exists=True, file_okay=False, dir_okay=True
+    ),
+    format: str = typer.Option("text", "--format", help="Output format: text|json"),
+    output: Path | None = typer.Option(
+        None,
+        "--output",
+        help="Output JSON file (default docs/ai/llmo-score.json)",
+    ),
+    use_ai: bool = typer.Option(
+        False,
+        "--use-ai",
+        help="Add an advisory OpenAI review (requires OPENAI_API_KEY)",
+    ),
+    dry_run: bool = typer.Option(False, "--dry-run", help="Do not write files"),
+):
+    """Analyze a public website for AI discoverability using deterministic heuristics."""
+    output_path = _resolve_repo_file(target, output, "docs/ai/llmo-score.json")
+
+    try:
+        results, payload = apply_analysis(
+            target,
+            url=url,
+            output_path=output_path,
+            use_ai=use_ai,
+            dry_run=dry_run,
+        )
+    except ValueError as exc:
+        err_console.print(f"ERROR: {exc}")
+        raise typer.Exit(code=1)
+
+    errors = [row for row in results if row.action == "error"]
+    response = {
+        "version": 1,
+        "command": "analyze",
+        "path": str(target),
+        "output": str(output_path),
+        "result": payload,
+        "results": _results_payload(results),
+    }
+
+    if format == "json":
+        sys.stdout.write(json.dumps(response, indent=2) + "\n")
+    else:
+        _print_results(results, print_diff=False)
+        console.print(f"url: {payload['url']}")
+        console.print(f"score: {payload['score']}/100 ({payload['visibility']})")
+        console.print(f"summary: {payload['summary']}")
+        if payload["recommendations"]:
+            console.print("recommendations:")
+            for item in payload["recommendations"][:5]:
+                console.print(f"- {item}")
+        if use_ai and payload.get("ai_review"):
+            console.print("ai_review: included")
 
     if errors:
         raise typer.Exit(code=1)
