@@ -1,7 +1,7 @@
 {
   "version": 1,
   "repo_path": ".",
-  "generated_at": "2026-03-24T13:08:45Z",
+  "generated_at": "2026-03-25T15:47:24Z",
   "files": [
     {
       "path": ".agentsgen.json",
@@ -40,6 +40,12 @@
       "symbols_count": 0
     },
     {
+      "path": ".github/workflows/set.yml",
+      "size": 409,
+      "language": "yaml",
+      "symbols_count": 0
+    },
+    {
       "path": "AGENTS.md",
       "size": 7559,
       "language": "markdown",
@@ -59,7 +65,7 @@
     },
     {
       "path": "README.md",
-      "size": 11500,
+      "size": 12880,
       "language": "markdown",
       "symbols_count": 0
     },
@@ -204,6 +210,24 @@
     {
       "path": "docs/status.md",
       "size": 1022,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "drafts/abvx-ecosystem.md",
+      "size": 5702,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "drafts/repo-config-schema.md",
+      "size": 3706,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "drafts/tool-contract.md",
+      "size": 3923,
       "language": "markdown",
       "symbols_count": 0
     },
@@ -695,15 +719,21 @@
     },
     {
       "path": "src/agentsgen/actions.py",
-      "size": 41916,
+      "size": 42282,
       "language": "python",
       "symbols_count": 45
     },
     {
-      "path": "src/agentsgen/cli.py",
-      "size": 30479,
+      "path": "src/agentsgen/analyze.py",
+      "size": 11539,
       "language": "python",
-      "symbols_count": 24
+      "symbols_count": 21
+    },
+    {
+      "path": "src/agentsgen/cli.py",
+      "size": 35110,
+      "language": "python",
+      "symbols_count": 26
     },
     {
       "path": "src/agentsgen/config.py",
@@ -784,6 +814,12 @@
       "symbols_count": 8
     },
     {
+      "path": "src/agentsgen/meta.py",
+      "size": 3394,
+      "language": "python",
+      "symbols_count": 4
+    },
+    {
       "path": "src/agentsgen/model.py",
       "size": 3187,
       "language": "python",
@@ -850,6 +886,12 @@
       "symbols_count": 8
     },
     {
+      "path": "src/agentsgen/site_pack.py",
+      "size": 4710,
+      "language": "python",
+      "symbols_count": 10
+    },
+    {
       "path": "src/agentsgen/stacks/__init__.py",
       "size": 511,
       "language": "python",
@@ -893,9 +935,9 @@
     },
     {
       "path": "src/agentsgen/understand.py",
-      "size": 25437,
+      "size": 34836,
       "language": "python",
-      "symbols_count": 32
+      "symbols_count": 40
     },
     {
       "path": "tests/__init__.py",
@@ -1078,6 +1120,12 @@
       "symbols_count": 0
     },
     {
+      "path": "tests/test_analyze_cli.py",
+      "size": 3268,
+      "language": "python",
+      "symbols_count": 4
+    },
+    {
       "path": "tests/test_check_aggregate_cli.py",
       "size": 3080,
       "language": "python",
@@ -1090,6 +1138,12 @@
       "symbols_count": 6
     },
     {
+      "path": "tests/test_meta_cli.py",
+      "size": 3514,
+      "language": "python",
+      "symbols_count": 4
+    },
+    {
       "path": "tests/test_pack.py",
       "size": 4530,
       "language": "python",
@@ -1097,9 +1151,9 @@
     },
     {
       "path": "tests/test_pack_cli.py",
-      "size": 4840,
+      "size": 6463,
       "language": "python",
-      "symbols_count": 9
+      "symbols_count": 11
     },
     {
       "path": "tests/test_presets_cli.py",
@@ -1121,9 +1175,9 @@
     },
     {
       "path": "tests/test_understand_cli.py",
-      "size": 4442,
+      "size": 6749,
       "language": "python",
-      "symbols_count": 4
+      "symbols_count": 5
     }
   ],
   "edges": [
@@ -1219,7 +1273,17 @@
     },
     {
       "from": "src/agentsgen/actions.py",
+      "to": "src/agentsgen/site_pack.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/actions.py",
       "to": "src/agentsgen/templates.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/analyze.py",
+      "to": "src/agentsgen/actions.py",
       "kind": "import"
     },
     {
@@ -1230,6 +1294,11 @@
     {
       "from": "src/agentsgen/cli.py",
       "to": "src/agentsgen/actions.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli.py",
+      "to": "src/agentsgen/analyze.py",
       "kind": "import"
     },
     {
@@ -1245,6 +1314,11 @@
     {
       "from": "src/agentsgen/cli.py",
       "to": "src/agentsgen/detect/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli.py",
+      "to": "src/agentsgen/meta.py",
       "kind": "import"
     },
     {
@@ -1353,6 +1427,16 @@
       "kind": "import"
     },
     {
+      "from": "src/agentsgen/meta.py",
+      "to": "src/agentsgen/actions.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/meta.py",
+      "to": "src/agentsgen/analyze.py",
+      "kind": "import"
+    },
+    {
       "from": "src/agentsgen/presets/__init__.py",
       "to": "src/agentsgen/config.py",
       "kind": "import"
@@ -1438,6 +1522,16 @@
       "kind": "import"
     },
     {
+      "from": "tests/test_analyze_cli.py",
+      "to": "src/agentsgen/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_analyze_cli.py",
+      "to": "src/agentsgen/cli.py",
+      "kind": "import"
+    },
+    {
       "from": "tests/test_check_aggregate_cli.py",
       "to": "src/agentsgen/cli.py",
       "kind": "import"
@@ -1445,6 +1539,21 @@
     {
       "from": "tests/test_detect.py",
       "to": "src/agentsgen/detect/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_meta_cli.py",
+      "to": "src/agentsgen/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_meta_cli.py",
+      "to": "src/agentsgen/analyze.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_meta_cli.py",
+      "to": "src/agentsgen/cli.py",
       "kind": "import"
     },
     {
@@ -1460,6 +1569,11 @@
     {
       "from": "tests/test_pack.py",
       "to": "src/agentsgen/detect/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_pack_cli.py",
+      "to": "src/agentsgen/__init__.py",
       "kind": "import"
     },
     {
@@ -1508,6 +1622,263 @@
       "label": "test",
       "command": "make test",
       "source": "manual"
+    }
+  ],
+  "changed_files": [
+    "README.md",
+    "docs/index.html",
+    "src/agentsgen/cli.py",
+    "src/agentsgen/understand.py",
+    "tests/test_understand_cli.py"
+  ],
+  "entrypoint_files": [],
+  "relevance": [
+    {
+      "path": "src/agentsgen/cli.py",
+      "score": 75,
+      "signals": [
+        "git-changed",
+        "inbound:9",
+        "outbound:12",
+        "symbols:26",
+        "size:35110"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": true,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/understand.py",
+      "score": 51,
+      "signals": [
+        "git-changed",
+        "inbound:1",
+        "outbound:5",
+        "symbols:40",
+        "size:34836"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": true,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/actions.py",
+      "score": 42,
+      "signals": [
+        "inbound:8",
+        "outbound:12",
+        "symbols:45",
+        "size:42282"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "tests/test_understand_cli.py",
+      "score": 40,
+      "signals": [
+        "git-changed",
+        "outbound:1",
+        "symbols:5",
+        "size:6749"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": true,
+      "entrypoint": false
+    },
+    {
+      "path": "README.md",
+      "score": 36,
+      "signals": [
+        "git-changed",
+        "size:12880"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": true,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/config.py",
+      "score": 34,
+      "signals": [
+        "inbound:6",
+        "outbound:3",
+        "symbols:8",
+        "size:8755"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/model.py",
+      "score": 34,
+      "signals": [
+        "inbound:9",
+        "symbols:5",
+        "size:3187"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/analyze.py",
+      "score": 24,
+      "signals": [
+        "inbound:3",
+        "outbound:1",
+        "symbols:21",
+        "size:11539"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/detect/__init__.py",
+      "score": 20,
+      "signals": [
+        "inbound:6",
+        "outbound:2"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/stacks/base.py",
+      "score": 19,
+      "signals": [
+        "inbound:5",
+        "outbound:1",
+        "symbols:3"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/markers.py",
+      "score": 18,
+      "signals": [
+        "inbound:2",
+        "outbound:1",
+        "symbols:8",
+        "size:4835"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/constants.py",
+      "score": 17,
+      "signals": [
+        "inbound:5",
+        "symbols:2"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/generate.py",
+      "score": 17,
+      "signals": [
+        "inbound:1",
+        "outbound:2",
+        "symbols:7",
+        "size:8366"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/shared_sections.py",
+      "score": 17,
+      "signals": [
+        "inbound:1",
+        "symbols:8",
+        "size:12303"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": ".github/actions/agentsgen-guard/guard.py",
+      "score": 15,
+      "signals": [
+        "outbound:1",
+        "symbols:15",
+        "size:13233"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "git-tweet/lib/services/github-ingestion.ts",
+      "score": 14,
+      "signals": [
+        "symbols:8",
+        "size:10191"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "scripts/scan_repos.py",
+      "score": 14,
+      "signals": [
+        "outbound:3",
+        "symbols:7",
+        "size:6827"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/site_pack.py",
+      "score": 14,
+      "signals": [
+        "inbound:1",
+        "symbols:10",
+        "size:4710"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "tests/test_pack_cli.py",
+      "score": 14,
+      "signals": [
+        "outbound:2",
+        "symbols:11",
+        "size:6463"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/detect/detect.py",
+      "score": 13,
+      "signals": [
+        "inbound:1",
+        "outbound:5",
+        "symbols:2",
+        "size:6968"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
     }
   ]
 }

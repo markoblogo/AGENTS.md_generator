@@ -1,9 +1,8 @@
 %% AGENTSGEN:START section=graph
 graph TD
-  n__github_actions_agentsgen_guard_guard_py[".github/actions/agentsgen-guard/guard.py"]
-  n_git_tweet_lib_services_github_ingestion_ts["git-tweet/lib/services/github-ingestion.ts"]
   n_src_agentsgen___init___py["src/agentsgen/__init__.py"]
   n_src_agentsgen_actions_py["src/agentsgen/actions.py"]
+  n_src_agentsgen_analyze_py["src/agentsgen/analyze.py"]
   n_src_agentsgen_cli_py["src/agentsgen/cli.py"]
   n_src_agentsgen_config_py["src/agentsgen/config.py"]
   n_src_agentsgen_constants_py["src/agentsgen/constants.py"]
@@ -18,19 +17,19 @@ graph TD
   n_src_agentsgen_generate_py["src/agentsgen/generate.py"]
   n_src_agentsgen_io_utils_py["src/agentsgen/io_utils.py"]
   n_src_agentsgen_markers_py["src/agentsgen/markers.py"]
+  n_src_agentsgen_meta_py["src/agentsgen/meta.py"]
   n_src_agentsgen_model_py["src/agentsgen/model.py"]
   n_src_agentsgen_normalize_py["src/agentsgen/normalize.py"]
   n_src_agentsgen_presets___init___py["src/agentsgen/presets/__init__.py"]
   n_src_agentsgen_render_py["src/agentsgen/render.py"]
   n_src_agentsgen_shared_sections_py["src/agentsgen/shared_sections.py"]
-  n_src_agentsgen_stacks___init___py["src/agentsgen/stacks/__init__.py"]
+  n_src_agentsgen_site_pack_py["src/agentsgen/site_pack.py"]
   n_src_agentsgen_stacks_base_py["src/agentsgen/stacks/base.py"]
   n_src_agentsgen_stacks_node_py["src/agentsgen/stacks/node.py"]
   n_src_agentsgen_stacks_python_py["src/agentsgen/stacks/python.py"]
   n_src_agentsgen_stacks_static_py["src/agentsgen/stacks/static.py"]
   n_src_agentsgen_templates_py["src/agentsgen/templates.py"]
   n_src_agentsgen_understand_py["src/agentsgen/understand.py"]
-  n__github_actions_agentsgen_guard_guard_py --> n_src_agentsgen_actions_py
   n_src_agentsgen_actions_py --> n_src_agentsgen_config_py
   n_src_agentsgen_actions_py --> n_src_agentsgen_constants_py
   n_src_agentsgen_actions_py --> n_src_agentsgen_detect___init___py
@@ -41,15 +40,18 @@ graph TD
   n_src_agentsgen_actions_py --> n_src_agentsgen_normalize_py
   n_src_agentsgen_actions_py --> n_src_agentsgen_render_py
   n_src_agentsgen_actions_py --> n_src_agentsgen_shared_sections_py
+  n_src_agentsgen_actions_py --> n_src_agentsgen_site_pack_py
   n_src_agentsgen_actions_py --> n_src_agentsgen_templates_py
+  n_src_agentsgen_analyze_py --> n_src_agentsgen_actions_py
   n_src_agentsgen_cli_py --> n_src_agentsgen___init___py
   n_src_agentsgen_cli_py --> n_src_agentsgen_actions_py
+  n_src_agentsgen_cli_py --> n_src_agentsgen_analyze_py
   n_src_agentsgen_cli_py --> n_src_agentsgen_config_py
   n_src_agentsgen_cli_py --> n_src_agentsgen_constants_py
   n_src_agentsgen_cli_py --> n_src_agentsgen_detect___init___py
+  n_src_agentsgen_cli_py --> n_src_agentsgen_meta_py
   n_src_agentsgen_cli_py --> n_src_agentsgen_model_py
   n_src_agentsgen_cli_py --> n_src_agentsgen_presets___init___py
-  n_src_agentsgen_cli_py --> n_src_agentsgen_stacks___init___py
   n_src_agentsgen_cli_py --> n_src_agentsgen_stacks_base_py
   n_src_agentsgen_cli_py --> n_src_agentsgen_understand_py
   n_src_agentsgen_config_py --> n_src_agentsgen_constants_py
@@ -68,11 +70,9 @@ graph TD
   n_src_agentsgen_generate_py --> n_src_agentsgen_model_py
   n_src_agentsgen_generate_py --> n_src_agentsgen_render_py
   n_src_agentsgen_markers_py --> n_src_agentsgen_constants_py
+  n_src_agentsgen_meta_py --> n_src_agentsgen_actions_py
+  n_src_agentsgen_meta_py --> n_src_agentsgen_analyze_py
   n_src_agentsgen_presets___init___py --> n_src_agentsgen_config_py
-  n_src_agentsgen_stacks___init___py --> n_src_agentsgen_stacks_base_py
-  n_src_agentsgen_stacks___init___py --> n_src_agentsgen_stacks_node_py
-  n_src_agentsgen_stacks___init___py --> n_src_agentsgen_stacks_python_py
-  n_src_agentsgen_stacks___init___py --> n_src_agentsgen_stacks_static_py
   n_src_agentsgen_stacks_base_py --> n_src_agentsgen_model_py
   n_src_agentsgen_stacks_node_py --> n_src_agentsgen_model_py
   n_src_agentsgen_stacks_node_py --> n_src_agentsgen_stacks_base_py

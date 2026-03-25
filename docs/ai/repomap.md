@@ -7,6 +7,7 @@
 ## Top-level structure
 - `demo/`
 - `docs/`
+- `drafts/`
 - `git-tweet/`
 - `recipes/`
 - `RELEASES/`
@@ -24,7 +25,6 @@
 - `pyproject.toml`
 - `README.md`
 - `README_SNIPPETS.generated.md`
-- `README_SNIPPETS.md`
 
 ## Entrypoints guess
 - `format`: `make format` (manual)
@@ -32,9 +32,9 @@
 - `test`: `make test` (manual)
 
 ## Key modules
-- `src/agentsgen/actions.py` — 41916 B, 45 symbols, inbound imports: 6
-- `src/agentsgen/cli.py` — 30479 B, 24 symbols, inbound imports: 7
-- `src/agentsgen/understand.py` — 25437 B, 32 symbols, inbound imports: 1
+- `src/agentsgen/actions.py` — 42282 B, 45 symbols, inbound imports: 8
+- `src/agentsgen/cli.py` — 35110 B, 26 symbols, inbound imports: 9
+- `src/agentsgen/understand.py` — 34836 B, 40 symbols, inbound imports: 1
 - `.github/actions/agentsgen-guard/guard.py` — 13233 B, 15 symbols, inbound imports: 0
 - `src/agentsgen/shared_sections.py` — 12303 B, 8 symbols, inbound imports: 1
 - `src/agentsgen/model.py` — 3187 B, 5 symbols, inbound imports: 9

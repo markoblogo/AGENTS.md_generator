@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import subprocess
 import shutil
 from pathlib import Path
 
@@ -39,9 +40,11 @@ def test_understand_python_uv_writes_artifacts_and_schema(tmp_path: Path) -> Non
 
     knowledge_path = target / "agents.knowledge.json"
     repomap_path = target / "docs" / "ai" / "repomap.md"
+    compact_path = target / "docs" / "ai" / "repomap.compact.md"
     graph_path = target / "docs" / "ai" / "graph.mmd"
     assert knowledge_path.is_file()
     assert repomap_path.is_file()
+    assert compact_path.is_file()
     assert graph_path.is_file()
 
     knowledge = json.loads(knowledge_path.read_text(encoding="utf-8"))
@@ -50,6 +53,7 @@ def test_understand_python_uv_writes_artifacts_and_schema(tmp_path: Path) -> Non
     assert isinstance(knowledge["files"], list) and knowledge["files"]
     assert any(row["path"].endswith("src/app/core.py") for row in knowledge["files"])
     assert any(edge["kind"] == "import" for edge in knowledge["edges"])
+    assert "relevance" in knowledge and knowledge["relevance"]
 
 
 def test_understand_node_only_writes_expected_artifacts(tmp_path: Path) -> None:
@@ -83,6 +87,7 @@ def test_understand_node_only_writes_expected_artifacts(tmp_path: Path) -> None:
     assert after - before == {
         "agents.knowledge.json",
         "docs/ai/repomap.md",
+        "docs/ai/repomap.compact.md",
         "docs/ai/graph.mmd",
     }
 
@@ -91,6 +96,10 @@ def test_understand_node_only_writes_expected_artifacts(tmp_path: Path) -> None:
     )
     assert any(item["label"] == "dev" for item in knowledge["entrypoints"])
     assert any(item["source"] == "package.json" for item in knowledge["entrypoints"])
+    compact = (target / "docs" / "ai" / "repomap.compact.md").read_text(
+        encoding="utf-8"
+    )
+    assert "Priority files" in compact
 
 
 def test_understand_mixed_monorepo_emits_compact_outputs(tmp_path: Path) -> None:
@@ -128,3 +137,67 @@ def test_understand_mixed_monorepo_emits_compact_outputs(tmp_path: Path) -> None
     )
     assert knowledge["version"] == 1
     assert len(knowledge["edges"]) <= 30
+
+
+def test_understand_prioritizes_git_changed_files_in_relevance(tmp_path: Path) -> None:
+    target = tmp_path / "repo"
+    _copy_fixture(FIXTURES / "python_uv", target)
+    (target / "src" / "app").mkdir(parents=True, exist_ok=True)
+    (target / "src" / "app" / "__init__.py").write_text("", encoding="utf-8")
+    (target / "src" / "app" / "core.py").write_text(
+        "from .utils import helper\n\n\ndef run():\n    return helper()\n",
+        encoding="utf-8",
+    )
+    (target / "src" / "app" / "utils.py").write_text(
+        "def helper():\n    return 'ok'\n",
+        encoding="utf-8",
+    )
+
+    subprocess.run(["git", "init"], cwd=target, check=True, capture_output=True)
+    subprocess.run(
+        ["git", "config", "user.email", "tests@example.com"],
+        cwd=target,
+        check=True,
+        capture_output=True,
+    )
+    subprocess.run(
+        ["git", "config", "user.name", "Tests"],
+        cwd=target,
+        check=True,
+        capture_output=True,
+    )
+    subprocess.run(["git", "add", "."], cwd=target, check=True, capture_output=True)
+    subprocess.run(
+        ["git", "commit", "-m", "init"],
+        cwd=target,
+        check=True,
+        capture_output=True,
+    )
+
+    changed_file = target / "src" / "app" / "utils.py"
+    changed_file.write_text(
+        "def helper():\n    return 'changed'\n",
+        encoding="utf-8",
+    )
+
+    res = runner.invoke(
+        app,
+        [
+            "understand",
+            str(target),
+            "--format",
+            "json",
+            "--compact-budget",
+            "512",
+        ],
+    )
+    assert res.exit_code == 0
+
+    payload = json.loads(res.stdout)
+    assert "src/app/utils.py" in payload["changed_files"]
+    assert payload["relevance"][0]["path"] == "src/app/utils.py"
+
+    compact = (target / "docs" / "ai" / "repomap.compact.md").read_text(
+        encoding="utf-8"
+    )
+    assert "git-changed" in compact

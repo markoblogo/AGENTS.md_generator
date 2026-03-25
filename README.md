@@ -275,11 +275,20 @@ What it is:
 
 ## Repo understanding artifacts
 
-`agentsgen understand` generates a deterministic repo map, import graph, and machine-readable knowledge file.
+`agentsgen understand` generates a deterministic repo map, compact token-budgeted map, import graph, and machine-readable knowledge file.
 It uses local heuristics only: no network calls, no LLM calls.
 Artifacts are written with the same safe update policy used elsewhere in `agentsgen`.
 
 `agentsgen understand .`
+`agentsgen understand . --compact-budget 4000`
+
+Artifacts:
+- `docs/ai/repomap.md`
+- `docs/ai/repomap.compact.md`
+- `docs/ai/graph.mmd`
+- `agents.knowledge.json`
+
+`repomap.compact.md` ranks files by import graph signals, entrypoint proximity, and local git changes, then trims the output to an approximate token budget for agent context handoff.
 
 What it is not:
 - not a traffic/SEO promise, and not a full developer handbook replacement.

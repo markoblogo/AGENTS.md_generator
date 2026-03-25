@@ -840,13 +840,23 @@ def understand(
     output_dir: str = typer.Option(
         "docs/ai", "--output-dir", help="Where to write repomap.md and graph.mmd"
     ),
+    compact_budget: int = typer.Option(
+        4000,
+        "--compact-budget",
+        min=256,
+        help="Approximate token budget for repomap.compact.md",
+    ),
 ):
     """Generate deterministic repo understanding artifacts."""
     out_dir = Path(output_dir)
     if not out_dir.is_absolute():
         out_dir = target / out_dir
 
-    results, payload = apply_understanding(target, output_dir=out_dir)
+    results, payload = apply_understanding(
+        target,
+        output_dir=out_dir,
+        compact_budget_tokens=compact_budget,
+    )
     errors = [row for row in results if row.action == "error"]
     response = {
         "version": 1,
@@ -855,6 +865,8 @@ def understand(
         "output_dir": str(out_dir),
         "stack": payload["stack"],
         "summary": payload["summary"],
+        "changed_files": payload["knowledge"].get("changed_files", []),
+        "relevance": payload["knowledge"].get("relevance", []),
         "results": _results_payload(results),
     }
 
@@ -867,7 +879,9 @@ def understand(
             "summary: "
             f"files={payload['summary']['files_count']} "
             f"edges={payload['summary']['edges_count']} "
-            f"entrypoints={payload['summary']['entrypoints_count']}"
+            f"entrypoints={payload['summary']['entrypoints_count']} "
+            f"changed={payload['summary']['changed_files_count']} "
+            f"compact_budget={payload['summary']['compact_budget_tokens']}"
         )
 
     if errors:

@@ -3,6 +3,7 @@ from __future__ import annotations
 import ast
 import json
 import re
+import subprocess
 from collections import Counter
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -116,6 +117,16 @@ class RepoEntrypoint:
     source: str
 
 
+@dataclass(frozen=True)
+class RelevanceItem:
+    path: str
+    score: int
+    signals: tuple[str, ...]
+    distance_from_entrypoint: int | None
+    changed: bool
+    entrypoint: bool
+
+
 def _utc_now_iso() -> str:
     return (
         datetime.now(timezone.utc)
@@ -167,6 +178,12 @@ def _count_symbols(path: Path, text: str) -> int:
     if path.suffix.lower() in {".js", ".jsx", ".ts", ".tsx", ".mjs", ".cjs"}:
         return len(_JS_SYMBOL_RE.findall(text))
     return 0
+
+
+def _estimate_tokens(text: str) -> int:
+    if not text:
+        return 0
+    return max(1, (len(text) + 3) // 4)
 
 
 def _source_roots(root: Path, detected_paths: dict[str, object]) -> list[Path]:
@@ -476,6 +493,171 @@ def _detect_entrypoints(root: Path) -> list[RepoEntrypoint]:
     return _entrypoints_from_pyproject(root)
 
 
+def _git_changed_files(root: Path) -> list[str]:
+    if not (root / ".git").exists():
+        return []
+    try:
+        proc = subprocess.run(
+            [
+                "git",
+                "-C",
+                str(root),
+                "status",
+                "--short",
+                "--untracked-files=all",
+            ],
+            check=False,
+            capture_output=True,
+            text=True,
+        )
+    except OSError:
+        return []
+    if proc.returncode != 0:
+        return []
+
+    rows: set[str] = set()
+    for line in proc.stdout.splitlines():
+        if len(line) < 4:
+            continue
+        raw = line[3:].strip()
+        if " -> " in raw:
+            raw = raw.split(" -> ", 1)[1].strip()
+        if raw:
+            rows.add(raw.replace("\\", "/"))
+    return sorted(rows)
+
+
+def _extract_command_file_hints(command: str, root: Path) -> list[str]:
+    hints: list[str] = []
+    for token in re.findall(r"[A-Za-z0-9_./-]+\.[A-Za-z0-9]+", command):
+        candidate = (root / token).resolve()
+        if candidate.exists() and candidate.is_file():
+            try:
+                hints.append(_rel(candidate, root))
+            except ValueError:
+                continue
+    return sorted(set(hints))
+
+
+def _default_entry_file_hints(file_infos: list[RepoFileInfo]) -> list[str]:
+    preferred = (
+        "src/main.py",
+        "src/app.py",
+        "src/cli.py",
+        "main.py",
+        "app.py",
+        "cli.py",
+        "src/index.ts",
+        "src/index.tsx",
+        "src/main.ts",
+        "src/main.tsx",
+        "src/index.js",
+        "src/index.jsx",
+        "index.ts",
+        "index.tsx",
+        "index.js",
+        "index.jsx",
+        "server.js",
+        "server.ts",
+    )
+    available = {item.path for item in file_infos}
+    return [path for path in preferred if path in available]
+
+
+def _entrypoint_files(
+    *,
+    root: Path,
+    file_infos: list[RepoFileInfo],
+    entrypoints: list[RepoEntrypoint],
+) -> list[str]:
+    available = {item.path for item in file_infos}
+    rows: list[str] = []
+    for entry in entrypoints:
+        rows.extend(_extract_command_file_hints(entry.command, root))
+    if rows:
+        return sorted({path for path in rows if path in available})
+    return _default_entry_file_hints(file_infos)
+
+
+def _rank_relevance(
+    *,
+    root: Path,
+    file_infos: list[RepoFileInfo],
+    edges: list[ImportEdge],
+    entrypoints: list[RepoEntrypoint],
+) -> tuple[list[RelevanceItem], list[str], list[str]]:
+    changed_files = _git_changed_files(root)
+    changed_set = set(changed_files)
+    entrypoint_files = _entrypoint_files(
+        root=root, file_infos=file_infos, entrypoints=entrypoints
+    )
+    entrypoint_set = set(entrypoint_files)
+    inbound = Counter(edge.to_path for edge in edges)
+    outbound = Counter(edge.from_path for edge in edges)
+    adjacency: dict[str, list[str]] = {}
+    for edge in edges:
+        adjacency.setdefault(edge.from_path, []).append(edge.to_path)
+
+    distances: dict[str, int] = {}
+    queue = list(entrypoint_files)
+    for path in queue:
+        distances[path] = 0
+    index = 0
+    while index < len(queue):
+        current = queue[index]
+        index += 1
+        for neighbor in adjacency.get(current, []):
+            if neighbor in distances:
+                continue
+            distances[neighbor] = distances[current] + 1
+            queue.append(neighbor)
+
+    rows: list[RelevanceItem] = []
+    for item in file_infos:
+        score = 0
+        signals: list[str] = []
+        if item.path in changed_set:
+            score += 30
+            signals.append("git-changed")
+        if item.path in entrypoint_set:
+            score += 24
+            signals.append("entrypoint")
+        distance = distances.get(item.path)
+        if distance is not None:
+            proximity_boost = {0: 18, 1: 12, 2: 8, 3: 4}.get(distance, 2)
+            score += proximity_boost
+            signals.append(f"hop-{distance}")
+        inbound_count = inbound.get(item.path, 0)
+        if inbound_count:
+            score += inbound_count * 3
+            signals.append(f"inbound:{inbound_count}")
+        outbound_count = outbound.get(item.path, 0)
+        if outbound_count:
+            score += min(outbound_count, 4)
+            signals.append(f"outbound:{outbound_count}")
+        if item.symbols_count:
+            score += min(item.symbols_count, 8)
+            signals.append(f"symbols:{item.symbols_count}")
+        if item.size:
+            size_points = min(item.size // 1500, 6)
+            if size_points:
+                score += size_points
+                signals.append(f"size:{item.size}")
+        rows.append(
+            RelevanceItem(
+                path=item.path,
+                score=score,
+                signals=tuple(signals),
+                distance_from_entrypoint=distance,
+                changed=item.path in changed_set,
+                entrypoint=item.path in entrypoint_set,
+            )
+        )
+
+    ranked = sorted(rows, key=lambda item: (-item.score, item.path))
+    return ranked, changed_files, entrypoint_files
+
+
 def _key_modules(file_infos: list[RepoFileInfo], edges: list[ImportEdge]) -> list[str]:
     code_files = [
         item
@@ -552,6 +734,70 @@ def _render_repomap(
         lines.append("- (no code modules detected)")
     lines.extend(["<!-- AGENTSGEN:END section=repomap -->", ""])
     return "\n".join(lines)
+
+
+def _render_compact_repomap(
+    *,
+    root: Path,
+    stack: str,
+    budget_tokens: int,
+    top_level: list[str],
+    entrypoints: list[RepoEntrypoint],
+    ranked: list[RelevanceItem],
+    changed_files: list[str],
+) -> str:
+    lines = [
+        "# Repo Map (Compact)",
+        "",
+        "<!-- AGENTSGEN:START section=repomap_compact -->",
+        f"- Repo: `{root.resolve().name}`",
+        f"- Detected stack: `{stack}`",
+        f"- Budget: `~{budget_tokens}` tokens",
+        f"- Changed files detected: `{len(changed_files)}`",
+        "",
+        "## Priority files",
+    ]
+    for item in ranked:
+        if item.score <= 0:
+            continue
+        signals = ", ".join(item.signals[:5]) or "baseline"
+        lines.append(f"- `{item.path}` — score {item.score}; {signals}")
+    if lines[-1] == "## Priority files":
+        lines.append("- (no ranked code files detected)")
+
+    lines.extend(["", "## Entrypoints"])
+    if entrypoints:
+        for entry in entrypoints[:6]:
+            lines.append(f"- `{entry.label}` -> `{entry.command}`")
+    else:
+        lines.append("- (no conservative entrypoints detected)")
+
+    lines.extend(["", "## Top-level"])
+    if top_level:
+        for item in top_level[:10]:
+            lines.append(f"- {item}")
+    else:
+        lines.append("- (no top-level files detected)")
+
+    lines.append("<!-- AGENTSGEN:END section=repomap_compact -->")
+    lines.append("")
+
+    budget = max(budget_tokens, 256)
+    kept: list[str] = []
+    used_tokens = 0
+    for line in lines:
+        estimated = _estimate_tokens(line + "\n")
+        if kept and used_tokens + estimated > budget:
+            break
+        kept.append(line)
+        used_tokens += estimated
+    if kept and kept[-1] != "<!-- AGENTSGEN:END section=repomap_compact -->":
+        if "<!-- AGENTSGEN:END section=repomap_compact -->" in lines:
+            if kept and kept[-1] == "":
+                kept.pop()
+            kept.append("<!-- AGENTSGEN:END section=repomap_compact -->")
+            kept.append("")
+    return "\n".join(kept)
 
 
 def _select_graph_nodes(
@@ -720,7 +966,12 @@ def _repo_files(root: Path, output_dir: Path) -> list[Path]:
     return sorted(files, key=lambda item: _rel(item, root))
 
 
-def build_understanding_payload(root: Path, *, output_dir: Path) -> dict[str, object]:
+def build_understanding_payload(
+    root: Path,
+    *,
+    output_dir: Path,
+    compact_budget_tokens: int = 4000,
+) -> dict[str, object]:
     det = detect_repo(root)
     stack = (
         str(det.project.get("primary_stack", "") or "unknown").strip().lower()
@@ -732,6 +983,12 @@ def build_understanding_payload(root: Path, *, output_dir: Path) -> dict[str, ob
     top_level = _top_level_structure(root)
     entrypoints = _detect_entrypoints(root)
     key_modules = _key_modules(file_infos, edges)
+    ranked, changed_files, entrypoint_files = _rank_relevance(
+        root=root,
+        file_infos=file_infos,
+        edges=edges,
+        entrypoints=entrypoints,
+    )
     graph_nodes, graph_edges = _select_graph_nodes(file_infos, edges, stack=stack)
 
     repomap = _render_repomap(
@@ -740,6 +997,15 @@ def build_understanding_payload(root: Path, *, output_dir: Path) -> dict[str, ob
         top_level=top_level,
         entrypoints=entrypoints,
         key_modules=key_modules,
+    )
+    compact_repomap = _render_compact_repomap(
+        root=root,
+        stack=stack,
+        budget_tokens=compact_budget_tokens,
+        top_level=top_level,
+        entrypoints=entrypoints,
+        ranked=ranked[:16],
+        changed_files=changed_files,
     )
     graph = _render_graph_mmd(graph_nodes, graph_edges)
     knowledge = {
@@ -763,6 +1029,19 @@ def build_understanding_payload(root: Path, *, output_dir: Path) -> dict[str, ob
             {"label": item.label, "command": item.command, "source": item.source}
             for item in entrypoints
         ],
+        "changed_files": changed_files,
+        "entrypoint_files": entrypoint_files,
+        "relevance": [
+            {
+                "path": item.path,
+                "score": item.score,
+                "signals": list(item.signals),
+                "distance_from_entrypoint": item.distance_from_entrypoint,
+                "changed": item.changed,
+                "entrypoint": item.entrypoint,
+            }
+            for item in ranked[:20]
+        ],
     }
     existing_knowledge = root / "agents.knowledge.json"
     if existing_knowledge.exists():
@@ -785,12 +1064,15 @@ def build_understanding_payload(root: Path, *, output_dir: Path) -> dict[str, ob
     return {
         "stack": stack,
         "repomap": repomap,
+        "compact_repomap": compact_repomap,
         "graph": graph,
         "knowledge": knowledge,
         "summary": {
             "files_count": len(file_infos),
             "edges_count": len(edges),
             "entrypoints_count": len(entrypoints),
+            "changed_files_count": len(changed_files),
+            "compact_budget_tokens": compact_budget_tokens,
         },
     }
 
@@ -799,10 +1081,16 @@ def apply_understanding(
     root: Path,
     *,
     output_dir: Path,
+    compact_budget_tokens: int = 4000,
     dry_run: bool = False,
 ) -> tuple[list[FileResult], dict[str, object]]:
-    payload = build_understanding_payload(root, output_dir=output_dir)
+    payload = build_understanding_payload(
+        root,
+        output_dir=output_dir,
+        compact_budget_tokens=compact_budget_tokens,
+    )
     repomap_path = output_dir / "repomap.md"
+    compact_repomap_path = output_dir / "repomap.compact.md"
     graph_path = output_dir / "graph.mmd"
     knowledge_path = root / "agents.knowledge.json"
     results = [
@@ -810,6 +1098,13 @@ def apply_understanding(
             repomap_path,
             payload["repomap"],
             required=["repomap"],
+            dry_run=dry_run,
+            print_diff=False,
+        ),
+        _handle_file(
+            compact_repomap_path,
+            payload["compact_repomap"],
+            required=["repomap_compact"],
             dry_run=dry_run,
             print_diff=False,
         ),
