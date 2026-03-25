@@ -44,7 +44,7 @@
     "url": "https://agentsmd.abvx.xyz/",
     "codeRepository": "https://github.com/markoblogo/AGENTS.md_generator",
     "license": "https://github.com/markoblogo/AGENTS.md_generator/blob/main/LICENSE",
-    "softwareVersion": "0.1.2",
+    "softwareVersion": "0.1.0",
     "author": {
       "@type": "Person",
       "name": "Marko Blogo"
@@ -156,13 +156,13 @@
           <div class="hero-left">
             <div class="hero-title-wrap">
               <div class="hero-sticker-cluster hero-stickers" aria-label="Release highlights">
-                <div class="sticker sticker-burst" data-ascii-sticker="NEW RELEASE v0.1.4">
-                  <span class="sticker-kicker">NEW RELEASE</span>
-                  <span class="sticker-big">v0.1.4</span>
+                <div class="sticker sticker-burst" data-ascii-sticker="CURRENT BUILD">
+                  <span class="sticker-kicker">CURRENT</span>
+                  <span class="sticker-big">BUILD</span>
                 </div>
 
-                <div class="sticker sticker-ribbon" data-ascii-sticker="NOW: Snippets + Presets">
-                  NOW: Snippets + Presets
+                <div class="sticker sticker-ribbon" data-ascii-sticker="NOW: Repomap + Site AI">
+                  NOW: Repomap + Site AI
                 </div>
 
                 <div class="sticker sticker-micro" data-ascii-sticker="SAFE UPDATES">
@@ -173,7 +173,7 @@
             </div>
             <p class="lede">
               Generate and maintain <strong>AGENTS.md</strong> / <strong>RUNBOOK.md</strong> with marker-only safe updates.
-              Add presets, read-only status, and canonical README snippets with deterministic drift checks.
+              Add presets, read-only status, canonical README snippets, deterministic repomap artifacts, and optional public-site AI workflows.
             </p>
 
             <div class="hero-cta" role="group" aria-label="Primary actions">
@@ -202,7 +202,7 @@
               <div class="lab-banner-copy">
                 <div class="lab-banner-kicker">ABVX tools hub</div>
                 <div class="lab-banner-title">ABVX Lab</div>
-                <p>All ABVX tools for AI-assisted coding live in ABVX Lab: agentsgen, git-tweet, AsciiTheme, and more.</p>
+                <p>All ABVX tools for AI-assisted coding live in ABVX Lab: agentsgen, SET, git-tweet, AsciiTheme, and more.</p>
               </div>
               <a class="btn primary" href="https://lab.abvx.xyz/">Open Lab</a>
             </aside>
@@ -322,7 +322,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.2
+      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@main
         with:
           comment: "true"
           files: |

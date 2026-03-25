@@ -1,7 +1,5 @@
 # AGENTS.md Generator (`agentsgen`)
-Repo Docs Guard
-AGENTS.md Generator — safe repo docs + PR Guard + AI docs bundle
-A safe-by-default repo docs toolchain for coding agents.
+Safe repo docs + PR Guard + AI docs bundle for coding agents.
 
 [![CI](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/ci.yml/badge.svg)](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/ci.yml)
 [![Pages](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/pages/pages-build-deployment)
@@ -9,14 +7,16 @@ A safe-by-default repo docs toolchain for coding agents.
 [![License](https://img.shields.io/github/license/markoblogo/AGENTS.md_generator)](LICENSE)
 [![Python](https://img.shields.io/badge/python-%3E%3D3.11-blue)](pyproject.toml)
 
-![AGENTS.md Generator landing page (v0.1.2)](docs/assets/agentsmd-landing-v0.1.2.png)
+![AGENTS.md Generator landing page](docs/assets/agentsmd-landing-v0.1.2.png)
 Landing: https://agentsmd.abvx.xyz/
 Manifest: https://github.com/markoblogo/AGENTS.md_generator/blob/main/docs/manifest.md
 Listed on ABVX Lab: https://lab.abvx.xyz/
+Orchestrated with SET: https://github.com/markoblogo/SET
 More tools like this: https://lab.abvx.xyz/
 
+`agentsgen` is the repo-intelligence runtime in the ABVX ecosystem: use it directly in a repo, or call it through `SET` when you want one thin orchestration entrypoint.
+
 Small, production-grade CLI to generate and safely update:
-New: README Snippets — extract canonical agent-facing README blocks with drift checks, alongside presets and status.
 
 - `AGENTS.md` (strict repo contract for coding agents)
 - `RUNBOOK.md` (human-friendly command/run cheatsheet)
@@ -93,7 +93,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.2
+      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@main
         with:
           comment: "true"
           files: "AGENTS.md,RUNBOOK.md"
@@ -126,7 +126,7 @@ For public website mode:
 agentsgen pack . --site https://example.com
 ```
 
-Companion guide for site-oriented AI visibility work: `docs/assets/llmo-quick-start.pdf`
+Companion guide for site-oriented AI visibility work: `docs/assets/llmo-quick-start.pdf`. For multi-repo orchestration, use `SET`: `https://github.com/markoblogo/SET`
 
 7. Profit: fewer agent mistakes, safer updates, and better indexable repo context.
 
@@ -176,7 +176,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.2
+      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@main
         with:
           path: "."
           files: "AGENTS.md,RUNBOOK.md"
@@ -309,7 +309,7 @@ See full details: `docs/llmo-pack.md`.
 - Auto-detect is intentionally conservative (file heuristics only; no “smart” analysis).
 - Monorepos may detect as `mixed`, and commands can be empty on purpose (better empty than wrong).
 - If a Makefile exists, Makefile targets win over other toolchains by design.
-- Templates are minimal for v0.1.x: `python`, `node`, `static`.
+- Templates are still intentionally minimal: `python`, `node`, `static`.
 - The tool only owns content inside `AGENTSGEN` marker sections; keep custom content outside markers.
 
 ## Landing Page (GitHub Pages)
