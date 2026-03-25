@@ -209,6 +209,7 @@ agentsgen check . --format json
 agentsgen status .
 agentsgen detect . --format json
 agentsgen analyze https://example.com
+agentsgen meta https://example.com
 agentsgen init --defaults --stack python --dry-run --print-diff
 pipx uninstall agentsgen
 ```
@@ -275,6 +276,8 @@ What it is not:
 
 `agentsgen analyze` audits a public URL and writes `docs/ai/llmo-score.json`.
 It uses deterministic heuristics by default and can add an optional advisory AI review with `--use-ai`.
+
+`agentsgen meta` generates `docs/ai/llmo-meta.json` with AI-oriented title, description, keywords, and short description suggestions for a public URL.
 
 ### Why it matters
 - **Less agent babysitting.** Repos with `AGENTS.md` + `docs/ai/` reduce back-and-forth and "where is X?" questions for Codex/Claude.

@@ -234,28 +234,33 @@ def _summary(score: int, visibility: str) -> str:
     return f"Weak AI discoverability signals detected ({score}/100)."
 
 
-def _openai_review(url: str, html: str, text_content: str) -> dict[str, Any]:
+def _parse_json_object(raw_text: str) -> dict[str, Any]:
+    try:
+        parsed = json.loads(raw_text)
+    except json.JSONDecodeError:
+        match = re.search(r"\{[\s\S]*\}", raw_text)
+        if not match:
+            raise ValueError("OpenAI response did not contain valid JSON.")
+        parsed = json.loads(match.group(0))
+    if not isinstance(parsed, dict):
+        raise ValueError("OpenAI response must be a JSON object.")
+    return parsed
+
+
+def _openai_chat_json(
+    *, system_prompt: str, user_prompt: str, temperature: float = 0.0
+) -> dict[str, Any]:
     api_key = os.getenv("OPENAI_API_KEY", "").strip()
     if not api_key:
-        raise ValueError("OPENAI_API_KEY is required when using --use-ai.")
+        raise ValueError("OPENAI_API_KEY is required for this command.")
 
-    prompt = (
-        "Analyze this website for AI discoverability. "
-        "Return only valid JSON with keys summary, reasons, recommendations. "
-        "Keep reasons and recommendations short.\n\n"
-        f"URL: {url}\n"
-        f"Content sample:\n{text_content[:2000]}"
-    )
     payload = {
         "model": "gpt-4o-mini",
         "messages": [
-            {
-                "role": "system",
-                "content": "You are an expert reviewer. Return only valid JSON.",
-            },
-            {"role": "user", "content": prompt},
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": user_prompt},
         ],
-        "temperature": 0,
+        "temperature": temperature,
     }
     request = Request(
         "https://api.openai.com/v1/chat/completions",
@@ -269,13 +274,23 @@ def _openai_review(url: str, html: str, text_content: str) -> dict[str, Any]:
     with urlopen(request, timeout=30) as response:
         raw = json.loads(response.read().decode("utf-8"))
     content = raw["choices"][0]["message"]["content"]
-    try:
-        return json.loads(content)
-    except json.JSONDecodeError:
-        match = re.search(r"\{[\s\S]*\}", content)
-        if not match:
-            raise ValueError("OpenAI response did not contain valid JSON.")
-        return json.loads(match.group(0))
+    return _parse_json_object(content)
+
+
+def _openai_review(url: str, html: str, text_content: str) -> dict[str, Any]:
+    del html
+    prompt = (
+        "Analyze this website for AI discoverability. "
+        "Return only valid JSON with keys summary, reasons, recommendations. "
+        "Keep reasons and recommendations short.\n\n"
+        f"URL: {url}\n"
+        f"Content sample:\n{text_content[:2000]}"
+    )
+    return _openai_chat_json(
+        system_prompt="You are an expert reviewer. Return only valid JSON.",
+        user_prompt=prompt,
+        temperature=0.0,
+    )
 
 
 def _stable_payload_without_timestamp(payload: dict[str, Any]) -> str:
