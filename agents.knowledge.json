@@ -1,7 +1,7 @@
 {
   "version": 1,
   "repo_path": ".",
-  "generated_at": "2026-03-25T15:47:24Z",
+  "generated_at": "2026-03-25T15:55:51Z",
   "files": [
     {
       "path": ".agentsgen.json",
@@ -41,7 +41,7 @@
     },
     {
       "path": ".github/workflows/set.yml",
-      "size": 409,
+      "size": 450,
       "language": "yaml",
       "symbols_count": 0
     },
@@ -168,6 +168,12 @@
     {
       "path": "docs/ai/how-to-test.md",
       "size": 462,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ai/repomap.compact.md",
+      "size": 1871,
       "language": "markdown",
       "symbols_count": 0
     },
@@ -1625,40 +1631,22 @@
     }
   ],
   "changed_files": [
-    "README.md",
-    "docs/index.html",
-    "src/agentsgen/cli.py",
-    "src/agentsgen/understand.py",
-    "tests/test_understand_cli.py"
+    ".github/workflows/set.yml",
+    "agents.knowledge.json"
   ],
   "entrypoint_files": [],
   "relevance": [
     {
       "path": "src/agentsgen/cli.py",
-      "score": 75,
+      "score": 45,
       "signals": [
-        "git-changed",
         "inbound:9",
         "outbound:12",
         "symbols:26",
         "size:35110"
       ],
       "distance_from_entrypoint": null,
-      "changed": true,
-      "entrypoint": false
-    },
-    {
-      "path": "src/agentsgen/understand.py",
-      "score": 51,
-      "signals": [
-        "git-changed",
-        "inbound:1",
-        "outbound:5",
-        "symbols:40",
-        "size:34836"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
+      "changed": false,
       "entrypoint": false
     },
     {
@@ -1672,30 +1660,6 @@
       ],
       "distance_from_entrypoint": null,
       "changed": false,
-      "entrypoint": false
-    },
-    {
-      "path": "tests/test_understand_cli.py",
-      "score": 40,
-      "signals": [
-        "git-changed",
-        "outbound:1",
-        "symbols:5",
-        "size:6749"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
-      "entrypoint": false
-    },
-    {
-      "path": "README.md",
-      "score": 36,
-      "signals": [
-        "git-changed",
-        "size:12880"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
       "entrypoint": false
     },
     {
@@ -1724,6 +1688,16 @@
       "entrypoint": false
     },
     {
+      "path": ".github/workflows/set.yml",
+      "score": 30,
+      "signals": [
+        "git-changed"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": true,
+      "entrypoint": false
+    },
+    {
       "path": "src/agentsgen/analyze.py",
       "score": 24,
       "signals": [
@@ -1731,6 +1705,19 @@
         "outbound:1",
         "symbols:21",
         "size:11539"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/understand.py",
+      "score": 21,
+      "signals": [
+        "inbound:1",
+        "outbound:5",
+        "symbols:40",
+        "size:34836"
       ],
       "distance_from_entrypoint": null,
       "changed": false,
@@ -1875,6 +1862,17 @@
         "outbound:5",
         "symbols:2",
         "size:6968"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "git-tweet/lib/services/bluesky-client.ts",
+      "score": 12,
+      "signals": [
+        "symbols:9",
+        "size:7029"
       ],
       "distance_from_entrypoint": null,
       "changed": false,

@@ -19,3 +19,4 @@ jobs:
           check: "true"
           repomap: "true"
           snippets: "true"
+          repomap_compact_budget: "4000"
