@@ -201,3 +201,97 @@ def test_understand_prioritizes_git_changed_files_in_relevance(tmp_path: Path) -
         encoding="utf-8"
     )
     assert "git-changed" in compact
+
+
+def test_understand_focus_limits_relevance_slice(tmp_path: Path) -> None:
+    target = tmp_path / "repo"
+    _copy_fixture(FIXTURES / "python_uv", target)
+    (target / "src" / "app").mkdir(parents=True, exist_ok=True)
+    (target / "src" / "app" / "__init__.py").write_text("", encoding="utf-8")
+    (target / "src" / "app" / "core.py").write_text(
+        "from .utils import helper\n\n\ndef run():\n    return helper()\n",
+        encoding="utf-8",
+    )
+    (target / "src" / "app" / "utils.py").write_text(
+        "def helper():\n    return 'ok'\n",
+        encoding="utf-8",
+    )
+
+    res = runner.invoke(
+        app,
+        ["understand", str(target), "--format", "json", "--focus", "helper"],
+    )
+    assert res.exit_code == 0
+
+    payload = json.loads(res.stdout)
+    assert payload["slice"]["focus"] == "helper"
+    assert payload["relevance"]
+    assert payload["relevance"][0]["path"] in {"src/app/core.py", "src/app/utils.py"}
+    compact = (target / "docs" / "ai" / "repomap.compact.md").read_text(
+        encoding="utf-8"
+    )
+    assert "Focus: `helper`" in compact
+    assert "focus:helper" in compact
+
+
+def test_understand_changed_mode_limits_to_changed_neighborhood(tmp_path: Path) -> None:
+    target = tmp_path / "repo"
+    _copy_fixture(FIXTURES / "python_uv", target)
+    (target / "src" / "app").mkdir(parents=True, exist_ok=True)
+    (target / "src" / "app" / "__init__.py").write_text("", encoding="utf-8")
+    (target / "src" / "app" / "core.py").write_text(
+        "from .utils import helper\n\n\ndef run():\n    return helper()\n",
+        encoding="utf-8",
+    )
+    (target / "src" / "app" / "utils.py").write_text(
+        "def helper():\n    return 'ok'\n",
+        encoding="utf-8",
+    )
+    (target / "src" / "app" / "other.py").write_text(
+        "def noop():\n    return None\n",
+        encoding="utf-8",
+    )
+
+    subprocess.run(["git", "init"], cwd=target, check=True, capture_output=True)
+    subprocess.run(
+        ["git", "config", "user.email", "tests@example.com"],
+        cwd=target,
+        check=True,
+        capture_output=True,
+    )
+    subprocess.run(
+        ["git", "config", "user.name", "Tests"],
+        cwd=target,
+        check=True,
+        capture_output=True,
+    )
+    subprocess.run(["git", "add", "."], cwd=target, check=True, capture_output=True)
+    subprocess.run(
+        ["git", "commit", "-m", "init"],
+        cwd=target,
+        check=True,
+        capture_output=True,
+    )
+
+    (target / "src" / "app" / "utils.py").write_text(
+        "def helper():\n    return 'changed'\n",
+        encoding="utf-8",
+    )
+
+    res = runner.invoke(
+        app,
+        ["understand", str(target), "--format", "json", "--changed"],
+    )
+    assert res.exit_code == 0
+
+    payload = json.loads(res.stdout)
+    assert payload["slice"]["changed_only"] is True
+    paths = [item["path"] for item in payload["relevance"]]
+    assert "src/app/utils.py" in paths
+    assert "src/app/core.py" in paths
+    assert "src/app/other.py" not in paths
+
+    compact = (target / "docs" / "ai" / "repomap.compact.md").read_text(
+        encoding="utf-8"
+    )
+    assert "Mode: `changed`" in compact

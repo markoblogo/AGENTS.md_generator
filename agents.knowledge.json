@@ -1,7 +1,7 @@
 {
   "version": 1,
   "repo_path": ".",
-  "generated_at": "2026-03-25T15:55:51Z",
+  "generated_at": "2026-03-25T16:02:00Z",
   "files": [
     {
       "path": ".agentsgen.json",
@@ -65,7 +65,7 @@
     },
     {
       "path": "README.md",
-      "size": 12880,
+      "size": 13106,
       "language": "markdown",
       "symbols_count": 0
     },
@@ -737,7 +737,7 @@
     },
     {
       "path": "src/agentsgen/cli.py",
-      "size": 35110,
+      "size": 35850,
       "language": "python",
       "symbols_count": 26
     },
@@ -941,9 +941,9 @@
     },
     {
       "path": "src/agentsgen/understand.py",
-      "size": 34836,
+      "size": 38814,
       "language": "python",
-      "symbols_count": 40
+      "symbols_count": 43
     },
     {
       "path": "tests/__init__.py",
@@ -1181,9 +1181,9 @@
     },
     {
       "path": "tests/test_understand_cli.py",
-      "size": 6749,
+      "size": 9911,
       "language": "python",
-      "symbols_count": 5
+      "symbols_count": 7
     }
   ],
   "edges": [
@@ -1631,22 +1631,65 @@
     }
   ],
   "changed_files": [
-    ".github/workflows/set.yml",
-    "agents.knowledge.json"
+    "README.md",
+    "agents.knowledge.json",
+    "docs/ai/repomap.md",
+    "src/agentsgen/cli.py",
+    "src/agentsgen/understand.py",
+    "tests/test_understand_cli.py"
   ],
   "entrypoint_files": [],
+  "slice": {
+    "focus": null,
+    "focus_matches": [],
+    "changed_only": false,
+    "changed_matches": [
+      "README.md",
+      "src/agentsgen/cli.py",
+      "src/agentsgen/understand.py",
+      "tests/test_understand_cli.py"
+    ]
+  },
   "relevance": [
     {
       "path": "src/agentsgen/cli.py",
-      "score": 45,
+      "score": 75,
       "signals": [
+        "git-changed",
         "inbound:9",
         "outbound:12",
         "symbols:26",
-        "size:35110"
+        "size:35850"
       ],
       "distance_from_entrypoint": null,
-      "changed": false,
+      "changed": true,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/understand.py",
+      "score": 51,
+      "signals": [
+        "git-changed",
+        "inbound:1",
+        "outbound:5",
+        "symbols:43",
+        "size:38814"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": true,
+      "entrypoint": false
+    },
+    {
+      "path": "tests/test_understand_cli.py",
+      "score": 44,
+      "signals": [
+        "git-changed",
+        "outbound:1",
+        "symbols:7",
+        "size:9911"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": true,
       "entrypoint": false
     },
     {
@@ -1660,6 +1703,17 @@
       ],
       "distance_from_entrypoint": null,
       "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "README.md",
+      "score": 36,
+      "signals": [
+        "git-changed",
+        "size:13106"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": true,
       "entrypoint": false
     },
     {
@@ -1688,16 +1742,6 @@
       "entrypoint": false
     },
     {
-      "path": ".github/workflows/set.yml",
-      "score": 30,
-      "signals": [
-        "git-changed"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
-      "entrypoint": false
-    },
-    {
       "path": "src/agentsgen/analyze.py",
       "score": 24,
       "signals": [
@@ -1705,19 +1749,6 @@
         "outbound:1",
         "symbols:21",
         "size:11539"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": false,
-      "entrypoint": false
-    },
-    {
-      "path": "src/agentsgen/understand.py",
-      "score": 21,
-      "signals": [
-        "inbound:1",
-        "outbound:5",
-        "symbols:40",
-        "size:34836"
       ],
       "distance_from_entrypoint": null,
       "changed": false,
@@ -1862,17 +1893,6 @@
         "outbound:5",
         "symbols:2",
         "size:6968"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": false,
-      "entrypoint": false
-    },
-    {
-      "path": "git-tweet/lib/services/bluesky-client.ts",
-      "score": 12,
-      "signals": [
-        "symbols:9",
-        "size:7029"
       ],
       "distance_from_entrypoint": null,
       "changed": false,

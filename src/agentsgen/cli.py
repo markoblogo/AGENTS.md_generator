@@ -846,6 +846,16 @@ def understand(
         min=256,
         help="Approximate token budget for repomap.compact.md",
     ),
+    focus: str | None = typer.Option(
+        None,
+        "--focus",
+        help="Limit compact repomap and relevance ranking to files matching this path/content query and nearby imports",
+    ),
+    changed: bool = typer.Option(
+        False,
+        "--changed",
+        help="Limit compact repomap and relevance ranking to changed files and nearby imports",
+    ),
 ):
     """Generate deterministic repo understanding artifacts."""
     out_dir = Path(output_dir)
@@ -856,6 +866,8 @@ def understand(
         target,
         output_dir=out_dir,
         compact_budget_tokens=compact_budget,
+        focus=focus,
+        changed_only=changed,
     )
     errors = [row for row in results if row.action == "error"]
     response = {
@@ -866,6 +878,7 @@ def understand(
         "stack": payload["stack"],
         "summary": payload["summary"],
         "changed_files": payload["knowledge"].get("changed_files", []),
+        "slice": payload["knowledge"].get("slice", {}),
         "relevance": payload["knowledge"].get("relevance", []),
         "results": _results_payload(results),
     }
@@ -881,8 +894,13 @@ def understand(
             f"edges={payload['summary']['edges_count']} "
             f"entrypoints={payload['summary']['entrypoints_count']} "
             f"changed={payload['summary']['changed_files_count']} "
-            f"compact_budget={payload['summary']['compact_budget_tokens']}"
+            f"compact_budget={payload['summary']['compact_budget_tokens']} "
+            f"slice={payload['summary']['slice_files_count']}"
         )
+        if payload["summary"]["focus"]:
+            console.print(f"focus: {payload['summary']['focus']}")
+        if payload["summary"]["changed_only"]:
+            console.print("mode: changed")
 
     if errors:
         raise typer.Exit(code=1)

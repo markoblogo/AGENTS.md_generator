@@ -33,8 +33,8 @@
 
 ## Key modules
 - `src/agentsgen/actions.py` — 42282 B, 45 symbols, inbound imports: 8
-- `src/agentsgen/cli.py` — 35110 B, 26 symbols, inbound imports: 9
-- `src/agentsgen/understand.py` — 34836 B, 40 symbols, inbound imports: 1
+- `src/agentsgen/understand.py` — 38814 B, 43 symbols, inbound imports: 1
+- `src/agentsgen/cli.py` — 35850 B, 26 symbols, inbound imports: 9
 - `.github/actions/agentsgen-guard/guard.py` — 13233 B, 15 symbols, inbound imports: 0
 - `src/agentsgen/shared_sections.py` — 12303 B, 8 symbols, inbound imports: 1
 - `src/agentsgen/model.py` — 3187 B, 5 symbols, inbound imports: 9

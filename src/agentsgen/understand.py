@@ -658,6 +658,112 @@ def _rank_relevance(
     return ranked, changed_files, entrypoint_files
 
 
+def _focus_matches(
+    *,
+    root: Path,
+    file_infos: list[RepoFileInfo],
+    query: str,
+) -> set[str]:
+    needle = query.strip().lower()
+    if not needle:
+        return set()
+    matches: set[str] = set()
+    for item in file_infos:
+        if needle in item.path.lower():
+            matches.add(item.path)
+            continue
+        file_path = root / item.path
+        try:
+            content = file_path.read_text(encoding="utf-8", errors="ignore")
+        except OSError:
+            continue
+        if needle in content.lower():
+            matches.add(item.path)
+    return matches
+
+
+def _related_paths(
+    *,
+    seeds: set[str],
+    edges: list[ImportEdge],
+) -> set[str]:
+    if not seeds:
+        return set()
+    related = set(seeds)
+    for edge in edges:
+        if edge.from_path in seeds:
+            related.add(edge.to_path)
+        if edge.to_path in seeds:
+            related.add(edge.from_path)
+    return related
+
+
+def _slice_relevance(
+    *,
+    root: Path,
+    file_infos: list[RepoFileInfo],
+    edges: list[ImportEdge],
+    ranked: list[RelevanceItem],
+    focus: str | None,
+    changed_only: bool,
+) -> tuple[list[RelevanceItem], dict[str, object]]:
+    focus_query = (focus or "").strip()
+    focus_matches = _focus_matches(root=root, file_infos=file_infos, query=focus_query)
+    changed_matches = {item.path for item in ranked if item.changed}
+
+    allowed: set[str] | None = None
+    focus_related: set[str] = set()
+    changed_related: set[str] = set()
+
+    if focus_query:
+        focus_related = _related_paths(seeds=focus_matches, edges=edges)
+        allowed = set(focus_related)
+    if changed_only:
+        changed_related = _related_paths(seeds=changed_matches, edges=edges)
+        allowed = set(changed_related) if allowed is None else allowed & changed_related
+
+    rows: list[RelevanceItem] = []
+    source_rows = (
+        ranked if allowed is None else [item for item in ranked if item.path in allowed]
+    )
+    for item in source_rows:
+        score = item.score
+        signals = list(item.signals)
+        if focus_query:
+            if item.path in focus_matches:
+                score += 40
+                signals.insert(0, f"focus:{focus_query}")
+            elif item.path in focus_related:
+                score += 12
+                signals.insert(0, "focus-neighbor")
+        if changed_only:
+            if item.changed:
+                score += 18
+                if "git-changed" not in signals:
+                    signals.insert(0, "git-changed")
+            elif item.path in changed_related:
+                score += 6
+                signals.insert(0, "changed-neighbor")
+        rows.append(
+            RelevanceItem(
+                path=item.path,
+                score=score,
+                signals=tuple(dict.fromkeys(signals)),
+                distance_from_entrypoint=item.distance_from_entrypoint,
+                changed=item.changed,
+                entrypoint=item.entrypoint,
+            )
+        )
+
+    sliced = sorted(rows, key=lambda item: (-item.score, item.path))
+    return sliced, {
+        "focus": focus_query or None,
+        "focus_matches": sorted(focus_matches),
+        "changed_only": changed_only,
+        "changed_matches": sorted(changed_matches),
+    }
+
+
 def _key_modules(file_infos: list[RepoFileInfo], edges: list[ImportEdge]) -> list[str]:
     code_files = [
         item
@@ -745,6 +851,8 @@ def _render_compact_repomap(
     entrypoints: list[RepoEntrypoint],
     ranked: list[RelevanceItem],
     changed_files: list[str],
+    focus: str | None,
+    changed_only: bool,
 ) -> str:
     lines = [
         "# Repo Map (Compact)",
@@ -754,9 +862,12 @@ def _render_compact_repomap(
         f"- Detected stack: `{stack}`",
         f"- Budget: `~{budget_tokens}` tokens",
         f"- Changed files detected: `{len(changed_files)}`",
+        f"- Mode: `{'changed' if changed_only else 'full'}`",
         "",
         "## Priority files",
     ]
+    if focus:
+        lines.insert(7, f"- Focus: `{focus}`")
     for item in ranked:
         if item.score <= 0:
             continue
@@ -791,12 +902,12 @@ def _render_compact_repomap(
             break
         kept.append(line)
         used_tokens += estimated
-    if kept and kept[-1] != "<!-- AGENTSGEN:END section=repomap_compact -->":
-        if "<!-- AGENTSGEN:END section=repomap_compact -->" in lines:
-            if kept and kept[-1] == "":
-                kept.pop()
-            kept.append("<!-- AGENTSGEN:END section=repomap_compact -->")
-            kept.append("")
+    end_marker = "<!-- AGENTSGEN:END section=repomap_compact -->"
+    if kept and end_marker not in kept and end_marker in lines:
+        if kept and kept[-1] == "":
+            kept.pop()
+        kept.append(end_marker)
+        kept.append("")
     return "\n".join(kept)
 
 
@@ -971,6 +1082,8 @@ def build_understanding_payload(
     *,
     output_dir: Path,
     compact_budget_tokens: int = 4000,
+    focus: str | None = None,
+    changed_only: bool = False,
 ) -> dict[str, object]:
     det = detect_repo(root)
     stack = (
@@ -989,6 +1102,14 @@ def build_understanding_payload(
         edges=edges,
         entrypoints=entrypoints,
     )
+    ranked, slice_meta = _slice_relevance(
+        root=root,
+        file_infos=file_infos,
+        edges=edges,
+        ranked=ranked,
+        focus=focus,
+        changed_only=changed_only,
+    )
     graph_nodes, graph_edges = _select_graph_nodes(file_infos, edges, stack=stack)
 
     repomap = _render_repomap(
@@ -1006,6 +1127,8 @@ def build_understanding_payload(
         entrypoints=entrypoints,
         ranked=ranked[:16],
         changed_files=changed_files,
+        focus=slice_meta["focus"],
+        changed_only=changed_only,
     )
     graph = _render_graph_mmd(graph_nodes, graph_edges)
     knowledge = {
@@ -1031,6 +1154,7 @@ def build_understanding_payload(
         ],
         "changed_files": changed_files,
         "entrypoint_files": entrypoint_files,
+        "slice": slice_meta,
         "relevance": [
             {
                 "path": item.path,
@@ -1073,6 +1197,9 @@ def build_understanding_payload(
             "entrypoints_count": len(entrypoints),
             "changed_files_count": len(changed_files),
             "compact_budget_tokens": compact_budget_tokens,
+            "focus": slice_meta["focus"],
+            "changed_only": changed_only,
+            "slice_files_count": len(ranked),
         },
     }
 
@@ -1082,12 +1209,16 @@ def apply_understanding(
     *,
     output_dir: Path,
     compact_budget_tokens: int = 4000,
+    focus: str | None = None,
+    changed_only: bool = False,
     dry_run: bool = False,
 ) -> tuple[list[FileResult], dict[str, object]]:
     payload = build_understanding_payload(
         root,
         output_dir=output_dir,
         compact_budget_tokens=compact_budget_tokens,
+        focus=focus,
+        changed_only=changed_only,
     )
     repomap_path = output_dir / "repomap.md"
     compact_repomap_path = output_dir / "repomap.compact.md"

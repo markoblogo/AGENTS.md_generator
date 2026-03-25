@@ -281,6 +281,8 @@ Artifacts are written with the same safe update policy used elsewhere in `agents
 
 `agentsgen understand .`
 `agentsgen understand . --compact-budget 4000`
+`agentsgen understand . --focus cli`
+`agentsgen understand . --changed`
 
 Artifacts:
 - `docs/ai/repomap.md`
@@ -289,6 +291,7 @@ Artifacts:
 - `agents.knowledge.json`
 
 `repomap.compact.md` ranks files by import graph signals, entrypoint proximity, and local git changes, then trims the output to an approximate token budget for agent context handoff.
+Use `--focus <query>` for a query-specific slice, or `--changed` to bias the compact map toward current git changes and their immediate import neighbors.
 
 What it is not:
 - not a traffic/SEO promise, and not a full developer handbook replacement.
