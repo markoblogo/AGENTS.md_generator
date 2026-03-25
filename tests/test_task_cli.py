@@ -188,3 +188,30 @@ def test_task_verdict_reads_evidence_summary(tmp_path: Path) -> None:
     assert payload["decision"] == "review-ready"
     assert payload["ready_for_apply"] is False
     assert "Review the captured evidence bundle" in payload["recommendation"]
+
+
+def test_task_verdict_parses_blocking_details(tmp_path: Path) -> None:
+    target = tmp_path / "repo"
+    target.mkdir()
+    res = runner.invoke(
+        app,
+        [
+            "task",
+            "verdict",
+            "proof-loop-v0",
+            str(target),
+            "--status",
+            "needs-review",
+            "--summary",
+            "Blocked by missing generated artifacts.",
+            "--blocking-item",
+            "high: repomap artifact is missing",
+            "--format",
+            "json",
+        ],
+    )
+    assert res.exit_code == 0
+    payload = json.loads(res.stdout)["result"]
+    assert payload["decision"] == "blocked"
+    assert payload["blocking_details"][0]["severity"] == "high"
+    assert payload["blocking_details"][0]["message"] == "repomap artifact is missing"
