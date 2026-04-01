@@ -15,6 +15,7 @@ Orchestrated with SET: https://github.com/markoblogo/SET
 More tools like this: https://lab.abvx.xyz/
 
 `agentsgen` is the repo-intelligence runtime in the ABVX ecosystem: use it directly in a repo, or call it through `SET` when you want one thin orchestration entrypoint.
+Pair it with `ID` when you also need portable human-AI context and repo-local integration hooks across tools: https://github.com/markoblogo/ID
 
 Small, production-grade CLI to generate and safely update:
 
@@ -127,7 +128,7 @@ For public website mode:
 agentsgen pack . --site https://example.com
 ```
 
-Companion guide for site-oriented AI visibility work: `docs/assets/llmo-quick-start.pdf`. For multi-repo orchestration, use `SET`: `https://github.com/markoblogo/SET`
+Companion guide for site-oriented AI visibility work: `docs/assets/llmo-quick-start.pdf`. For multi-repo orchestration, use `SET`: `https://github.com/markoblogo/SET`. For portable human-AI context across tools, pair with `ID`: `https://github.com/markoblogo/ID`
 
 7. Profit: fewer agent mistakes, safer updates, and better indexable repo context.
 
@@ -372,6 +373,20 @@ make snapshot
 
 This runs `ruff format`, `ruff check`, `pytest`, then commits only if there are changes and tests are green.
 
+## Local Smoke
+
+If direct `python -m agentsgen ...` runs are flaky in your local shell or runner, use the repo wrapper:
+
+```sh
+make smoke
+```
+
+This uses `scripts/smoke.sh`, which prefers `.venv/bin/python` and launches Python through a minimal `perl exec` shim when `perl` is available. The smoke run covers:
+
+- `python -m agentsgen --version`
+- `python -m agentsgen._smoke`
+- short `pytest` / `CliRunner` coverage for presets, status, snippets, and detect
+
 ## Definition Of Done (DoD)
 
 - `agentsgen init` works in an empty folder and creates:
@@ -383,10 +398,11 @@ This runs `ruff format`, `ruff check`, `pytest`, then commits only if there are 
   - preserves content outside markers
   - writes `*.generated.md` if markers are missing
 - `agentsgen check` returns non-zero exit code on problems
-- 3 smoke tests exist: `python -m agentsgen._smoke`
+- 3 builtin smoke tests exist: `python -m agentsgen._smoke`
   - init in empty dir creates files
   - edit outside markers persists after update
   - no-markers files produce `*.generated.md` and leave originals untouched
+- recommended local smoke entrypoint: `make smoke`
 
 ## Contributing
 
