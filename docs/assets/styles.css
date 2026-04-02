@@ -89,7 +89,7 @@ a{ color: inherit; text-decoration: none; }
   display:flex;
   align-items:center;
   justify-content:space-between;
-  gap: 16px;
+  gap: 12px;
   padding: 14px 0;
   min-height: 64px;
   flex-wrap: nowrap;
@@ -99,7 +99,7 @@ a{ color: inherit; text-decoration: none; }
   display:flex;
   align-items:center;
   gap: 10px;
-  min-width: 260px;
+  min-width: 220px;
   flex: 0 0 auto;
 }
 .pill{
@@ -130,7 +130,7 @@ a{ color: inherit; text-decoration: none; }
 .nav-left{
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 4px;
   flex: 1 1 auto;
   min-width: 0;
   overflow-x: auto;
@@ -141,13 +141,13 @@ a{ color: inherit; text-decoration: none; }
 .nav-right{
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   flex: 0 0 auto;
 }
 .nav a.link{
   font-size: 14px;
   color: var(--muted);
-  padding: 8px 10px;
+  padding: 8px 8px;
   border-radius: 999px;
   white-space: nowrap;
   flex: 0 0 auto;
@@ -249,7 +249,7 @@ h1{
   max-width: 48ch;
 }
 .manifest-card .btn{
-  margin-top: 14px;
+  margin-top: 22px;
   align-self: flex-start;
 }
 .hero-side{
@@ -365,6 +365,20 @@ h1{
   margin: 0 0 10px;
   font-size: 16px;
   letter-spacing: -.01em;
+}
+.card-link{
+  display: block;
+  transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease;
+}
+.card-link:hover{
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--accent) 36%, var(--border));
+  box-shadow: var(--shadow);
+}
+.card-link:focus,
+.card-link:focus-visible{
+  outline: none;
+  box-shadow: var(--ring), var(--shadow);
 }
 .card p{
   margin: 0;
@@ -491,8 +505,19 @@ pre code{
   gap: 14px;
 }
 .docs-grid .card{
+  display: flex;
+  padding: 0;
   text-align: center;
   font-weight: 650;
+}
+.docs-grid .card > a{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 118px;
+  padding: 22px;
+  text-align: center;
 }
 
 details{
@@ -553,6 +578,29 @@ details[open] summary::after{ transform: rotate(-135deg); }
   flex-wrap:wrap;
   justify-content:flex-end;
 }
+.footer-icons{
+  gap: 10px;
+}
+.footer-icon{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--card) 92%, transparent);
+  box-shadow: var(--shadow-soft);
+}
+.footer-icon svg{
+  width: 18px;
+  height: 18px;
+}
+.footer-icon:hover{
+  color: var(--text);
+  transform: translateY(-1px);
+  text-decoration: none;
+}
 
 .ascii-footnote{
   font-size: 12px;
@@ -572,7 +620,7 @@ details[open] summary::after{ transform: rotate(-135deg); }
 @media (max-width: 820px){
   .topbar-inner{ min-height: 60px; gap: 12px; }
   .hero-side{ gap: 18px; }
-  .brand{ min-width: 220px; }
+  .brand{ min-width: 180px; }
   .nav{ gap: 8px; }
   .nav-left{ gap: 6px; }
   .nav a.link{ padding: 7px 9px; }
@@ -602,6 +650,7 @@ details[open] summary::after{ transform: rotate(-135deg); }
   .topbar-inner{ padding: 10px 0; min-height: 56px; }
   .nav-right .btn.secondary{ padding-inline: 10px; }
   .nav-right .btn.icon{ width: 38px; padding: 8px 10px; }
+  .footer-icon{ width: 38px; height: 38px; }
   h1{ font-size: clamp(32px, 11vw, 36px); line-height: 1.04; }
   .card{ padding: 18px; }
   .code-card{ padding: 14px; }

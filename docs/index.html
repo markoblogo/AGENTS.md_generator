@@ -156,17 +156,17 @@
           <div class="hero-left">
             <div class="hero-title-wrap">
               <div class="hero-sticker-cluster hero-stickers" aria-label="Release highlights">
-                <div class="sticker sticker-burst" data-ascii-sticker="CURRENT BUILD">
-                  <span class="sticker-kicker">CURRENT</span>
-                  <span class="sticker-big">BUILD</span>
+                <div class="sticker sticker-burst" data-ascii-sticker="LATEST UPDATE">
+                  <span class="sticker-kicker">LATEST</span>
+                  <span class="sticker-big">UPDATE</span>
                 </div>
 
-                <div class="sticker sticker-ribbon" data-ascii-sticker="NOW: Repomap + Site AI">
-                  NOW: Repomap + Site AI
+                <div class="sticker sticker-ribbon" data-ascii-sticker="NOW: ID + HANDOFF">
+                  NOW: ID + HANDOFF
                 </div>
 
-                <div class="sticker sticker-micro" data-ascii-sticker="SAFE UPDATES">
-                  SAFE UPDATES
+                <div class="sticker sticker-micro" data-ascii-sticker="LANDING REFRESH">
+                  LANDING REFRESH
                 </div>
               </div>
               <h1>AGENTS.md Generator for AI coding agents</h1>
@@ -220,30 +220,30 @@
         </div>
 
         <div class="grid-2 use-cases-grid">
-          <div class="card" data-ascii-role="card">
+          <a class="card card-link" data-ascii-role="card" href="https://github.com/markoblogo/AGENTS.md_generator">
             <h3><code>agentsgen</code></h3>
             <ul class="bullets">
               <li>Owns repo-scoped agent context: <code>AGENTS.md</code>, <code>RUNBOOK.md</code>, pack docs, command manifests, repomap artifacts.</li>
             </ul>
-          </div>
-          <div class="card" data-ascii-role="card">
+          </a>
+          <a class="card card-link" data-ascii-role="card" href="https://github.com/markoblogo/ID">
             <h3><code>ID</code></h3>
             <ul class="bullets">
               <li>Owns portable human context: preferences, freshness, privacy, handshakes, and cross-tool continuity.</li>
             </ul>
-          </div>
-          <div class="card" data-ascii-role="card">
+          </a>
+          <a class="card card-link" data-ascii-role="card" href="https://github.com/markoblogo/SET">
             <h3><code>SET</code></h3>
             <ul class="bullets">
               <li>Owns workflow execution: CI entrypoint, orchestration, registry-driven flows, and hook timing.</li>
             </ul>
-          </div>
-          <div class="card" data-ascii-role="card">
+          </a>
+          <a class="card card-link" data-ascii-role="card" href="https://github.com/markoblogo/AGENTS.md_generator/blob/main/docs/ai/id-context.json">
             <h3>Bridge</h3>
             <ul class="bullets">
               <li><code>docs/ai/id-context.json</code> is the repo-local handoff surface that lets <code>ID</code> meet repo context without guesswork.</li>
             </ul>
-          </div>
+          </a>
         </div>
       </div>
     </section>
@@ -292,30 +292,30 @@ agentsgen check . --all --ci</code></pre>
         </div>
 
         <div class="grid-2 use-cases-grid">
-          <div class="card" data-ascii-role="card">
+          <a class="card card-link" data-ascii-role="card" href="https://github.com/markoblogo/AGENTS.md_generator">
             <h3>Repo context</h3>
             <ul class="bullets">
               <li>Give Codex, Claude Code, and Cursor a stable repo contract instead of ad-hoc prompt boilerplate.</li>
             </ul>
-          </div>
-          <div class="card" data-ascii-role="card">
+          </a>
+          <a class="card card-link" data-ascii-role="card" href="https://github.com/markoblogo/ID/blob/main/docs/AGENTSGEN_INTEGRATION.md">
             <h3>Human + repo handoff</h3>
             <ul class="bullets">
               <li>Let <code>ID</code> carry the human and let <code>agentsgen</code> carry the repo, with <code>id-context.json</code> joining them.</li>
             </ul>
-          </div>
-          <div class="card" data-ascii-role="card">
+          </a>
+          <a class="card card-link" data-ascii-role="card" href="https://agentsmd.abvx.xyz/gh-action.html">
             <h3>CI drift guard</h3>
             <ul class="bullets">
               <li>Fail pull requests when docs, pack artifacts, or snippets drift from the expected repo state.</li>
             </ul>
-          </div>
-          <div class="card" data-ascii-role="card">
+          </a>
+          <a class="card card-link" data-ascii-role="card" href="https://lab.abvx.xyz/tools/set/">
             <h3>Multi-repo orchestration</h3>
             <ul class="bullets">
               <li>Feed the same repo runtime into <code>SET</code> when you want one entrypoint across many repositories.</li>
             </ul>
-          </div>
+          </a>
         </div>
       </div>
     </section>
@@ -484,7 +484,7 @@ jobs:
         <div class="docs-grid">
           <div class="card" data-ascii-role="card"><a href="https://agentsmd.abvx.xyz/gh-action.html">Action docs</a></div>
           <div class="card" data-ascii-role="card"><a href="https://agentsmd.abvx.xyz/llmo-pack.html">Pack bundle docs</a></div>
-          <div class="card" data-ascii-role="card"><a href="https://github.com/markoblogo/ID/pull/1">ID integration</a></div>
+          <div class="card" data-ascii-role="card"><a href="https://github.com/markoblogo/ID/blob/main/docs/AGENTSGEN_INTEGRATION.md">ID integration</a></div>
           <div class="card" data-ascii-role="card"><a href="https://agentsmd.abvx.xyz/assets/llmo-quick-start.pdf">LLMO Quick Start guide (PDF) for site pack / analyze / meta</a></div>
           <div class="card" data-ascii-role="card"><a href="https://agentsmd.abvx.xyz/release-checklist.html">Release kit</a></div>
         </div>
@@ -553,11 +553,19 @@ jobs:
         <strong>Contact</strong>
         <a href="mailto:a.biletskyi@gmail.com?subject=AGENTS.md%20Generator">a.biletskyi@gmail.com</a>
       </div>
-      <div class="footer-links">
-        <a href="https://abvcreative.medium.com/">Medium</a>
-        <a href="https://abvx.substack.com/">Substack</a>
-        <a href="https://github.com/markoblogo">GitHub</a>
-        <a href="https://lab.abvx.xyz/">Lab</a>
+      <div class="footer-links footer-icons" aria-label="External links">
+        <a class="footer-icon" href="https://abvcreative.medium.com/" aria-label="Medium" title="Medium">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 6.5c0-.3-.1-.6-.4-.9L2.9 4.8V4h5.6l4.4 9.7L16.8 4H22v.8l-.6.6c-.2.2-.3.3-.3.6v12.1c0 .3.1.5.3.6l.6.6v.8h-5.7v-.8l.6-.6c.2-.2.2-.3.2-.6V9.3l-4.9 10.6h-.7L6.8 9.3v7.4c0 .5.1 1 .4 1.4l.9 1.1v.8H3.9v-.8l.9-1.1c.3-.4.4-.8.4-1.4V6.5Z"/></svg>
+        </a>
+        <a class="footer-icon" href="https://abvx.substack.com/" aria-label="Substack" title="Substack">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 4h16v2H4V4Zm0 4h16v8.8l-8-4.4-8 4.4V8Zm0 10.2 8-4.4 8 4.4V20H4v-1.8Z"/></svg>
+        </a>
+        <a class="footer-icon" href="https://github.com/markoblogo" aria-label="GitHub" title="GitHub">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 .5A12 12 0 0 0 8.2 23.9c.6.1.8-.2.8-.6v-2.2c-3.3.7-4-1.4-4-1.4-.6-1.4-1.4-1.8-1.4-1.8-1.2-.8.1-.8.1-.8 1.3.1 2 .1 2.9 1.9 1.2 1.9 3 1.4 3.7 1.1.1-.9.5-1.4.8-1.7-2.7-.3-5.6-1.3-5.6-6a4.7 4.7 0 0 1 1.2-3.2 4.3 4.3 0 0 1 .1-3.2s1-.3 3.3 1.2a11.5 11.5 0 0 1 6 0c2.3-1.5 3.3-1.2 3.3-1.2.5 1.1.4 2.4.1 3.2a4.7 4.7 0 0 1 1.2 3.2c0 4.7-2.9 5.7-5.6 6 .5.4.9 1.2.9 2.4v3.5c0 .4.2.7.8.6A12 12 0 0 0 12 .5Z"/></svg>
+        </a>
+        <a class="footer-icon" href="https://lab.abvx.xyz/" aria-label="ABVX Lab" title="ABVX Lab">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M4 5h16v2H4V5Zm2 4h12v10H6V9Zm3 2v6h2v-2h2.5a2.5 2.5 0 1 0 0-5H9Zm2 2h2.5a.5.5 0 1 1 0 1H11v-1Z"/></svg>
+        </a>
       </div>
       <div class="ascii-footnote">
         This landing uses an experimental ASCII theme mode (toggle in the header) · Source:
