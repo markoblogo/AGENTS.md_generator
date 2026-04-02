@@ -257,7 +257,7 @@ h1{
   max-width: 48ch;
 }
 .manifest-card .btn{
-  margin-top: 32px;
+  margin-top: 40px;
   align-self: flex-start;
 }
 .hero-side{
@@ -431,7 +431,15 @@ h1{
   box-shadow: var(--shadow-soft);
 }
 .quickstart-meta{
-  margin-top: 10px;
+  margin-top: 16px;
+  line-height: 1.8;
+}
+.quickstart-meta code,
+.code-card .note code{
+  display: inline-block;
+  margin: 0.2em 0.32em 0.2em 0;
+  vertical-align: baseline;
+  white-space: nowrap;
 }
 
 .quickstart-grid .quickstart-copy,
