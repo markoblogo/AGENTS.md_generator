@@ -7,12 +7,12 @@ Safe repo docs + PR Guard + AI docs bundle for coding agents.
 [![License](https://img.shields.io/github/license/markoblogo/AGENTS.md_generator)](LICENSE)
 [![Python](https://img.shields.io/badge/python-%3E%3D3.11-blue)](pyproject.toml)
 
-![AGENTS.md Generator landing page](docs/assets/agentsmd-landing-v0.1.2.png)
 Landing: https://agentsmd.abvx.xyz/
 Manifest: https://github.com/markoblogo/AGENTS.md_generator/blob/main/docs/manifest.md
+ID integration: https://github.com/markoblogo/ID/blob/main/docs/AGENTSGEN_INTEGRATION.md
 Listed on ABVX Lab: https://lab.abvx.xyz/
 Orchestrated with SET: https://github.com/markoblogo/SET
-More tools like this: https://lab.abvx.xyz/
+Human context with ID: https://github.com/markoblogo/ID
 
 `agentsgen` is the repo-intelligence runtime in the ABVX ecosystem: use it directly in a repo, or call it through `SET` when you want one thin orchestration entrypoint.
 Pair it with `ID` when you also need portable human-AI context and repo-local integration hooks across tools: `agentsgen pack` now emits a repo-local handoff manifest at `docs/ai/id-context.json` for that bridge. `ID` remains the human/profile layer: https://github.com/markoblogo/ID
