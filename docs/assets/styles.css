@@ -65,6 +65,10 @@ a{ color: inherit; text-decoration: none; }
   padding: 0 var(--pad);
 }
 
+.topbar .container.nav-inner{
+  max-width: 1320px;
+}
+
 section[id]{
   scroll-margin-top: 96px;
 }
@@ -253,7 +257,7 @@ h1{
   max-width: 48ch;
 }
 .manifest-card .btn{
-  margin-top: 22px;
+  margin-top: 32px;
   align-self: flex-start;
 }
 .hero-side{
@@ -545,6 +549,7 @@ pre code{
 }
 .docs-grid .card{
   display: flex;
+  align-items: stretch;
   padding: 0;
   text-align: center;
   font-weight: 650;
@@ -554,9 +559,11 @@ pre code{
   display: flex;
   align-items: center;
   justify-content: center;
+  flex-direction: column;
   width: 100%;
   min-height: 118px;
   padding: 22px;
+  line-height: 1.2;
   text-align: center;
   transition: transform .14s ease, box-shadow .14s ease;
 }
@@ -653,6 +660,7 @@ details[open] summary::after{ transform: rotate(-135deg); }
   justify-content: center;
   width: 42px;
   height: 42px;
+  color: var(--muted);
   border-radius: 999px;
   border: 1px solid var(--border);
   background: color-mix(in oklab, var(--card) 92%, transparent);
@@ -697,6 +705,7 @@ details[open] summary::after{ transform: rotate(-135deg); }
   .nav{ gap: 8px; }
   .nav-left{ gap: 6px; }
   .nav a.link{ padding: 7px 9px; }
+  .brand-title{ display: none; }
 
   .hero{ padding: 40px 0 12px; }
 
