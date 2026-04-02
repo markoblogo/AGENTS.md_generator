@@ -29,6 +29,7 @@ def test_pack_python_uv_generates_bundle(tmp_path: Path) -> None:
     assert (target / "docs" / "ai" / "how-to-test.md").is_file()
     assert (target / "docs" / "ai" / "architecture.md").is_file()
     assert (target / "docs" / "ai" / "data-contracts.md").is_file()
+    assert (target / "docs" / "ai" / "id-context.json").is_file()
     assert (target / "SECURITY_AI.md").is_file()
     assert (target / "CONTRIBUTING_AI.md").is_file()
     assert (target / "README_SNIPPETS.md").is_file()
@@ -38,13 +39,19 @@ def test_pack_python_uv_generates_bundle(tmp_path: Path) -> None:
     entrypoints = json.loads(
         (target / "agents.entrypoints.json").read_text(encoding="utf-8")
     )
+    id_context = json.loads(
+        (target / "docs" / "ai" / "id-context.json").read_text(encoding="utf-8")
+    )
     how_to_test = (target / "docs" / "ai" / "how-to-test.md").read_text(
         encoding="utf-8"
     )
     assert "uv run pytest" in llms
+    assert "docs/ai/id-context.json" in llms
     assert "uv run pytest" in how_to_test
     assert entrypoints["version"] == 1
     assert entrypoints["commands"]
+    assert id_context["handoff"]["consumer"] == "ID"
+    assert id_context["bundle"]["pack"]["entrypoints"] == "agents.entrypoints.json"
 
 
 def test_pack_node_pnpm_uses_detected_commands(tmp_path: Path) -> None:

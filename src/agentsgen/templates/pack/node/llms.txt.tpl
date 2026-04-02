@@ -7,6 +7,7 @@ Agent context bundle (LLMO Pack):
 - Test guide: docs/ai/how-to-test.md
 - Architecture: docs/ai/architecture.md
 - Data contracts: docs/ai/data-contracts.md
+- ID handoff: docs/ai/id-context.json
 - Security: SECURITY_AI.md
 - Contributing: CONTRIBUTING_AI.md
 
@@ -20,4 +21,3 @@ Quick commands:
 Notes:
 {{pack_notes}}
 <!-- AGENTSGEN:END section=llms -->
-

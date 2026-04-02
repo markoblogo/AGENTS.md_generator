@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "generated_by": "agentsgen",
+  "generated_at": "2026-04-02T17:50:19Z",
+  "repo": {
+    "name": "AGENTS.md Generator",
+    "path": ".",
+    "stack": "python",
+    "autodetect": true
+  },
+  "handoff": {
+    "consumer": "ID",
+    "target": "agentsmd",
+    "status": "ready",
+    "purpose": "repo-scoped handoff surface for ID-compatible human-AI workflows"
+  },
+  "bundle": {
+    "repo_docs": {
+      "agents_md": "AGENTS.md",
+      "runbook_md": "RUNBOOK.md"
+    },
+    "pack": {
+      "llms": "llms.txt",
+      "entrypoints": "agents.entrypoints.json",
+      "id_context": "docs/ai/id-context.json",
+      "how_to_run": "docs/ai/how-to-run.md",
+      "how_to_test": "docs/ai/how-to-test.md",
+      "architecture": "docs/ai/architecture.md",
+      "data_contracts": "docs/ai/data-contracts.md",
+      "security": "SECURITY_AI.md",
+      "contributing": "CONTRIBUTING_AI.md",
+      "readme_snippets": "README_SNIPPETS.md"
+    },
+    "optional_repo_artifacts": {
+      "repomap": "docs/ai/repomap.md",
+      "repomap_compact": "docs/ai/repomap.compact.md",
+      "graph": "docs/ai/graph.mmd",
+      "knowledge": "agents.knowledge.json",
+      "proof_tasks_dir": "docs/ai/tasks"
+    }
+  },
+  "usage": {
+    "preferred_inputs": [
+      "AGENTS.md",
+      "RUNBOOK.md",
+      "agents.entrypoints.json",
+      "docs/ai/how-to-run.md",
+      "docs/ai/how-to-test.md",
+      "docs/ai/architecture.md",
+      "docs/ai/data-contracts.md"
+    ],
+    "notes": [
+      "Use this manifest as the repo-local companion to an ID profile; it does not replace human-owned ID artifacts.",
+      "AGENTS.md Generator owns repo context, while ID owns portable person and policy context.",
+      "SET can route both layers together, but this manifest is useful even without SET."
+    ]
+  }
+}

@@ -6,6 +6,7 @@
 
 - `llms.txt` (default) or `LLMS.md` (`--llms-format md` or config)
 - `agents.entrypoints.json`
+- `docs/ai/id-context.json`
 - `docs/ai/how-to-run.md`
 - `docs/ai/how-to-test.md`
 - `docs/ai/architecture.md`
@@ -27,6 +28,7 @@ A machine-readable list of canonical repo commands (install/test/lint/build/run)
 | `docs/ai/how-to-test.md` | Test/lint/verification commands | Coding agents + reviewers |
 | `docs/ai/architecture.md` | High-level structure and boundaries | Coding agents |
 | `docs/ai/data-contracts.md` | Contract-change checklist and invariants | Coding agents + maintainers |
+| `docs/ai/id-context.json` | Stable repo-local handoff manifest for `ID` and orchestration flows | `ID`, `SET`, and agent tooling |
 | `SECURITY_AI.md` | Security guardrails for automated edits | Coding agents |
 | `CONTRIBUTING_AI.md` | Contribution protocol and output expectations | Coding agents |
 | `README_SNIPPETS.md` | Copy-ready README fragments | Maintainers |
@@ -78,5 +80,6 @@ Optional overrides:
 Notes:
 
 - `files` is an optional allowlist; empty means default bundle.
+- `docs/ai/id-context.json` is the bridge artifact between repo-scoped `agentsgen` output and human-scoped `ID` profiles.
 - Command detection is reused from existing autodetect (`Makefile > package.json scripts > Python heuristics`).
 - For mixed/monorepo detection, pack templates use conservative placeholders instead of invented commands.

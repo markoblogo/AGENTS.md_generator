@@ -208,7 +208,43 @@
             </aside>
           </div>
         </div>
-        <p class="note">Safe to re-run. Diff-first. Fork-safe PR guard. Optional pack drift check. Optional proof-loop task artifacts via <code>agentsgen task</code>. Pair with <code>ID</code> when you also need portable human-AI context across tools.</p>
+        <p class="note"><code>agentsgen</code> = repo context. <code>ID</code> = human context. <code>SET</code> = orchestration.</p>
+      </div>
+    </section>
+
+    <section id="boundary">
+      <div class="container">
+        <div class="section-head">
+          <h2>How it fits</h2>
+          <p>Three layers. Clear boundaries.</p>
+        </div>
+
+        <div class="grid-2 use-cases-grid">
+          <div class="card" data-ascii-role="card">
+            <h3><code>agentsgen</code></h3>
+            <ul class="bullets">
+              <li>Owns repo-scoped agent context: <code>AGENTS.md</code>, <code>RUNBOOK.md</code>, pack docs, command manifests, repomap artifacts.</li>
+            </ul>
+          </div>
+          <div class="card" data-ascii-role="card">
+            <h3><code>ID</code></h3>
+            <ul class="bullets">
+              <li>Owns portable human context: preferences, freshness, privacy, handshakes, and cross-tool continuity.</li>
+            </ul>
+          </div>
+          <div class="card" data-ascii-role="card">
+            <h3><code>SET</code></h3>
+            <ul class="bullets">
+              <li>Owns workflow execution: CI entrypoint, orchestration, registry-driven flows, and hook timing.</li>
+            </ul>
+          </div>
+          <div class="card" data-ascii-role="card">
+            <h3>Bridge</h3>
+            <ul class="bullets">
+              <li><code>docs/ai/id-context.json</code> is the repo-local handoff surface that lets <code>ID</code> meet repo context without guesswork.</li>
+            </ul>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -224,10 +260,10 @@
             <h3>What you get fast</h3>
             <ul class="bullets">
               <li>Repo-level agent contract with safe updates.</li>
-              <li>Reviewable diffs before writing changes.</li>
-              <li>Read-only status snapshot before writing changes.</li>
+              <li>Reviewable diffs and read-only status before writing changes.</li>
+              <li>Machine-readable command and handoff manifests.</li>
               <li>Canonical README snippets with CI drift detection.</li>
-              <li>Aggregated check summaries for core, pack, and snippets drift in CI.</li>
+              <li>One compact bridge from repo docs into <code>ID</code>-compatible flows.</li>
             </ul>
           </div>
           <div class="card code-card" data-ascii-role="card">
@@ -238,11 +274,11 @@
             <pre id="qs-code"><code>pipx install git+https://github.com/markoblogo/AGENTS.md_generator
 cd your-repo
 agentsgen init --preset nextjs
-agentsgen status .
-agentsgen snippets .
-agentsgen update --dry-run --print-diff
+agentsgen pack . --autodetect
+cat agents.entrypoints.json
+cat docs/ai/id-context.json
 agentsgen check . --all --ci</code></pre>
-            <div class="note">Use <code>agentsgen status</code> locally for a read-only repo snapshot, then run <code>agentsgen check . --all --ci</code> in CI for one compact drift summary.</div>
+            <div class="note">Generate the repo bundle, inspect the command manifest, inspect the <code>ID</code> bridge, then enforce drift in CI.</div>
           </div>
         </div>
       </div>
@@ -257,80 +293,28 @@ agentsgen check . --all --ci</code></pre>
 
         <div class="grid-2 use-cases-grid">
           <div class="card" data-ascii-role="card">
-            <h3>Agent context, fast</h3>
+            <h3>Repo context</h3>
             <ul class="bullets">
-              <li>Give Codex / Claude Code / Cursor immediate repo rules.</li>
+              <li>Give Codex, Claude Code, and Cursor a stable repo contract instead of ad-hoc prompt boilerplate.</li>
             </ul>
           </div>
           <div class="card" data-ascii-role="card">
-            <h3>Consistent across repos</h3>
+            <h3>Human + repo handoff</h3>
             <ul class="bullets">
-              <li>Reuse the same safety model and output protocol everywhere.</li>
+              <li>Let <code>ID</code> carry the human and let <code>agentsgen</code> carry the repo, with <code>id-context.json</code> joining them.</li>
             </ul>
           </div>
           <div class="card" data-ascii-role="card">
-            <h3>Safer updates</h3>
+            <h3>CI drift guard</h3>
             <ul class="bullets">
-              <li>Marker-only ownership plus diff-first workflow.</li>
+              <li>Fail pull requests when docs, pack artifacts, or snippets drift from the expected repo state.</li>
             </ul>
           </div>
           <div class="card" data-ascii-role="card">
-            <h3>No command guessing</h3>
+            <h3>Multi-repo orchestration</h3>
             <ul class="bullets">
-              <li>Makefile/scripts priority keeps commands realistic.</li>
+              <li>Feed the same repo runtime into <code>SET</code> when you want one entrypoint across many repositories.</li>
             </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section id="guard" class="section-primary">
-      <div class="container">
-        <div class="section-head">
-          <h2>PR Guard + Pack drift check <span class="mini-badge">Recommended</span></h2>
-          <p>Fail PRs when agent docs drift. Optionally enforce pack bundle drift in the same job.</p>
-        </div>
-
-        <div class="grid-2 guard-grid">
-          <div class="card" data-ascii-role="card">
-            <h3>Why it matters</h3>
-            <ul class="bullets">
-              <li>Fail PRs when generated docs drift.</li>
-              <li><code>pack_check: "true"</code> adds <code>agentsgen pack --check</code>.</li>
-              <li>Marker-only ownership stays intact for handcrafted docs.</li>
-            </ul>
-            <div class="note">Works on forks (best-effort comments).</div>
-          </div>
-          <div class="card code-card" data-ascii-role="card">
-            <div class="code-head">
-              <span class="code-label">Workflow</span>
-              <button class="copy" type="button" data-copy-target="#guard-code">Copy</button>
-            </div>
-            <pre id="guard-code"><code>name: agentsgen guard + pack check
-
-on:
-  pull_request:
-  push:
-    branches: [ main ]
-
-permissions:
-  contents: read
-  pull-requests: write
-
-jobs:
-  agentsgen:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@main
-        with:
-          comment: "true"
-          files: |
-            AGENTS.md
-            RUNBOOK.md
-          pack_check: "true"
-          pack_format: "json"</code></pre>
-            <div class="note">If you do not want PR comments, set <code>comment: "false"</code>.</div>
           </div>
         </div>
       </div>
@@ -425,16 +409,68 @@ jobs:
 
         <div class="card" data-ascii-role="card">
           <ul class="bullets">
-            <li><code>llms.txt</code> (or <code>LLMS.md</code>)</li>
-            <li><code>agents.entrypoints.json</code> — command manifest for agents/CI (install/test/lint/build/run)</li>
-            <li><code>docs/ai/*</code> (<code>how-to-run</code>, <code>how-to-test</code>, <code>architecture</code>, <code>data-contracts</code>)</li>
-            <li><code>SECURITY_AI.md</code></li>
-            <li><code>CONTRIBUTING_AI.md</code></li>
-            <li><code>README_SNIPPETS.md</code></li>
+            <li><strong>Crawl / index layer:</strong> <code>llms.txt</code> (or <code>LLMS.md</code>)</li>
+            <li><strong>Execution layer:</strong> <code>agents.entrypoints.json</code>, <code>docs/ai/how-to-run.md</code>, <code>docs/ai/how-to-test.md</code></li>
+            <li><strong>Boundary layer:</strong> <code>docs/ai/architecture.md</code>, <code>docs/ai/data-contracts.md</code></li>
+            <li><strong>Handoff layer:</strong> <code>docs/ai/id-context.json</code> for <code>ID</code>-compatible workflows</li>
+            <li><strong>Policy layer:</strong> <code>SECURITY_AI.md</code>, <code>CONTRIBUTING_AI.md</code>, <code>README_SNIPPETS.md</code></li>
           </ul>
           <div class="note">Commands: <code>agentsgen pack --autodetect</code> and <code>agentsgen pack --autodetect --check</code>.</div>
+          <div class="note"><code>ID</code> reads the human. <code>agentsgen</code> reads the repo. <code>id-context.json</code> connects them.</div>
           <div class="note">If markers are missing, pack writes sibling <code>*.generated.*</code> files instead of overwriting originals.</div>
           <div class="note">Companion guide for site-oriented AI visibility work: <a href="https://agentsmd.abvx.xyz/assets/llmo-quick-start.pdf">LLMO Quick Start (PDF)</a>.</div>
+        </div>
+      </div>
+    </section>
+
+    <section id="guard" class="section-primary">
+      <div class="container">
+        <div class="section-head">
+          <h2>PR Guard + Pack drift check <span class="mini-badge">Recommended</span></h2>
+          <p>Fail PRs when agent docs drift. Optionally enforce pack bundle drift in the same job.</p>
+        </div>
+
+        <div class="grid-2 guard-grid">
+          <div class="card" data-ascii-role="card">
+            <h3>Why it matters</h3>
+            <ul class="bullets">
+              <li>Fail PRs when generated docs drift.</li>
+              <li><code>pack_check: "true"</code> adds <code>agentsgen pack --check</code>.</li>
+              <li>Marker-only ownership stays intact for handcrafted docs.</li>
+            </ul>
+            <div class="note">Works on forks (best-effort comments).</div>
+          </div>
+          <div class="card code-card" data-ascii-role="card">
+            <div class="code-head">
+              <span class="code-label">Workflow</span>
+              <button class="copy" type="button" data-copy-target="#guard-code">Copy</button>
+            </div>
+            <pre id="guard-code"><code>name: agentsgen guard + pack check
+
+on:
+  pull_request:
+  push:
+    branches: [ main ]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  agentsgen:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@main
+        with:
+          comment: "true"
+          files: |
+            AGENTS.md
+            RUNBOOK.md
+          pack_check: "true"
+          pack_format: "json"</code></pre>
+            <div class="note">If you do not want PR comments, set <code>comment: "false"</code>.</div>
+          </div>
         </div>
       </div>
     </section>
@@ -448,6 +484,7 @@ jobs:
         <div class="docs-grid">
           <div class="card" data-ascii-role="card"><a href="https://agentsmd.abvx.xyz/gh-action.html">Action docs</a></div>
           <div class="card" data-ascii-role="card"><a href="https://agentsmd.abvx.xyz/llmo-pack.html">Pack bundle docs</a></div>
+          <div class="card" data-ascii-role="card"><a href="https://github.com/markoblogo/ID/pull/1">ID integration</a></div>
           <div class="card" data-ascii-role="card"><a href="https://agentsmd.abvx.xyz/assets/llmo-quick-start.pdf">LLMO Quick Start guide (PDF) for site pack / analyze / meta</a></div>
           <div class="card" data-ascii-role="card"><a href="https://agentsmd.abvx.xyz/release-checklist.html">Release kit</a></div>
         </div>

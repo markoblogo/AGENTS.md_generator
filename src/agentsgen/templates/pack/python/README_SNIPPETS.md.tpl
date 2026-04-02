@@ -11,6 +11,7 @@
 - Test guide for agents: `docs/ai/how-to-test.md`
 - Architecture: `docs/ai/architecture.md`
 - Data contracts: `docs/ai/data-contracts.md`
+- ID repo handoff: `docs/ai/id-context.json`
 ```
 
 ## Suggested snippet: local checks
@@ -20,4 +21,3 @@
 {{cmd_lint}}
 ```
 <!-- AGENTSGEN:END section=readme_snippets -->
-

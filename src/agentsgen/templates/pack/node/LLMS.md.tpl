@@ -9,6 +9,7 @@
 - `docs/ai/how-to-test.md`
 - `docs/ai/architecture.md`
 - `docs/ai/data-contracts.md`
+- `docs/ai/id-context.json`
 - `SECURITY_AI.md`
 - `CONTRIBUTING_AI.md`
 
@@ -22,4 +23,3 @@
 ## Notes
 {{pack_notes}}
 <!-- AGENTSGEN:END section=llms -->
-

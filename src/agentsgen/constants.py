@@ -15,6 +15,7 @@ DEFAULT_PACK_LLMS_FORMAT = "txt"
 DEFAULT_PACK_FILES = [
     "llms",
     "agents.entrypoints.json",
+    "id-context.json",
     "how-to-run.md",
     "how-to-test.md",
     "architecture.md",

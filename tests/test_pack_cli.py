@@ -36,6 +36,10 @@ def test_pack_check_reports_drift_json(tmp_path: Path) -> None:
         str(r.get("path", "")).endswith("agents.entrypoints.json")
         for r in payload["results"]
     )
+    assert any(
+        str(r.get("path", "")).endswith("docs/ai/id-context.json")
+        for r in payload["results"]
+    )
 
 
 def test_pack_check_passes_after_pack(tmp_path: Path) -> None:

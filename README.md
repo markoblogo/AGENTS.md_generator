@@ -15,7 +15,7 @@ Orchestrated with SET: https://github.com/markoblogo/SET
 More tools like this: https://lab.abvx.xyz/
 
 `agentsgen` is the repo-intelligence runtime in the ABVX ecosystem: use it directly in a repo, or call it through `SET` when you want one thin orchestration entrypoint.
-Pair it with `ID` when you also need portable human-AI context and repo-local integration hooks across tools: https://github.com/markoblogo/ID
+Pair it with `ID` when you also need portable human-AI context and repo-local integration hooks across tools: `agentsgen pack` now emits a repo-local handoff manifest at `docs/ai/id-context.json` for that bridge. `ID` remains the human/profile layer: https://github.com/markoblogo/ID
 
 Small, production-grade CLI to generate and safely update:
 
@@ -120,6 +120,7 @@ agentsgen snippets .
 ```sh
 agentsgen pack . --autodetect
 cat agents.entrypoints.json
+cat docs/ai/id-context.json
 ```
 
 For public website mode:
@@ -277,6 +278,7 @@ agentsgen task verdict proof-loop-v0 . --status needs-review --summary "Manual r
 
 - `llms.txt` (or `LLMS.md` with `--llms-format md`)
 - `agents.entrypoints.json` (machine-readable command manifest for agents/CI)
+- `docs/ai/id-context.json` (machine-readable repo handoff manifest for `ID`-compatible flows)
 - `docs/ai/how-to-run.md`
 - `docs/ai/how-to-test.md`
 - `docs/ai/architecture.md`
@@ -285,7 +287,9 @@ agentsgen task verdict proof-loop-v0 . --status needs-review --summary "Manual r
 - `CONTRIBUTING_AI.md`
 - `README_SNIPPETS.md`
 
-New: `agents.entrypoints.json` — a machine-readable manifest of repo commands (install/test/lint/build/run) derived from `.agentsgen.json` / autodetect.
+New:
+- `agents.entrypoints.json` — a machine-readable manifest of repo commands (install/test/lint/build/run) derived from `.agentsgen.json` / autodetect.
+- `docs/ai/id-context.json` — a repo-scoped handoff manifest that gives `ID` a stable entrypoint into repo docs, command manifests, repomap artifacts, and proof-loop surfaces.
 
 By default, pack writes AI docs into docs/ai/ (override via pack_output_dir).
 Use --print-plan to preview what pack will write.

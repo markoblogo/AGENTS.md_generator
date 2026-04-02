@@ -667,6 +667,117 @@ def _pack_entrypoints_json(
     return json.dumps(payload, indent=2) + "\n"
 
 
+def _pack_id_context_json(
+    target: Path,
+    cfg: ToolConfig,
+    *,
+    autodetect: bool,
+) -> str:
+    project_name = (
+        str((cfg.project or {}).get("name", "")).strip()
+        or cfg.project_info.project_name
+        or target.name
+    )
+    stack = (
+        str((cfg.project or {}).get("primary_stack", "")).strip().lower()
+        or str(cfg.project_info.stack or "").strip().lower()
+        or "unknown"
+    )
+    if stack not in {"python", "node", "static", "mixed", "unknown"}:
+        stack = "unknown"
+
+    output_dir = Path((cfg.pack.output_dir or DEFAULT_PACK_OUTPUT_DIR).strip())
+    llms_format = (cfg.pack.llms_format or DEFAULT_PACK_LLMS_FORMAT).strip().lower()
+    if llms_format not in {"txt", "md"}:
+        llms_format = DEFAULT_PACK_LLMS_FORMAT
+    llms_name = "llms.txt" if llms_format == "txt" else "LLMS.md"
+    id_context_path = str(output_dir / "id-context.json").replace("\\", "/")
+
+    payload: dict[str, object] = {
+        "version": 1,
+        "generated_by": "agentsgen",
+        "generated_at": "",
+        "repo": {
+            "name": project_name,
+            "path": ".",
+            "stack": stack,
+            "autodetect": autodetect,
+        },
+        "handoff": {
+            "consumer": "ID",
+            "target": "agentsmd",
+            "status": "ready",
+            "purpose": "repo-scoped handoff surface for ID-compatible human-AI workflows",
+        },
+        "bundle": {
+            "repo_docs": {
+                "agents_md": AGENTS_FILENAME,
+                "runbook_md": RUNBOOK_FILENAME,
+            },
+            "pack": {
+                "llms": llms_name,
+                "entrypoints": "agents.entrypoints.json",
+                "id_context": id_context_path,
+                "how_to_run": str(output_dir / "how-to-run.md").replace("\\", "/"),
+                "how_to_test": str(output_dir / "how-to-test.md").replace("\\", "/"),
+                "architecture": str(output_dir / "architecture.md").replace(
+                    "\\", "/"
+                ),
+                "data_contracts": str(output_dir / "data-contracts.md").replace(
+                    "\\", "/"
+                ),
+                "security": "SECURITY_AI.md",
+                "contributing": "CONTRIBUTING_AI.md",
+                "readme_snippets": "README_SNIPPETS.md",
+            },
+            "optional_repo_artifacts": {
+                "repomap": str(output_dir / "repomap.md").replace("\\", "/"),
+                "repomap_compact": str(output_dir / "repomap.compact.md").replace(
+                    "\\", "/"
+                ),
+                "graph": str(output_dir / "graph.mmd").replace("\\", "/"),
+                "knowledge": "agents.knowledge.json",
+                "proof_tasks_dir": str(output_dir / "tasks").replace("\\", "/"),
+            },
+        },
+        "usage": {
+            "preferred_inputs": [
+                AGENTS_FILENAME,
+                RUNBOOK_FILENAME,
+                "agents.entrypoints.json",
+                str(output_dir / "how-to-run.md").replace("\\", "/"),
+                str(output_dir / "how-to-test.md").replace("\\", "/"),
+                str(output_dir / "architecture.md").replace("\\", "/"),
+                str(output_dir / "data-contracts.md").replace("\\", "/"),
+            ],
+            "notes": [
+                "Use this manifest as the repo-local companion to an ID profile; it does not replace human-owned ID artifacts.",
+                "AGENTS.md Generator owns repo context, while ID owns portable person and policy context.",
+                "SET can route both layers together, but this manifest is useful even without SET.",
+            ],
+        },
+    }
+
+    existing_path = target / output_dir / "id-context.json"
+    if existing_path.exists():
+        try:
+            existing = read_json(existing_path)
+            if str(
+                existing.get("generated_by", "")
+            ) == "agentsgen" and _stable_payload_without_timestamp(
+                existing
+            ) == _stable_payload_without_timestamp(payload):
+                payload["generated_at"] = str(existing.get("generated_at", "") or "")
+            else:
+                payload["generated_at"] = _utc_now_iso()
+        except Exception:
+            payload["generated_at"] = _utc_now_iso()
+    else:
+        payload["generated_at"] = _utc_now_iso()
+
+    return json.dumps(payload, indent=2) + "\n"
+
+
 def _handle_generated_json_file(
     path: Path,
     generated_full: str,
@@ -771,6 +882,7 @@ def _pack_output_specs(
     specs: list[tuple[Path, str, list[str]]] = [
         (Path(llms_name), llms_tpl, ["llms"]),
         (Path("agents.entrypoints.json"), "__generated_entrypoints_json__", []),
+        (output_dir / "id-context.json", "__generated_id_context_json__", []),
         (output_dir / "how-to-run.md", "how-to-run.md.tpl", ["how_to_run"]),
         (output_dir / "how-to-test.md", "how-to-test.md.tpl", ["how_to_test"]),
         (output_dir / "architecture.md", "architecture.md.tpl", ["architecture"]),
@@ -793,6 +905,7 @@ def _pack_output_specs(
             key_path in allow_set
             or key_name in allow_set
             or ("entrypoints" in allow_set and key_name == "agents.entrypoints.json")
+            or ("id-context" in allow_set and key_name == "id-context.json")
             or ("llms" in allow_set and key_name in {"llms.txt", "llms.md"})
         ):
             filtered.append((rel_path, tpl_name, required))
@@ -811,6 +924,15 @@ def _pack_output_specs(
                 (
                     rel_path,
                     _pack_entrypoints_json(target, cfg, autodetect=autodetect),
+                    required,
+                )
+            )
+            continue
+        if tpl_name == "__generated_id_context_json__":
+            rendered.append(
+                (
+                    rel_path,
+                    _pack_id_context_json(target, cfg, autodetect=autodetect),
                     required,
                 )
             )
@@ -868,7 +990,7 @@ def apply_pack(
                 )
             )
             continue
-        if rel_path.name == "agents.entrypoints.json":
+        if rel_path.suffix == ".json":
             results.append(
                 _handle_generated_json_file(
                     out_path,

@@ -20,6 +20,8 @@ Recent research suggests that auto-generated context files can _hurt_ agent perf
 
 - machine-readable outputs when possible (JSON, manifests)
 
+- explicit bridge artifacts when repo context must meet portable human context (`docs/ai/id-context.json`)
+
 3. **Instrumented truth beats prose.**
 
    The source of truth is not “a nice description.”
