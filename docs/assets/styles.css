@@ -65,6 +65,10 @@ a{ color: inherit; text-decoration: none; }
   padding: 0 var(--pad);
 }
 
+section[id]{
+  scroll-margin-top: 96px;
+}
+
 .skip{
   position: absolute;
   left: -999px;
@@ -367,8 +371,24 @@ h1{
   letter-spacing: -.01em;
 }
 .card-link{
+  position: relative;
   display: block;
   transition: transform .14s ease, border-color .14s ease, box-shadow .14s ease;
+}
+.card-link::after{
+  content: "Open";
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--text) 78%, var(--muted));
+  border: 1px solid color-mix(in oklab, var(--border) 84%, transparent);
+  background: color-mix(in oklab, var(--bg-soft) 70%, transparent);
 }
 .card-link:hover{
   transform: translateY(-2px);
@@ -390,6 +410,25 @@ h1{
   color: var(--muted);
 }
 .bullets li{ margin: 7px 0; }
+.hero-boundary-note{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 10px;
+  margin-top: 18px;
+}
+.hero-boundary-note span{
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: color-mix(in oklab, var(--card) 90%, transparent);
+  box-shadow: var(--shadow-soft);
+}
+.quickstart-meta{
+  margin-top: 10px;
+}
 
 .quickstart-grid .quickstart-copy,
 .guard-grid .card:first-child{
@@ -511,6 +550,7 @@ pre code{
   font-weight: 650;
 }
 .docs-grid .card > a{
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -518,6 +558,32 @@ pre code{
   min-height: 118px;
   padding: 22px;
   text-align: center;
+  transition: transform .14s ease, box-shadow .14s ease;
+}
+.docs-grid .card > a::after{
+  content: "Read";
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .04em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, var(--text) 78%, var(--muted));
+  border: 1px solid color-mix(in oklab, var(--border) 84%, transparent);
+  background: color-mix(in oklab, var(--bg-soft) 70%, transparent);
+}
+.docs-card:hover,
+.docs-card:focus-within{
+  border-color: color-mix(in oklab, var(--accent) 36%, var(--border));
+  box-shadow: var(--shadow);
+}
+.docs-grid .card > a:hover,
+.docs-grid .card > a:focus-visible{
+  transform: translateY(-2px);
+  outline: none;
 }
 
 details{
@@ -601,6 +667,13 @@ details[open] summary::after{ transform: rotate(-135deg); }
   transform: translateY(-1px);
   text-decoration: none;
 }
+.footer-icon:focus,
+.footer-icon:focus-visible{
+  outline: none;
+  color: var(--text);
+  transform: translateY(-1px);
+  box-shadow: var(--ring), var(--shadow);
+}
 
 .ascii-footnote{
   font-size: 12px;
@@ -646,6 +719,7 @@ details[open] summary::after{ transform: rotate(-135deg); }
 
 @media (max-width: 520px){
   :root{ --pad: 18px; --section-y: 44px; }
+  section[id]{ scroll-margin-top: 84px; }
   .brand{ min-width: 0; }
   .topbar-inner{ padding: 10px 0; min-height: 56px; }
   .nav-right .btn.secondary{ padding-inline: 10px; }
@@ -655,6 +729,9 @@ details[open] summary::after{ transform: rotate(-135deg); }
   .card{ padding: 18px; }
   .code-card{ padding: 14px; }
   .mini-badge{ margin-left: 0; margin-top: 8px; }
+  .hero-boundary-note span{ min-height: 32px; padding: 5px 10px; }
+  .card-link::after,
+  .docs-grid .card > a::after{ top: 12px; right: 12px; }
   .sticker{
     font-size: 11px;
     padding: 7px 10px;

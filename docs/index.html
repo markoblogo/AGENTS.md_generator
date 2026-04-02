@@ -208,7 +208,12 @@
             </aside>
           </div>
         </div>
-        <p class="note"><code>agentsgen</code> = repo context. <code>ID</code> = human context. <code>SET</code> = orchestration.</p>
+        <p class="note hero-boundary-note">
+          <span><code>agentsgen</code> = repo</span>
+          <span><code>ID</code> = human</span>
+          <span><code>SET</code> = orchestration</span>
+          <span><code>id-context.json</code> = bridge</span>
+        </p>
       </div>
     </section>
 
@@ -279,6 +284,7 @@ cat agents.entrypoints.json
 cat docs/ai/id-context.json
 agentsgen check . --all --ci</code></pre>
             <div class="note">Generate the repo bundle, inspect the command manifest, inspect the <code>ID</code> bridge, then enforce drift in CI.</div>
+            <div class="note quickstart-meta">Outputs: <code>AGENTS.md</code>, <code>agents.entrypoints.json</code>, and <code>docs/ai/id-context.json</code>.</div>
           </div>
         </div>
       </div>
@@ -482,11 +488,11 @@ jobs:
           <p>Everything detailed lives in docs. The landing stays short.</p>
         </div>
         <div class="docs-grid">
-          <div class="card" data-ascii-role="card"><a href="https://agentsmd.abvx.xyz/gh-action.html">Action docs</a></div>
-          <div class="card" data-ascii-role="card"><a href="https://agentsmd.abvx.xyz/llmo-pack.html">Pack bundle docs</a></div>
-          <div class="card" data-ascii-role="card"><a href="https://github.com/markoblogo/ID/blob/main/docs/AGENTSGEN_INTEGRATION.md">ID integration</a></div>
-          <div class="card" data-ascii-role="card"><a href="https://agentsmd.abvx.xyz/assets/llmo-quick-start.pdf">LLMO Quick Start guide (PDF) for site pack / analyze / meta</a></div>
-          <div class="card" data-ascii-role="card"><a href="https://agentsmd.abvx.xyz/release-checklist.html">Release kit</a></div>
+          <div class="card docs-card" data-ascii-role="card"><a href="https://agentsmd.abvx.xyz/gh-action.html">Action docs</a></div>
+          <div class="card docs-card" data-ascii-role="card"><a href="https://agentsmd.abvx.xyz/llmo-pack.html">Pack bundle docs</a></div>
+          <div class="card docs-card" data-ascii-role="card"><a href="https://github.com/markoblogo/ID/blob/main/docs/AGENTSGEN_INTEGRATION.md">ID integration</a></div>
+          <div class="card docs-card" data-ascii-role="card"><a href="https://agentsmd.abvx.xyz/assets/llmo-quick-start.pdf">LLMO Quick Start guide (PDF) for site pack / analyze / meta</a></div>
+          <div class="card docs-card" data-ascii-role="card"><a href="https://agentsmd.abvx.xyz/release-checklist.html">Release kit</a></div>
         </div>
       </div>
     </section>
