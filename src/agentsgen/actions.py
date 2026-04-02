@@ -720,9 +720,7 @@ def _pack_id_context_json(
                 "id_context": id_context_path,
                 "how_to_run": str(output_dir / "how-to-run.md").replace("\\", "/"),
                 "how_to_test": str(output_dir / "how-to-test.md").replace("\\", "/"),
-                "architecture": str(output_dir / "architecture.md").replace(
-                    "\\", "/"
-                ),
+                "architecture": str(output_dir / "architecture.md").replace("\\", "/"),
                 "data_contracts": str(output_dir / "data-contracts.md").replace(
                     "\\", "/"
                 ),

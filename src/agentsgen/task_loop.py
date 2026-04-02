@@ -331,7 +331,9 @@ def _recommendation_for_verdict(
     if blocking_details:
         return "Resolve blockers, refresh evidence, then re-run verdict."
     if evidence_status == "incomplete":
-        return "Run or record the missing checks and artifacts, then refresh the verdict."
+        return (
+            "Run or record the missing checks and artifacts, then refresh the verdict."
+        )
     if evidence_status == "failed":
         return "Fix failing checks before advancing this task."
     return "Review the captured evidence bundle before marking the task as pass."
@@ -401,7 +403,9 @@ def apply_task_verdict(
     if status_value not in {"pass", "fail", "needs-review"}:
         raise ValueError("status must be one of: pass, fail, needs-review")
     evidence_path = task_dir(root, normalized_task_id) / "evidence.json"
-    evidence_generated_path = task_dir(root, normalized_task_id) / "evidence.generated.json"
+    evidence_generated_path = (
+        task_dir(root, normalized_task_id) / "evidence.generated.json"
+    )
     evidence_payload = _load_task_json(evidence_path) or _load_task_json(
         evidence_generated_path
     )
