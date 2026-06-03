@@ -17,7 +17,7 @@ Reusable skills: https://github.com/markoblogo/abvx-agent-skills
 
 `agentsgen` is the repo-intelligence runtime in the ABVX ecosystem: use it directly in a repo, or call it through `SET` when you want one thin orchestration entrypoint.
 Pair it with `ID` when you also need portable human-AI context and repo-local integration hooks across tools: `agentsgen pack` now emits a repo-local handoff manifest at `docs/ai/id-context.json` for that bridge. `ID` remains the human/profile layer: https://github.com/markoblogo/ID
-Pair it with `abvx-agent-skills` when the agent needs reusable expert workflows for coding, frontend, audits, debugging, research, handoffs, and browser verification without bloating each repo's always-loaded AGENTS.md.
+Pair it with `abvx-agent-skills` when the agent needs reusable expert workflows for coding, frontend, audits, debugging, research, token economy, handoffs, and browser verification without bloating each repo's always-loaded AGENTS.md.
 
 Small, production-grade CLI to generate and safely update:
 
@@ -35,7 +35,7 @@ Small, production-grade CLI to generate and safely update:
 - `agentsgen` owns repo-scoped agent context: AGENTS.md, RUNBOOK.md, pack docs, command manifests, and drift checks.
 - `ID` owns portable human context: preferences, privacy, handshakes, and cross-tool continuity.
 - `SET` owns workflow execution: CI entrypoint, orchestration, registry flows, and proof loops.
-- `abvx-agent-skills` owns reusable agent capabilities: compact SKILL.md workflows for coding, frontend, audits, debugging, research, handoffs, and browser verification, with skill cards, attribution, validation, and risk gates.
+- `abvx-agent-skills` owns reusable agent capabilities: compact SKILL.md workflows for coding, frontend, audits, debugging, research, token economy, handoffs, and browser verification, with skill cards, attribution, validation, and risk gates.
 
 ## Safety Model
 
