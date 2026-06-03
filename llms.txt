@@ -10,7 +10,6 @@ Agent context bundle (LLMO Pack):
 - ID handoff: docs/ai/id-context.json
 - Security: SECURITY_AI.md
 - Contributing: CONTRIBUTING_AI.md
-- Companion skillpacks: https://github.com/markoblogo/abvx-agent-skills
 
 Quick commands:
 - install: (not detected)
@@ -21,5 +20,4 @@ Quick commands:
 
 Notes:
 - Keep these files concise and command-accurate. Avoid speculative guidance.
-- agentsgen owns repo context; ABVX Agent Skills own reusable expert workflows.
 <!-- AGENTSGEN:END section=llms -->
