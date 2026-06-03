@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <!-- Primary SEO -->
   <title>AGENTS.md Generator (agentsgen) — Safe AGENTS.md & RUNBOOK.md for AI coding agents</title>
-  <meta name="description" content="Generate and maintain AGENTS.md / RUNBOOK.md safely: marker-based updates, diff-first workflow, and auto-detected repo commands (Makefile, package.json, Python). No overwrites. OSS." />
+  <meta name="description" content="Generate and maintain AGENTS.md / RUNBOOK.md safely: marker-based updates, diff-first workflow, auto-detected repo commands, and companion ABVX skillpacks. No overwrites. OSS." />
   <link rel="canonical" href="https://agentsmd.abvx.xyz/" />
 
   <!-- Robots -->
@@ -14,7 +14,7 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="AGENTS.md Generator (agentsgen)" />
-  <meta property="og:description" content="Safe-by-default generator for AGENTS.md / RUNBOOK.md. Marker-based updates, diffs, autodetect. No repo damage." />
+  <meta property="og:description" content="Safe-by-default generator for AGENTS.md / RUNBOOK.md. Marker-based updates, diffs, autodetect, and companion ABVX skillpacks." />
   <meta property="og:url" content="https://agentsmd.abvx.xyz/" />
   <meta property="og:image" content="https://agentsmd.abvx.xyz/og.png" />
   <meta property="og:image:width" content="1200" />
@@ -23,7 +23,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="AGENTS.md Generator (agentsgen)" />
-  <meta name="twitter:description" content="Generate & update AGENTS.md safely. Markers + diffs + autodetect. OSS." />
+  <meta name="twitter:description" content="Generate & update AGENTS.md safely. Markers + diffs + autodetect + companion skillpacks. OSS." />
   <meta name="twitter:image" content="https://agentsmd.abvx.xyz/og.png" />
 
   <!-- Favicons -->
@@ -40,7 +40,7 @@
     "name": "AGENTS.md Generator (agentsgen)",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "macOS, Linux, Windows",
-    "description": "Safe-by-default generator for AGENTS.md / RUNBOOK.md. Marker-based updates, diff-first workflow, and auto-detect of repo commands.",
+    "description": "Safe-by-default generator for AGENTS.md / RUNBOOK.md. Marker-based updates, diff-first workflow, auto-detect of repo commands, and companion ABVX skillpacks.",
     "url": "https://agentsmd.abvx.xyz/",
     "codeRepository": "https://github.com/markoblogo/AGENTS.md_generator",
     "license": "https://github.com/markoblogo/AGENTS.md_generator/blob/main/LICENSE",
@@ -202,7 +202,7 @@
               <div class="lab-banner-copy">
                 <div class="lab-banner-kicker">ABVX tools hub</div>
                 <div class="lab-banner-title">ABVX Lab</div>
-                <p>All ABVX tools for AI-assisted coding live in ABVX Lab: agentsgen, SET, ID, git-tweet, AsciiTheme, and more.</p>
+                <p>All ABVX tools for AI-assisted coding live in ABVX Lab: agentsgen, SET, ID, ABVX Agent Skills, git-tweet, AsciiTheme, and more.</p>
               </div>
               <a class="btn primary" href="https://lab.abvx.xyz/">Open Lab</a>
             </aside>
@@ -212,6 +212,7 @@
           <span><code>agentsgen</code> = repo</span>
           <span><code>ID</code> = human</span>
           <span><code>SET</code> = orchestration</span>
+          <span><code>skills</code> = reusable workflows</span>
           <span><code>id-context.json</code> = bridge</span>
         </p>
       </div>
@@ -221,7 +222,7 @@
       <div class="container">
         <div class="section-head">
           <h2>How it fits</h2>
-          <p>Three layers. Clear boundaries.</p>
+          <p>Four layers. Clear boundaries.</p>
         </div>
 
         <div class="grid-2 use-cases-grid">
@@ -247,6 +248,12 @@
             <h3>Bridge</h3>
             <ul class="bullets">
               <li><code>docs/ai/id-context.json</code> is the repo-local handoff surface that lets <code>ID</code> meet repo context without guesswork.</li>
+            </ul>
+          </a>
+          <a class="card card-link" data-ascii-role="card" href="https://github.com/markoblogo/abvx-agent-skills">
+            <h3><code>abvx-agent-skills</code></h3>
+            <ul class="bullets">
+              <li>Owns reusable capabilities: compact <code>SKILL.md</code> workflows with skill cards, attribution, validation, and risk gates.</li>
             </ul>
           </a>
         </div>
