@@ -88,3 +88,20 @@ def test_check_aggregate_snippets_check_json(tmp_path: Path) -> None:
     assert payload["checks"]["snippets"]["raw"]["output_path"].endswith(
         "README_SNIPPETS.generated.md"
     )
+
+
+def test_check_invalid_config_returns_error_json(tmp_path: Path) -> None:
+    target = tmp_path / "repo"
+    target.mkdir()
+    (target / ".agentsgen.json").write_text("{invalid\n", encoding="utf-8")
+
+    res = runner.invoke(app, ["check", str(target), "--format", "json"])
+    assert res.exit_code == 2
+    payload = json.loads(res.stdout)
+    assert payload["status"] == "error"
+    assert payload["checks"]["core"]["status"] == "error"
+    assert any(
+        item["message"].startswith("Invalid .agentsgen.json:")
+        for item in payload["checks"]["core"]["results"]
+        if item["level"] == "problem"
+    )

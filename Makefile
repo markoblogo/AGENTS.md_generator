@@ -18,7 +18,7 @@ snapshot:
 	. .venv/bin/activate && python scripts/snapshot.py
 
 agents:
-	. .venv/bin/activate && agentsgen update --autodetect
+	. .venv/bin/activate && agentsgen update
 
 pack:
 	. .venv/bin/activate && agentsgen pack --autodetect

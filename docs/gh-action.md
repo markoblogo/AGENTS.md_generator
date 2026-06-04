@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.2
+      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@main
         with:
           path: "."
           files: "AGENTS.md,RUNBOOK.md"
@@ -89,7 +89,7 @@ permissions:
 ```
 
 ```yaml
-- uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.2
+- uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@main
   with:
     comment: "true"
 ```
@@ -99,7 +99,7 @@ If comment write fails (common on fork PRs with restricted permissions), the act
 To also guard LLMO pack drift:
 
 ```yaml
-- uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.1.2
+- uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@main
   with:
     comment: "false"
     pack_check: "true"

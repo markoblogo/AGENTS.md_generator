@@ -339,7 +339,11 @@ def init(
             raise typer.Exit(code=1)
 
     if cfg_path.exists() and not force_config:
-        cfg = load_tool_config(target)
+        try:
+            cfg = load_tool_config(target)
+        except Exception as exc:
+            err_console.print(f"ERROR: Invalid {CONFIG_FILENAME}: {exc}")
+            raise typer.Exit(code=1)
         if preset:
             console.print(
                 f"Using existing {CONFIG_FILENAME}; preset '{preset}' not applied. Use --force-config to replace it."
@@ -410,6 +414,9 @@ def update(
     except FileNotFoundError:
         err_console.print("ERROR: Missing .agentsgen.json. Run: agentsgen init")
         raise typer.Exit(code=1)
+    except Exception as exc:
+        err_console.print(f"ERROR: Invalid {CONFIG_FILENAME}: {exc}")
+        raise typer.Exit(code=1)
 
     errors = [r for r in results if r.action == "error"]
     _print_results(results, print_diff=print_diff)
@@ -467,7 +474,11 @@ def pack(
 ):
     """Generate/update LLMO pack files with marker-safe updates."""
     cfg_path = target / ".agentsgen.json"
-    cfg = load_tool_config(target) if cfg_path.exists() else ToolConfig()
+    try:
+        cfg = load_tool_config(target) if cfg_path.exists() else ToolConfig()
+    except Exception as exc:
+        err_console.print(f"ERROR: Invalid {CONFIG_FILENAME}: {exc}")
+        raise typer.Exit(code=1)
 
     if autodetect:
         det_cfg = ToolConfig.from_detect(detect_repo(target))
@@ -748,6 +759,8 @@ def status(
         console.print(f"Generated siblings: {', '.join(report.generated['files'])}")
     for finding in report.pack["findings"]:
         console.print(f"- {finding}")
+    for error in report.pack.get("errors", []):
+        console.print(f"- {error}")
     if not quiet:
         # Reconstruct high-level file findings from structured payload.
         if not report.config.get("present"):

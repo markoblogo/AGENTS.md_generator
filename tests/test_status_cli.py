@@ -43,3 +43,37 @@ def test_status_generated_sibling_reports_drift_text(tmp_path: Path) -> None:
     assert "Generated sibling exists for AGENTS.md: AGENTS.generated.md" in res.stdout
     assert "RUNBOOK.md: present, markers: no" in res.stdout
     assert "Summary: DRIFT" in res.stdout
+
+
+def test_status_reports_pack_output_escape_as_error(tmp_path: Path) -> None:
+    target = tmp_path / "repo"
+    target.mkdir()
+    (target / ".agentsgen.json").write_text(
+        json.dumps(
+            {
+                "version": 1,
+                "project": {"name": "repo", "primary_stack": "python"},
+                "pack": {"output_dir": "../escaped"},
+            }
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    (target / "AGENTS.md").write_text(
+        "<!-- AGENTSGEN:START section=overview -->ok<!-- AGENTSGEN:END section=overview -->\n",
+        encoding="utf-8",
+    )
+    (target / "RUNBOOK.md").write_text(
+        "<!-- AGENTSGEN:START section=quickstart -->ok<!-- AGENTSGEN:END section=quickstart -->\n",
+        encoding="utf-8",
+    )
+
+    res = runner.invoke(app, ["status", str(target), "--format", "json"])
+    assert res.exit_code == 2
+    payload = json.loads(res.stdout)
+    assert payload["status"] == "error"
+    assert payload["pack"]["status"] == "error"
+    assert any(
+        "Pack output path escapes target directory" in item
+        for item in payload["pack"]["errors"]
+    )

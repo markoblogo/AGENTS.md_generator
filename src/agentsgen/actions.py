@@ -313,6 +313,14 @@ def _generated_sibling_path(path: Path, generated_suffix: str = ".generated") ->
     return path.with_name(f"{path.stem}{generated_suffix}{path.suffix}")
 
 
+def _resolve_target_child(target: Path, rel_path: Path) -> Path | None:
+    target_resolved = target.resolve()
+    out_path = (target / rel_path).resolve()
+    if target_resolved not in out_path.parents and out_path != target_resolved:
+        return None
+    return out_path
+
+
 def _extract_readme_snippets(readme_text: str) -> list[ReadmeSnippet]:
     snippets: list[ReadmeSnippet] = []
     seen: set[str] = set()
@@ -977,9 +985,8 @@ def apply_pack(
     for rel_path, content, required in _pack_output_specs(
         target, cfg, autodetect=autodetect, site_url=site_url
     ):
-        out_path = (target / rel_path).resolve()
-        target_resolved = target.resolve()
-        if target_resolved not in out_path.parents and out_path != target_resolved:
+        out_path = _resolve_target_child(target, rel_path)
+        if out_path is None:
             results.append(
                 FileResult(
                     path=target / rel_path,
@@ -1095,7 +1102,11 @@ def check_repo(target: Path) -> tuple[int, list[str], list[str]]:
         problems.append(f"Missing {CONFIG_FILENAME}. Run: agentsgen init")
         return 2, problems, warnings
 
-    tool_cfg = load_tool_config(target)
+    try:
+        tool_cfg = load_tool_config(target)
+    except Exception as exc:
+        problems.append(f"Invalid {CONFIG_FILENAME}: {exc}")
+        return 2, problems, warnings
     info = tool_cfg.project_info
 
     for fname in [AGENTS_FILENAME, RUNBOOK_FILENAME]:
@@ -1104,7 +1115,11 @@ def check_repo(target: Path) -> tuple[int, list[str], list[str]]:
             problems.append(f"Missing {fname}. Run: agentsgen init")
             continue
 
-        text = read_text(p)
+        try:
+            text = read_text(p)
+        except Exception as exc:
+            problems.append(f"{fname}: unreadable ({exc})")
+            continue
         if not has_any_agentsgen_markers(text):
             problems.append(f"{fname} has no AGENTSGEN markers (cannot update safely)")
             continue
@@ -1406,7 +1421,12 @@ def status_repo(target: Path) -> RepoStatusReport:
         try:
             specs = _pack_output_specs(target, tool_cfg, autodetect=False)
             for rel_path, _content, _required in specs:
-                path = target / rel_path
+                path = _resolve_target_child(target, rel_path)
+                if path is None:
+                    pack_errors.append(
+                        f"Pack output path escapes target directory: {rel_path.as_posix()}"
+                    )
+                    continue
                 if not path.exists():
                     pack_findings.append(f"Missing pack file: {rel_path.as_posix()}")
                     continue
@@ -1452,7 +1472,7 @@ def status_repo(target: Path) -> RepoStatusReport:
         config=config,
         agents_md=agents_report,
         runbook_md=runbook_report,
-        pack={"status": pack_status, "findings": pack_findings},
+        pack={"status": pack_status, "findings": pack_findings, "errors": pack_errors},
         generated={"count": len(generated_files), "files": generated_files},
         summary={"drift": drift_count, "errors": error_count},
     )

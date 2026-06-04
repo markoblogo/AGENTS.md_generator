@@ -227,7 +227,9 @@ agentsgen check
 agentsgen check . --pack-check
 agentsgen check . --all --ci
 agentsgen check . --format json
+agentsgen doctor . --all --ci
 agentsgen status .
+agentsgen status . --format json
 agentsgen detect . --format json
 agentsgen analyze https://example.com
 agentsgen meta https://example.com
@@ -240,6 +242,9 @@ pipx uninstall agentsgen
 
 agentsgen status is a read-only overview of managed files, markers, generated fallbacks, and pack drift.
 It is lighter and more diagnostic than `agentsgen check`, which focuses on repo readiness errors/warnings.
+`agentsgen doctor` is an exact alias for `agentsgen check`.
+Invalid `.agentsgen.json` files now fail as structured CLI errors instead of raw tracebacks.
+`agentsgen status --format json` includes pack-level findings and pack-level errors for machine consumers.
 `agentsgen task evidence` and `agentsgen task verdict` now write richer summaries for checks, artifacts, decision state, and review readiness under `docs/ai/tasks/<task-id>/`.
 
 `agentsgen check` can also aggregate optional drift checks:
@@ -388,17 +393,14 @@ This runs `ruff format`, `ruff check`, `pytest`, then commits only if there are 
 
 ## Local Smoke
 
-If direct `python -m agentsgen ...` runs are flaky in your local shell or runner, use the repo wrapper:
+Run the built-in smoke entrypoint directly from the activated virtualenv:
 
 ```sh
-make smoke
+python -m agentsgen._smoke
+pytest -q
 ```
 
-This uses `scripts/smoke.sh`, which prefers `.venv/bin/python` and launches Python through a minimal `perl exec` shim when `perl` is available. The smoke run covers:
-
-- `python -m agentsgen --version`
-- `python -m agentsgen._smoke`
-- short `pytest` / `CliRunner` coverage for presets, status, snippets, and detect
+Release automation uses the same smoke entrypoint before tagging.
 
 ## Definition Of Done (DoD)
 
@@ -415,7 +417,7 @@ This uses `scripts/smoke.sh`, which prefers `.venv/bin/python` and launches Pyth
   - init in empty dir creates files
   - edit outside markers persists after update
   - no-markers files produce `*.generated.md` and leave originals untouched
-- recommended local smoke entrypoint: `make smoke`
+- recommended local smoke entrypoint: `python -m agentsgen._smoke`
 
 ## Contributing
 
