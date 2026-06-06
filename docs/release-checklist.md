@@ -79,6 +79,12 @@ CLI (optional):
 gh release create vX.Y.Z --title "vX.Y.Z - ..." --notes-file RELEASES/vX.Y.Z.md
 ```
 
+Publishing to PyPI is triggered by the GitHub Release being published. If the release already exists and PyPI needs a retry, run:
+
+```bash
+gh workflow run publish-pypi.yml -f tag=vX.Y.Z
+```
+
 ### 6) Post-release sanity
 
 - Release page renders correctly
@@ -110,7 +116,7 @@ Do everything in Mode B, plus:
 - update landing "Latest version" and snippets
 - add a short "Why it matters" paragraph in notes
 - optional migration/deprecation guide
-- optional package distribution (PyPI)
+- optional package distribution (PyPI), ideally through trusted publishing on release publish
 - short public announcement
 
 ## Hard stop (do not release)
