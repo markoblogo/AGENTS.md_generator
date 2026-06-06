@@ -13,7 +13,7 @@ jobs:
   agentsgen:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: PR Guard + LLMO Pack drift check
         uses: ./.github/actions/agentsgen-guard
