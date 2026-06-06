@@ -25,9 +25,9 @@ jobs:
           ruff --version
           ruff format --check .
           ruff check .
-      - name: Smoke tests
+      - name: Type check
         run: |
-          python -m agentsgen._smoke
+          mypy src
       - name: Unit tests
         run: |
           pytest -q

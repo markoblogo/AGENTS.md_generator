@@ -1,0 +1,99 @@
+{
+  "name": "mcp-detect-response",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "path": {
+        "type": "string"
+      },
+      "result": {
+        "additional_properties": true,
+        "properties": {
+          "commands": {
+            "additional_properties": true,
+            "properties": {},
+            "required": [],
+            "type": "object"
+          },
+          "evidence": {
+            "additional_properties": true,
+            "properties": {
+              "ci": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "make": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "node": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "python": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "python",
+              "node",
+              "make",
+              "ci"
+            ],
+            "type": "object"
+          },
+          "paths": {
+            "additional_properties": true,
+            "properties": {},
+            "required": [],
+            "type": "object"
+          },
+          "project": {
+            "additional_properties": true,
+            "properties": {},
+            "required": [],
+            "type": "object"
+          },
+          "rationale": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "project",
+          "paths",
+          "commands",
+          "evidence",
+          "rationale"
+        ],
+        "type": "object"
+      },
+      "tool": {
+        "type": "string"
+      },
+      "version": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "version",
+      "tool",
+      "path",
+      "result"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

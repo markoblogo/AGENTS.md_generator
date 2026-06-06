@@ -1,0 +1,160 @@
+{
+  "name": "mcp-update-response",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "dry_run": {
+        "type": "boolean"
+      },
+      "llm": {
+        "additional_properties": true,
+        "nullable": true,
+        "properties": {
+          "request": {
+            "additional_properties": true,
+            "properties": {
+              "enabled": {
+                "type": "boolean"
+              },
+              "model": {
+                "type": "string"
+              },
+              "narrative_sections": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "provider": {
+                "type": "string"
+              },
+              "timeout_seconds": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "enabled",
+              "provider",
+              "model",
+              "timeout_seconds",
+              "narrative_sections"
+            ],
+            "type": "object"
+          },
+          "result": {
+            "additional_properties": true,
+            "properties": {
+              "applied": {
+                "type": "boolean"
+              },
+              "message": {
+                "type": "string"
+              },
+              "provider": {
+                "type": "string"
+              },
+              "sections": {
+                "additional_properties": true,
+                "properties": {},
+                "required": [],
+                "type": "object"
+              }
+            },
+            "required": [
+              "provider",
+              "applied",
+              "sections",
+              "message"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "request",
+          "result"
+        ],
+        "type": "object"
+      },
+      "path": {
+        "type": "string"
+      },
+      "results": {
+        "items": {
+          "additional_properties": true,
+          "properties": {
+            "action": {
+              "type": "string"
+            },
+            "changed": {
+              "type": "boolean"
+            },
+            "diff": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "action",
+            "message",
+            "changed",
+            "diff"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "status": {
+        "type": "string"
+      },
+      "summary": {
+        "type": "string"
+      },
+      "tool": {
+        "type": "string"
+      },
+      "version": {
+        "type": "integer"
+      },
+      "write_policy": {
+        "additional_properties": true,
+        "properties": {
+          "may_write": {
+            "type": "boolean"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "writes_applied": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "mode",
+          "may_write",
+          "writes_applied"
+        ],
+        "type": "object"
+      }
+    },
+    "required": [
+      "version",
+      "tool",
+      "path",
+      "status",
+      "summary",
+      "dry_run",
+      "write_policy",
+      "llm",
+      "results"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

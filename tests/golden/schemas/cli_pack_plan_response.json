@@ -1,0 +1,68 @@
+{
+  "name": "cli-pack-plan-response",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "check": {
+        "type": "boolean"
+      },
+      "dry_run": {
+        "type": "boolean"
+      },
+      "plan": {
+        "items": {
+          "additional_properties": true,
+          "properties": {
+            "action": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            },
+            "sections": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            }
+          },
+          "required": [
+            "path",
+            "action",
+            "sections",
+            "message"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "print_plan": {
+        "type": "boolean"
+      },
+      "status": {
+        "type": "string"
+      },
+      "summary": {
+        "type": "string"
+      },
+      "version": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "version",
+      "status",
+      "summary",
+      "check",
+      "dry_run",
+      "print_plan",
+      "plan"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

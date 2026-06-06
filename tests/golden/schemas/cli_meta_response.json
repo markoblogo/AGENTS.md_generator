@@ -1,0 +1,122 @@
+{
+  "name": "cli-meta-response",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "command": {
+        "type": "string"
+      },
+      "output": {
+        "type": "string"
+      },
+      "path": {
+        "type": "string"
+      },
+      "result": {
+        "additional_properties": true,
+        "properties": {
+          "final_url": {
+            "type": "string"
+          },
+          "generated_at": {
+            "type": "string"
+          },
+          "generated_by": {
+            "type": "string"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "result": {
+            "additional_properties": true,
+            "properties": {
+              "description": {
+                "type": "string"
+              },
+              "keywords": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "shortDescription": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "title",
+              "description",
+              "keywords",
+              "shortDescription"
+            ],
+            "type": "object"
+          },
+          "url": {
+            "type": "string"
+          },
+          "version": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version",
+          "generated_by",
+          "generated_at",
+          "url",
+          "final_url",
+          "mode",
+          "result"
+        ],
+        "type": "object"
+      },
+      "results": {
+        "items": {
+          "additional_properties": true,
+          "properties": {
+            "action": {
+              "type": "string"
+            },
+            "changed": {
+              "type": "boolean"
+            },
+            "diff": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "action",
+            "message",
+            "changed",
+            "diff"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "version": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "version",
+      "command",
+      "path",
+      "output",
+      "result",
+      "results"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

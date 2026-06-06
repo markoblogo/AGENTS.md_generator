@@ -1,0 +1,73 @@
+{
+  "name": "analysis-payload",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "ai_review": {
+        "type": "string"
+      },
+      "evidence": {
+        "additional_properties": true,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "factors": {
+        "additional_properties": true,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "final_url": {
+        "type": "string"
+      },
+      "generated_at": {
+        "type": "string"
+      },
+      "generated_by": {
+        "type": "string"
+      },
+      "mode": {
+        "type": "string"
+      },
+      "recommendations": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "score": {
+        "type": "integer"
+      },
+      "summary": {
+        "type": "string"
+      },
+      "url": {
+        "type": "string"
+      },
+      "version": {
+        "type": "integer"
+      },
+      "visibility": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "version",
+      "generated_by",
+      "generated_at",
+      "url",
+      "final_url",
+      "mode",
+      "score",
+      "visibility",
+      "summary",
+      "factors",
+      "evidence",
+      "recommendations"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

@@ -1,6 +1,6 @@
 [project]
 name = "agentsgen"
-version = "0.1.0"
+version = "0.2.0"
 description = "Generate and safely update AGENTS.md and RUNBOOK.md for coding agents"
 readme = "README.md"
 requires-python = ">=3.11"
@@ -22,12 +22,51 @@ agents = "agentsgen.cli:main"
 [project.optional-dependencies]
 dev = [
   "pytest>=8,<10",
+  "pytest-cov>=5,<6",
+  "mypy>=1.11,<2",
+  "hypothesis>=6.112,<7",
+  "syrupy>=4.7,<5",
   # Pin ruff to keep CI formatting deterministic.
   "ruff==0.6.9"
+]
+llm = [
+  "openai>=1.35,<2",
+  "anthropic>=0.34,<1",
+]
+mcp = [
+  "mcp>=1.9,<2",
 ]
 
 [tool.ruff]
 required-version = "0.6.9"
+
+[tool.mypy]
+python_version = "3.11"
+check_untyped_defs = true
+no_implicit_optional = true
+warn_unused_ignores = true
+ignore_missing_imports = true
+
+[[tool.mypy.overrides]]
+module = [
+  "agentsgen.actions",
+  "agentsgen.cli",
+  "agentsgen.cli_core",
+  "agentsgen.cli_extra",
+  "agentsgen.cli_pack",
+  "agentsgen.cli_support",
+  "agentsgen.cli_task",
+  "agentsgen.mcp_server",
+  "agentsgen.pack_engine",
+  "agentsgen.task_loop",
+  "agentsgen.understand",
+  "agentsgen.understand_ast",
+  "agentsgen.understand_context",
+]
+ignore_errors = true
+
+[tool.pytest.ini_options]
+addopts = "--cov=src/agentsgen --cov-report=term-missing --cov-fail-under=60"
 
 [tool.setuptools]
 package-dir = {"" = "src"}

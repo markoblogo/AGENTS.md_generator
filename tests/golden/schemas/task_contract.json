@@ -1,0 +1,48 @@
+{
+  "name": "task.contract",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "acceptance": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "generated_at": {
+        "type": "string"
+      },
+      "generated_by": {
+        "type": "string"
+      },
+      "path": {
+        "type": "string"
+      },
+      "summary": {
+        "type": "string"
+      },
+      "task_id": {
+        "type": "string"
+      },
+      "title": {
+        "type": "string"
+      },
+      "version": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "version",
+      "generated_by",
+      "generated_at",
+      "task_id",
+      "title",
+      "summary",
+      "acceptance",
+      "path"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

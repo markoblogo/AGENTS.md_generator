@@ -16,6 +16,7 @@ Human context with ID: https://github.com/markoblogo/ID
 Reusable skills: https://github.com/markoblogo/abvx-agent-skills
 
 `agentsgen` is the repo-intelligence runtime in the ABVX ecosystem: use it directly in a repo, or call it through `SET` when you want one thin orchestration entrypoint.
+It now ships a reliability-first core with split CLI/actions/understand modules, versioned JSON contracts across CLI and MCP surfaces, and opt-in LLM enhancement that falls back cleanly to local-only behavior.
 Pair it with `ID` when you also need portable human-AI context and repo-local integration hooks across tools: `agentsgen pack` now emits a repo-local handoff manifest at `docs/ai/id-context.json` for that bridge. `ID` remains the human/profile layer: https://github.com/markoblogo/ID
 Pair it with `abvx-agent-skills` when the agent needs reusable expert workflows for coding, frontend, audits, debugging, research, token economy, handoffs, and browser verification without bloating each repo's always-loaded AGENTS.md.
 
@@ -61,6 +62,12 @@ Marker format:
 python3 -m venv .venv
 . .venv/bin/activate
 pip install -e ".[dev]"
+```
+
+Optional experimental extras:
+
+```sh
+pip install -e ".[llm,mcp]"
 ```
 
 ## Quickstart
@@ -140,7 +147,7 @@ agentsgen pack . --site https://example.com
 
 Companion guide for site-oriented AI visibility work: `docs/assets/llmo-quick-start.pdf`. For multi-repo orchestration, use `SET`: `https://github.com/markoblogo/SET`. For portable human-AI context across tools, pair with `ID`: `https://github.com/markoblogo/ID`
 
-7. Profit: fewer agent mistakes, safer updates, and better indexable repo context.
+7. Profit: fewer agent mistakes, safer updates, better indexable repo context, and a stable machine-readable surface for CI/MCP callers.
 
 Deep dives:
 - Action options: `docs/gh-action.md`
@@ -253,6 +260,22 @@ Invalid `.agentsgen.json` files now fail as structured CLI errors instead of raw
 - `agentsgen check . --format json` emits a stable machine-readable payload
 - `agentsgen check . --ci` prints a compact CI summary without path-heavy log noise
 - `agentsgen pack . --site https://example.com` generates a site-oriented `llms.txt` from the homepage and sitemap
+
+## Experimental surfaces
+
+These features are opt-in and do not change the default local-only CLI path.
+
+- `agentsgen init . --llm-enhance --llm-provider openai`
+- `agentsgen update . --llm-enhance --llm-provider anthropic`
+- `agentsgen mcp`
+
+Experimental notes:
+
+- `--llm-enhance` only appends narrative context sections grounded in local `understand` artifacts.
+- Provider failures and timeouts fall back to local-only generation.
+- MCP currently exposes read and write tools with versioned JSON contracts for `status`, `check`, `detect`, `understand`, `init`, `update`, and `pack`.
+- Install optional extras first: `pip install -e ".[llm,mcp]"`.
+- Provider-specific notes: `docs/experimental-llm.md`.
 
 ## README Snippets (mini-validator)
 

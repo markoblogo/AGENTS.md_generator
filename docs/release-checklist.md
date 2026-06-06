@@ -56,6 +56,7 @@ Use this when distribution/monetization/support flows are active.
   - Safety model
   - Quickstart
   - Known limitations
+  - Experimental MCP/LLM features as opt-in only
 
 ### 3) Update versioned docs references (if needed)
 

@@ -4,7 +4,6 @@ import json
 from pathlib import Path
 from typing import Any
 
-from .actions import FileResult, _handle_generated_json_file
 from .analyze import (
     _extract_text_content,
     _fetch_url,
@@ -13,6 +12,9 @@ from .analyze import (
     _stable_payload_without_timestamp,
     _utc_now_iso,
 )
+from .result_types import FileResult
+from .generated_artifacts import handle_generated_json_artifact
+from .validators import validate_metadata_payload
 
 
 def _normalize_keywords(value: Any) -> list[str]:
@@ -69,6 +71,7 @@ def build_metadata_payload(url: str) -> dict[str, Any]:
         "result": _build_metadata_result(fetch.url, text_content),
     }
     payload["generated_at"] = _utc_now_iso()
+    validate_metadata_payload(payload)
     return payload
 
 
@@ -98,7 +101,7 @@ def apply_metadata(
             ) == _stable_payload_without_timestamp(payload):
                 payload["generated_at"] = str(existing.get("generated_at", "") or "")
 
-    result = _handle_generated_json_file(
+    result = handle_generated_json_artifact(
         output_path,
         json.dumps(payload, indent=2) + "\n",
         dry_run=dry_run,

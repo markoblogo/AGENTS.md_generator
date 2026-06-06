@@ -1,0 +1,33 @@
+{
+  "name": "file-result",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "action": {
+        "type": "string"
+      },
+      "changed": {
+        "type": "boolean"
+      },
+      "diff": {
+        "type": "string"
+      },
+      "message": {
+        "type": "string"
+      },
+      "path": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "path",
+      "action",
+      "message",
+      "changed",
+      "diff"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

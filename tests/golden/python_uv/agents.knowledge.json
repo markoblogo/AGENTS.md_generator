@@ -1,0 +1,268 @@
+{
+  "version": 1,
+  "repo_path": ".",
+  "generated_at": "2026-06-06T17:27:36Z",
+  "files": [
+    {
+      "path": ".agentsgen.json",
+      "size": 1151,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "AGENTS.md",
+      "size": 7371,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "CONTRIBUTING_AI.md",
+      "size": 507,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "README.md",
+      "size": 12,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "README_SNIPPETS.md",
+      "size": 528,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "RUNBOOK.md",
+      "size": 694,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "SECURITY_AI.md",
+      "size": 467,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "agents.entrypoints.json",
+      "size": 1122,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ai/architecture.md",
+      "size": 382,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ai/data-contracts.md",
+      "size": 499,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ai/how-to-run.md",
+      "size": 444,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ai/how-to-test.md",
+      "size": 472,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ai/id-context.json",
+      "size": 1772,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "prompt/execspec.md",
+      "size": 359,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "pyproject.toml",
+      "size": 120,
+      "language": "toml",
+      "symbols_count": 0
+    },
+    {
+      "path": "src/app/__init__.py",
+      "size": 10,
+      "language": "python",
+      "symbols_count": 0
+    }
+  ],
+  "edges": [],
+  "entrypoints": [
+    {
+      "label": "fast",
+      "command": "uv run pytest -q",
+      "source": "manual"
+    },
+    {
+      "label": "format",
+      "command": "uv run ruff format .",
+      "source": "manual"
+    },
+    {
+      "label": "lint",
+      "command": "uv run ruff check .",
+      "source": "manual"
+    },
+    {
+      "label": "test",
+      "command": "uv run pytest",
+      "source": "manual"
+    }
+  ],
+  "changed_files": [],
+  "entrypoint_files": [],
+  "slice": {
+    "focus": null,
+    "focus_matches": [],
+    "changed_only": false,
+    "changed_matches": []
+  },
+  "relevance": [
+    {
+      "path": "AGENTS.md",
+      "score": 4,
+      "signals": [
+        "size:7371"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "docs/ai/id-context.json",
+      "score": 1,
+      "signals": [
+        "size:1772"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": ".agentsgen.json",
+      "score": 0,
+      "signals": [],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "CONTRIBUTING_AI.md",
+      "score": 0,
+      "signals": [],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "README.md",
+      "score": 0,
+      "signals": [],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "README_SNIPPETS.md",
+      "score": 0,
+      "signals": [],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "RUNBOOK.md",
+      "score": 0,
+      "signals": [],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "SECURITY_AI.md",
+      "score": 0,
+      "signals": [],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "agents.entrypoints.json",
+      "score": 0,
+      "signals": [],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "docs/ai/architecture.md",
+      "score": 0,
+      "signals": [],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "docs/ai/data-contracts.md",
+      "score": 0,
+      "signals": [],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "docs/ai/how-to-run.md",
+      "score": 0,
+      "signals": [],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "docs/ai/how-to-test.md",
+      "score": 0,
+      "signals": [],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "prompt/execspec.md",
+      "score": 0,
+      "signals": [],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "pyproject.toml",
+      "score": 0,
+      "signals": [],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/app/__init__.py",
+      "score": 0,
+      "signals": [],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    }
+  ]
+}

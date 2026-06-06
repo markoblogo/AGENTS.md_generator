@@ -1,0 +1,202 @@
+{
+  "name": "id-context",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "bundle": {
+        "additional_properties": true,
+        "properties": {
+          "optional_repo_artifacts": {
+            "additional_properties": true,
+            "properties": {
+              "graph": {
+                "type": "string"
+              },
+              "knowledge": {
+                "type": "string"
+              },
+              "proof_tasks_dir": {
+                "type": "string"
+              },
+              "repomap": {
+                "type": "string"
+              },
+              "repomap_compact": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "repomap",
+              "repomap_compact",
+              "graph",
+              "knowledge",
+              "proof_tasks_dir"
+            ],
+            "type": "object"
+          },
+          "pack": {
+            "additional_properties": true,
+            "properties": {
+              "architecture": {
+                "type": "string"
+              },
+              "contributing": {
+                "type": "string"
+              },
+              "data_contracts": {
+                "type": "string"
+              },
+              "entrypoints": {
+                "type": "string"
+              },
+              "how_to_run": {
+                "type": "string"
+              },
+              "how_to_test": {
+                "type": "string"
+              },
+              "id_context": {
+                "type": "string"
+              },
+              "llms": {
+                "type": "string"
+              },
+              "readme_snippets": {
+                "type": "string"
+              },
+              "security": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "llms",
+              "entrypoints",
+              "id_context",
+              "how_to_run",
+              "how_to_test",
+              "architecture",
+              "data_contracts",
+              "security",
+              "contributing",
+              "readme_snippets"
+            ],
+            "type": "object"
+          },
+          "repo_docs": {
+            "additional_properties": true,
+            "properties": {
+              "agents_md": {
+                "type": "string"
+              },
+              "runbook_md": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "agents_md",
+              "runbook_md"
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "repo_docs",
+          "pack",
+          "optional_repo_artifacts"
+        ],
+        "type": "object"
+      },
+      "generated_at": {
+        "type": "string"
+      },
+      "generated_by": {
+        "type": "string"
+      },
+      "handoff": {
+        "additional_properties": true,
+        "properties": {
+          "consumer": {
+            "type": "string"
+          },
+          "purpose": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "target": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "consumer",
+          "target",
+          "status",
+          "purpose"
+        ],
+        "type": "object"
+      },
+      "repo": {
+        "additional_properties": true,
+        "properties": {
+          "autodetect": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "stack": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "name",
+          "path",
+          "stack",
+          "autodetect"
+        ],
+        "type": "object"
+      },
+      "usage": {
+        "additional_properties": true,
+        "properties": {
+          "notes": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "preferred_inputs": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "preferred_inputs",
+          "notes"
+        ],
+        "type": "object"
+      },
+      "version": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "version",
+      "generated_by",
+      "generated_at",
+      "repo",
+      "handoff",
+      "bundle",
+      "usage"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

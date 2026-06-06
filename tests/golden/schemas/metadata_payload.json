@@ -1,0 +1,65 @@
+{
+  "name": "metadata-payload",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "final_url": {
+        "type": "string"
+      },
+      "generated_at": {
+        "type": "string"
+      },
+      "generated_by": {
+        "type": "string"
+      },
+      "mode": {
+        "type": "string"
+      },
+      "result": {
+        "additional_properties": true,
+        "properties": {
+          "description": {
+            "type": "string"
+          },
+          "keywords": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "shortDescription": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "title",
+          "description",
+          "keywords",
+          "shortDescription"
+        ],
+        "type": "object"
+      },
+      "url": {
+        "type": "string"
+      },
+      "version": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "version",
+      "generated_by",
+      "generated_at",
+      "url",
+      "final_url",
+      "mode",
+      "result"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

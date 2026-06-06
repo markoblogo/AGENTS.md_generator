@@ -1,0 +1,107 @@
+{
+  "name": "task.verdict",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "artifact_summary": {
+        "additional_properties": true,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "blocking_details": {
+        "items": {
+          "additional_properties": true,
+          "properties": {
+            "blocks_apply": {
+              "type": "boolean"
+            },
+            "message": {
+              "type": "string"
+            },
+            "severity": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "message",
+            "severity",
+            "blocks_apply"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "blocking_items": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "check_summary": {
+        "additional_properties": true,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      },
+      "decision": {
+        "type": "string"
+      },
+      "evidence_status": {
+        "type": "string"
+      },
+      "generated_at": {
+        "type": "string"
+      },
+      "generated_by": {
+        "type": "string"
+      },
+      "ready_for_apply": {
+        "type": "boolean"
+      },
+      "recommendation": {
+        "type": "string"
+      },
+      "review_ready": {
+        "type": "boolean"
+      },
+      "status": {
+        "enum": [
+          "pass",
+          "fail",
+          "needs-review"
+        ],
+        "type": "string"
+      },
+      "summary": {
+        "type": "string"
+      },
+      "task_id": {
+        "type": "string"
+      },
+      "version": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "version",
+      "generated_by",
+      "generated_at",
+      "task_id",
+      "status",
+      "summary",
+      "blocking_items",
+      "blocking_details",
+      "evidence_status",
+      "check_summary",
+      "artifact_summary",
+      "review_ready",
+      "ready_for_apply",
+      "decision",
+      "recommendation"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 2
+}

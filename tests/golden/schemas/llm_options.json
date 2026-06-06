@@ -1,0 +1,36 @@
+{
+  "name": "llm-options",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "enabled": {
+        "type": "boolean"
+      },
+      "model": {
+        "type": "string"
+      },
+      "narrative_sections": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "provider": {
+        "type": "string"
+      },
+      "timeout_seconds": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "enabled",
+      "provider",
+      "model",
+      "timeout_seconds",
+      "narrative_sections"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

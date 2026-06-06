@@ -6,6 +6,7 @@ from typing import Any
 from .model import ProjectInfo
 from .detect.model import DetectResult
 from .constants import DEFAULT_PACK_OUTPUT_DIR, DEFAULT_PACK_LLMS_FORMAT
+from .validators import validate_tool_config_payload
 
 
 @dataclass(frozen=True)
@@ -63,7 +64,7 @@ class ToolConfig:
     )
 
     def to_json(self) -> dict[str, Any]:
-        return {
+        payload = {
             "version": self.version,
             "mode": self.mode,
             "on_missing_markers": self.on_missing_markers,
@@ -83,6 +84,8 @@ class ToolConfig:
                 "files": list(self.pack.files),
             },
         }
+        validate_tool_config_payload(payload)
+        return payload
 
     @staticmethod
     def from_json(d: dict[str, Any]) -> "ToolConfig":
@@ -97,6 +100,7 @@ class ToolConfig:
             }
             return cfg
 
+        validate_tool_config_payload(dict(d))
         cfg = ToolConfig()
         cfg.version = int(d.get("version", 1))
         cfg.mode = str(d.get("mode", "safe"))

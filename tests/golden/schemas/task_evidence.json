@@ -1,0 +1,181 @@
+{
+  "name": "task.evidence",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "artifact_details": {
+        "items": {
+          "additional_properties": true,
+          "properties": {
+            "kind": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            },
+            "present": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "path",
+            "kind",
+            "present"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "artifact_summary": {
+        "additional_properties": true,
+        "properties": {
+          "missing": {
+            "type": "integer"
+          },
+          "present": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total",
+          "present",
+          "missing"
+        ],
+        "type": "object"
+      },
+      "artifacts": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "changed_files": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "changed_files_count": {
+        "type": "integer"
+      },
+      "check_summary": {
+        "additional_properties": true,
+        "properties": {
+          "failed": {
+            "type": "integer"
+          },
+          "passed": {
+            "type": "integer"
+          },
+          "pending": {
+            "type": "integer"
+          },
+          "recorded": {
+            "type": "integer"
+          },
+          "total": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "total",
+          "passed",
+          "failed",
+          "pending",
+          "recorded"
+        ],
+        "type": "object"
+      },
+      "checks": {
+        "items": {
+          "additional_properties": true,
+          "properties": {
+            "kind": {
+              "type": "string"
+            },
+            "name": {
+              "type": "string"
+            },
+            "required": {
+              "type": "boolean"
+            },
+            "status": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "name",
+            "status",
+            "required",
+            "kind"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "contract_present": {
+        "type": "boolean"
+      },
+      "evidence_status": {
+        "type": "string"
+      },
+      "generated_at": {
+        "type": "string"
+      },
+      "generated_by": {
+        "type": "string"
+      },
+      "notes": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "repo_state": {
+        "additional_properties": true,
+        "properties": {
+          "git_available": {
+            "type": "boolean"
+          },
+          "working_tree_dirty": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "git_available",
+          "working_tree_dirty"
+        ],
+        "type": "object"
+      },
+      "task_id": {
+        "type": "string"
+      },
+      "version": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "version",
+      "generated_by",
+      "generated_at",
+      "task_id",
+      "checks",
+      "check_summary",
+      "changed_files",
+      "changed_files_count",
+      "artifacts",
+      "artifact_details",
+      "artifact_summary",
+      "contract_present",
+      "evidence_status",
+      "repo_state",
+      "notes"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 2
+}

@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "generated_by": "agentsgen",
+  "generated_at": "2026-06-06T17:27:36Z",
+  "repo": {
+    "path": ".",
+    "stack": "python",
+    "autodetect": true
+  },
+  "commands": [
+    {
+      "id": "test",
+      "title": "Test",
+      "command": "uv run pytest",
+      "cwd": ".",
+      "source": {
+        "kind": "config",
+        "hint": ".agentsgen.json:commands.test"
+      },
+      "notes": ""
+    },
+    {
+      "id": "lint",
+      "title": "Lint",
+      "command": "uv run ruff check .",
+      "cwd": ".",
+      "source": {
+        "kind": "config",
+        "hint": ".agentsgen.json:commands.lint"
+      },
+      "notes": ""
+    },
+    {
+      "id": "format",
+      "title": "Format",
+      "command": "uv run ruff format .",
+      "cwd": ".",
+      "source": {
+        "kind": "config",
+        "hint": ".agentsgen.json:commands.format"
+      },
+      "notes": ""
+    },
+    {
+      "id": "fast",
+      "title": "Fast",
+      "command": "uv run pytest -q",
+      "cwd": ".",
+      "source": {
+        "kind": "config",
+        "hint": ".agentsgen.json:commands.fast"
+      },
+      "notes": ""
+    }
+  ]
+}

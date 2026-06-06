@@ -1,0 +1,61 @@
+{
+  "name": "cli-pack-response",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "check": {
+        "type": "boolean"
+      },
+      "dry_run": {
+        "type": "boolean"
+      },
+      "results": {
+        "items": {
+          "additional_properties": true,
+          "properties": {
+            "action": {
+              "type": "string"
+            },
+            "changed": {
+              "type": "boolean"
+            },
+            "diff": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "action",
+            "message",
+            "changed",
+            "diff"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "status": {
+        "type": "string"
+      },
+      "summary": {
+        "type": "string"
+      }
+    },
+    "required": [
+      "status",
+      "summary",
+      "check",
+      "dry_run",
+      "results"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

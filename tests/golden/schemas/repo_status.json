@@ -1,0 +1,148 @@
+{
+  "name": "repo-status-report",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "agents_md": {
+        "additional_properties": true,
+        "properties": {
+          "generated_sibling": {
+            "type": "boolean"
+          },
+          "marker_sections": {
+            "type": "integer"
+          },
+          "markers": {
+            "type": "boolean"
+          },
+          "present": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "present",
+          "markers",
+          "marker_sections",
+          "generated_sibling"
+        ],
+        "type": "object"
+      },
+      "config": {
+        "additional_properties": true,
+        "properties": {
+          "present": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "present"
+        ],
+        "type": "object"
+      },
+      "generated": {
+        "additional_properties": true,
+        "properties": {
+          "count": {
+            "type": "integer"
+          },
+          "files": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "count",
+          "files"
+        ],
+        "type": "object"
+      },
+      "pack": {
+        "additional_properties": true,
+        "properties": {
+          "errors": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "findings": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "status": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "status",
+          "findings",
+          "errors"
+        ],
+        "type": "object"
+      },
+      "path": {
+        "type": "string"
+      },
+      "runbook_md": {
+        "additional_properties": true,
+        "properties": {
+          "generated_sibling": {
+            "type": "boolean"
+          },
+          "marker_sections": {
+            "type": "integer"
+          },
+          "markers": {
+            "type": "boolean"
+          },
+          "present": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "present",
+          "markers",
+          "marker_sections",
+          "generated_sibling"
+        ],
+        "type": "object"
+      },
+      "status": {
+        "type": "string"
+      },
+      "summary": {
+        "additional_properties": true,
+        "properties": {
+          "drift": {
+            "type": "integer"
+          },
+          "errors": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "drift",
+          "errors"
+        ],
+        "type": "object"
+      }
+    },
+    "required": [
+      "status",
+      "path",
+      "config",
+      "agents_md",
+      "runbook_md",
+      "pack",
+      "generated",
+      "summary"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

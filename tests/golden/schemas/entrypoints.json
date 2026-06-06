@@ -1,0 +1,95 @@
+{
+  "name": "agents.entrypoints",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "commands": {
+        "items": {
+          "additional_properties": true,
+          "properties": {
+            "command": {
+              "type": "string"
+            },
+            "cwd": {
+              "type": "string"
+            },
+            "id": {
+              "type": "string"
+            },
+            "notes": {
+              "type": "string"
+            },
+            "source": {
+              "additional_properties": true,
+              "properties": {
+                "hint": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "kind",
+                "hint"
+              ],
+              "type": "object"
+            },
+            "title": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "id",
+            "title",
+            "command",
+            "cwd",
+            "source",
+            "notes"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "generated_at": {
+        "type": "string"
+      },
+      "generated_by": {
+        "type": "string"
+      },
+      "repo": {
+        "additional_properties": true,
+        "properties": {
+          "autodetect": {
+            "type": "boolean"
+          },
+          "path": {
+            "type": "string"
+          },
+          "stack": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path",
+          "stack",
+          "autodetect"
+        ],
+        "type": "object"
+      },
+      "version": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "version",
+      "generated_by",
+      "generated_at",
+      "repo",
+      "commands"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

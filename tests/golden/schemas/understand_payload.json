@@ -1,0 +1,252 @@
+{
+  "name": "understand-payload",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "compact_repomap": {
+        "type": "string"
+      },
+      "graph": {
+        "type": "string"
+      },
+      "knowledge": {
+        "additional_properties": true,
+        "properties": {
+          "changed_files": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "edges": {
+            "items": {
+              "additional_properties": true,
+              "properties": {
+                "from": {
+                  "type": "string"
+                },
+                "kind": {
+                  "type": "string"
+                },
+                "to": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "from",
+                "to",
+                "kind"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "entrypoint_files": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "entrypoints": {
+            "items": {
+              "additional_properties": true,
+              "properties": {
+                "command": {
+                  "type": "string"
+                },
+                "label": {
+                  "type": "string"
+                },
+                "source": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "label",
+                "command",
+                "source"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "files": {
+            "items": {
+              "additional_properties": true,
+              "properties": {
+                "language": {
+                  "type": "string"
+                },
+                "path": {
+                  "type": "string"
+                },
+                "size": {
+                  "type": "integer"
+                },
+                "symbols_count": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "path",
+                "size",
+                "language",
+                "symbols_count"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "generated_at": {
+            "type": "string"
+          },
+          "relevance": {
+            "items": {
+              "additional_properties": true,
+              "properties": {
+                "changed": {
+                  "type": "boolean"
+                },
+                "distance_from_entrypoint": {
+                  "nullable": true,
+                  "type": "integer"
+                },
+                "entrypoint": {
+                  "type": "boolean"
+                },
+                "path": {
+                  "type": "string"
+                },
+                "score": {
+                  "type": "integer"
+                },
+                "signals": {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array"
+                }
+              },
+              "required": [
+                "path",
+                "score",
+                "signals",
+                "changed",
+                "entrypoint"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          },
+          "repo_path": {
+            "type": "string"
+          },
+          "slice": {
+            "additional_properties": true,
+            "properties": {
+              "changed_matches": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "changed_only": {
+                "type": "boolean"
+              },
+              "focus": {
+                "nullable": true,
+                "type": "string"
+              },
+              "focus_matches": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "focus_matches",
+              "changed_only",
+              "changed_matches"
+            ],
+            "type": "object"
+          },
+          "version": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version",
+          "repo_path",
+          "generated_at",
+          "files",
+          "edges",
+          "entrypoints",
+          "changed_files",
+          "entrypoint_files",
+          "slice",
+          "relevance"
+        ],
+        "type": "object"
+      },
+      "repomap": {
+        "type": "string"
+      },
+      "stack": {
+        "type": "string"
+      },
+      "summary": {
+        "additional_properties": true,
+        "properties": {
+          "changed_files_count": {
+            "type": "integer"
+          },
+          "changed_only": {
+            "type": "boolean"
+          },
+          "compact_budget_tokens": {
+            "type": "integer"
+          },
+          "edges_count": {
+            "type": "integer"
+          },
+          "entrypoints_count": {
+            "type": "integer"
+          },
+          "files_count": {
+            "type": "integer"
+          },
+          "focus": {
+            "nullable": true,
+            "type": "string"
+          },
+          "slice_files_count": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "files_count",
+          "edges_count",
+          "entrypoints_count",
+          "changed_files_count",
+          "compact_budget_tokens",
+          "focus",
+          "changed_only",
+          "slice_files_count"
+        ],
+        "type": "object"
+      }
+    },
+    "required": [
+      "stack",
+      "repomap",
+      "compact_repomap",
+      "graph",
+      "knowledge",
+      "summary"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

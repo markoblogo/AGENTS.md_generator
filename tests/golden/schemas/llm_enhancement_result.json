@@ -1,0 +1,32 @@
+{
+  "name": "llm-enhancement-result",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "applied": {
+        "type": "boolean"
+      },
+      "message": {
+        "type": "string"
+      },
+      "provider": {
+        "type": "string"
+      },
+      "sections": {
+        "additional_properties": true,
+        "properties": {},
+        "required": [],
+        "type": "object"
+      }
+    },
+    "required": [
+      "provider",
+      "applied",
+      "sections",
+      "message"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

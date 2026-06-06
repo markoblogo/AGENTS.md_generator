@@ -1,0 +1,334 @@
+{
+  "name": "mcp-check-response",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "path": {
+        "type": "string"
+      },
+      "result": {
+        "additional_properties": true,
+        "properties": {
+          "checks": {
+            "additional_properties": true,
+            "properties": {
+              "core": {
+                "additional_properties": true,
+                "properties": {
+                  "drift_count": {
+                    "type": "integer"
+                  },
+                  "error_count": {
+                    "type": "integer"
+                  },
+                  "raw": {
+                    "additional_properties": true,
+                    "properties": {
+                      "exit_code": {
+                        "type": "integer"
+                      },
+                      "problems": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "warnings": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      }
+                    },
+                    "required": [
+                      "exit_code",
+                      "problems",
+                      "warnings"
+                    ],
+                    "type": "object"
+                  },
+                  "results": {
+                    "items": {
+                      "additional_properties": true,
+                      "properties": {
+                        "level": {
+                          "type": "string"
+                        },
+                        "message": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "level",
+                        "message"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "warnings_count": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "status",
+                  "drift_count",
+                  "error_count",
+                  "warnings_count",
+                  "results",
+                  "raw"
+                ],
+                "type": "object"
+              },
+              "pack": {
+                "additional_properties": true,
+                "nullable": true,
+                "properties": {
+                  "drift_count": {
+                    "type": "integer"
+                  },
+                  "error_count": {
+                    "type": "integer"
+                  },
+                  "raw": {
+                    "additional_properties": true,
+                    "properties": {
+                      "check": {
+                        "type": "boolean"
+                      },
+                      "dry_run": {
+                        "type": "boolean"
+                      },
+                      "results": {
+                        "items": {
+                          "additional_properties": true,
+                          "properties": {
+                            "action": {
+                              "type": "string"
+                            },
+                            "changed": {
+                              "type": "boolean"
+                            },
+                            "diff": {
+                              "type": "string"
+                            },
+                            "message": {
+                              "type": "string"
+                            },
+                            "path": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "path",
+                            "action",
+                            "message",
+                            "changed",
+                            "diff"
+                          ],
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "status": {
+                        "type": "string"
+                      },
+                      "summary": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "summary",
+                      "check",
+                      "dry_run",
+                      "results"
+                    ],
+                    "type": "object"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "status",
+                  "drift_count",
+                  "error_count",
+                  "raw"
+                ],
+                "type": "object"
+              },
+              "snippets": {
+                "additional_properties": true,
+                "nullable": true,
+                "properties": {
+                  "drift_count": {
+                    "type": "integer"
+                  },
+                  "error_count": {
+                    "type": "integer"
+                  },
+                  "raw": {
+                    "additional_properties": true,
+                    "properties": {
+                      "check": {
+                        "type": "boolean"
+                      },
+                      "diff": {
+                        "type": "string"
+                      },
+                      "dry_run": {
+                        "type": "boolean"
+                      },
+                      "format_version": {
+                        "type": "integer"
+                      },
+                      "message": {
+                        "type": "string"
+                      },
+                      "output_path": {
+                        "type": "string"
+                      },
+                      "readme_path": {
+                        "type": "string"
+                      },
+                      "snippets": {
+                        "items": {
+                          "additional_properties": true,
+                          "properties": {
+                            "content": {
+                              "type": "string"
+                            },
+                            "end_line": {
+                              "type": "integer"
+                            },
+                            "name": {
+                              "type": "string"
+                            },
+                            "start_line": {
+                              "type": "integer"
+                            }
+                          },
+                          "required": [
+                            "name",
+                            "start_line",
+                            "end_line",
+                            "content"
+                          ],
+                          "type": "object"
+                        },
+                        "type": "array"
+                      },
+                      "snippets_count": {
+                        "type": "integer"
+                      },
+                      "status": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "status",
+                      "check",
+                      "dry_run",
+                      "format_version",
+                      "readme_path",
+                      "output_path",
+                      "snippets_count",
+                      "snippets"
+                    ],
+                    "type": "object"
+                  },
+                  "reason": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "status",
+                  "drift_count",
+                  "error_count",
+                  "raw"
+                ],
+                "type": "object"
+              }
+            },
+            "required": [
+              "core",
+              "pack",
+              "snippets"
+            ],
+            "type": "object"
+          },
+          "command": {
+            "type": "string"
+          },
+          "path": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "summary": {
+            "additional_properties": true,
+            "properties": {
+              "drift_count": {
+                "type": "integer"
+              },
+              "error_count": {
+                "type": "integer"
+              },
+              "ok": {
+                "type": "boolean"
+              },
+              "skipped_count": {
+                "type": "integer"
+              }
+            },
+            "required": [
+              "ok",
+              "drift_count",
+              "error_count",
+              "skipped_count"
+            ],
+            "type": "object"
+          },
+          "version": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "version",
+          "command",
+          "path",
+          "status",
+          "checks",
+          "summary"
+        ],
+        "type": "object"
+      },
+      "tool": {
+        "type": "string"
+      },
+      "version": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "version",
+      "tool",
+      "path",
+      "result"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

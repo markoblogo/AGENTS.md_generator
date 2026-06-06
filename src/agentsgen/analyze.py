@@ -10,7 +10,9 @@ from typing import Any
 from urllib.parse import urljoin, urlparse
 from urllib.request import Request, urlopen
 
-from .actions import FileResult, _handle_generated_json_file
+from .generated_artifacts import handle_generated_json_artifact
+from .result_types import FileResult
+from .validators import validate_analysis_payload
 
 
 _TITLE_RE = re.compile(r"<title[^>]*>(.*?)</title>", re.IGNORECASE | re.DOTALL)
@@ -328,6 +330,7 @@ def build_analysis_payload(url: str, *, use_ai: bool = False) -> dict[str, Any]:
     if use_ai:
         payload["ai_review"] = _openai_review(fetch.url, html, text_content)
     payload["generated_at"] = _utc_now_iso()
+    validate_analysis_payload(payload)
     return payload
 
 
@@ -358,7 +361,7 @@ def apply_analysis(
             ) == _stable_payload_without_timestamp(payload):
                 payload["generated_at"] = str(existing.get("generated_at", "") or "")
 
-    result = _handle_generated_json_file(
+    result = handle_generated_json_artifact(
         output_path,
         json.dumps(payload, indent=2) + "\n",
         dry_run=dry_run,

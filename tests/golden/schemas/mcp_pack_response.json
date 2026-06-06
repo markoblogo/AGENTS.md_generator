@@ -1,0 +1,98 @@
+{
+  "name": "mcp-pack-response",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "check": {
+        "type": "boolean"
+      },
+      "drift": {
+        "type": "boolean"
+      },
+      "dry_run": {
+        "type": "boolean"
+      },
+      "path": {
+        "type": "string"
+      },
+      "results": {
+        "items": {
+          "additional_properties": true,
+          "properties": {
+            "action": {
+              "type": "string"
+            },
+            "changed": {
+              "type": "boolean"
+            },
+            "diff": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "action",
+            "message",
+            "changed",
+            "diff"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "status": {
+        "type": "string"
+      },
+      "summary": {
+        "type": "string"
+      },
+      "tool": {
+        "type": "string"
+      },
+      "version": {
+        "type": "integer"
+      },
+      "write_policy": {
+        "additional_properties": true,
+        "properties": {
+          "may_write": {
+            "type": "boolean"
+          },
+          "mode": {
+            "type": "string"
+          },
+          "writes_applied": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "mode",
+          "may_write",
+          "writes_applied"
+        ],
+        "type": "object"
+      }
+    },
+    "required": [
+      "version",
+      "tool",
+      "path",
+      "status",
+      "summary",
+      "dry_run",
+      "check",
+      "drift",
+      "write_policy",
+      "results"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

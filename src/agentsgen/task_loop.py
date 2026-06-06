@@ -6,7 +6,14 @@ import subprocess
 from datetime import datetime, timezone
 from pathlib import Path
 
-from .actions import FileResult, _handle_file, _handle_generated_json_file
+from .generated_artifacts import handle_generated_json_artifact
+from .patch_engine import handle_file
+from .result_types import FileResult
+from .validators import (
+    validate_task_contract_payload,
+    validate_task_evidence_payload,
+    validate_task_verdict_payload,
+)
 
 _TASK_ID_RE = re.compile(r"^[a-z0-9][a-z0-9._-]*$")
 _CONTRACT_SECTION = "task_contract"
@@ -120,7 +127,8 @@ def apply_task_init(
         "acceptance": acceptance_rows,
         "path": str(output_path.relative_to(root)).replace("\\", "/"),
     }
-    result = _handle_file(
+    validate_task_contract_payload(payload)
+    result = handle_file(
         output_path,
         build_contract_markdown(
             task_id=normalized_task_id,
@@ -379,7 +387,8 @@ def apply_task_evidence(
         "notes": [item.strip() for item in notes if item.strip()],
     }
     payload = _preserve_generated_timestamp(payload, output_path)
-    result = _handle_generated_json_file(
+    validate_task_evidence_payload(payload)
+    result = handle_generated_json_artifact(
         output_path,
         json.dumps(payload, indent=2) + "\n",
         dry_run=dry_run,
@@ -468,7 +477,8 @@ def apply_task_verdict(
         ),
     }
     payload = _preserve_generated_timestamp(payload, output_path)
-    result = _handle_generated_json_file(
+    validate_task_verdict_payload(payload)
+    result = handle_generated_json_artifact(
         output_path,
         json.dumps(payload, indent=2) + "\n",
         dry_run=dry_run,

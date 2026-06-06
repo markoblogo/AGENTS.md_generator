@@ -1,0 +1,25 @@
+{
+  "name": "write-policy",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "may_write": {
+        "type": "boolean"
+      },
+      "mode": {
+        "type": "string"
+      },
+      "writes_applied": {
+        "type": "boolean"
+      }
+    },
+    "required": [
+      "mode",
+      "may_write",
+      "writes_applied"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}
