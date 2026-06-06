@@ -51,7 +51,12 @@ def test_validate_tool_config_payload_accepts_v1_shape() -> None:
             "paths": {},
             "commands": {},
             "evidence": {},
-            "pack": {"enabled": True, "llms_format": "txt", "output_dir": "docs/ai", "files": []},
+            "pack": {
+                "enabled": True,
+                "llms_format": "txt",
+                "output_dir": "docs/ai",
+                "files": [],
+            },
         }
     )
 
@@ -138,7 +143,11 @@ def test_validate_other_payloads_accept_minimal_shapes() -> None:
             "entrypoints": [],
             "changed_files": [],
             "entrypoint_files": [],
-            "slice": {"focus_matches": [], "changed_only": False, "changed_matches": []},
+            "slice": {
+                "focus_matches": [],
+                "changed_only": False,
+                "changed_matches": [],
+            },
             "relevance": [],
         }
     )
@@ -147,7 +156,12 @@ def test_validate_other_payloads_accept_minimal_shapes() -> None:
             "version": 1,
             "generated_by": "agentsgen",
             "generated_at": "",
-            "repo": {"name": "repo", "path": ".", "stack": "python", "autodetect": True},
+            "repo": {
+                "name": "repo",
+                "path": ".",
+                "stack": "python",
+                "autodetect": True,
+            },
             "handoff": {
                 "consumer": "ID",
                 "target": "agentsmd",

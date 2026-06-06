@@ -3,7 +3,7 @@
 From repo root:
 
 ```sh
-pipx install .
+pipx install git+https://github.com/markoblogo/AGENTS.md_generator.git
 ```
 
 Then:

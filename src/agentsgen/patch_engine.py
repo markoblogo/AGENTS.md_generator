@@ -14,7 +14,11 @@ from .generate import (
 from .config import ToolConfig
 from .config_io import load_tool_config
 from .io_utils import read_text, write_text_atomic
-from .markers import extract_section_content, has_any_agentsgen_markers, replace_section_content
+from .markers import (
+    extract_section_content,
+    has_any_agentsgen_markers,
+    replace_section_content,
+)
 from .model import ProjectInfo
 from .normalize import normalize_markdown
 from .result_types import FileResult
@@ -92,7 +96,9 @@ def handle_file(
     existing = read_text(path)
     if not has_any_agentsgen_markers(existing):
         generated_path = generated_sibling_path(path)
-        changed, diff = write_or_diff(generated_path, generated_full, dry_run, print_diff)
+        changed, diff = write_or_diff(
+            generated_path, generated_full, dry_run, print_diff
+        )
         return FileResult(
             path=generated_path,
             action="generated",
@@ -154,7 +160,9 @@ def render_shared_blocks_detailed(
         for section, extra in enhancement.sections.items():
             base = blocks.get(section, "").strip()
             blocks[section] = (
-                f"{base}\n\n{extra.strip()}" if base and extra.strip() else extra.strip()
+                f"{base}\n\n{extra.strip()}"
+                if base and extra.strip()
+                else extra.strip()
             )
     return blocks, enhancement
 

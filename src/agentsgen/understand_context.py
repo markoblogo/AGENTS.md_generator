@@ -675,7 +675,9 @@ def write_or_diff_raw(path: Path, new_content: str, dry_run: bool) -> tuple[bool
     return True, ""
 
 
-def handle_mermaid_file(path: Path, generated_full: str, *, dry_run: bool) -> FileResult:
+def handle_mermaid_file(
+    path: Path, generated_full: str, *, dry_run: bool
+) -> FileResult:
     if not path.exists():
         changed, diff = write_or_diff_raw(path, generated_full, dry_run=dry_run)
         return FileResult(

@@ -28,17 +28,40 @@ from .validators import (
 def register_extra_commands(app: typer.Typer) -> None:
     @app.command()
     def understand(
-        target: Path = typer.Argument(Path("."), exists=True, file_okay=False, dir_okay=True),
+        target: Path = typer.Argument(
+            Path("."), exists=True, file_okay=False, dir_okay=True
+        ),
         format: str = typer.Option("text", "--format", help="Output format: text|json"),
-        output_dir: str = typer.Option("docs/ai", "--output-dir", help="Where to write repomap.md and graph.mmd"),
-        compact_budget: int = typer.Option(4000, "--compact-budget", min=256, help="Approximate token budget for repomap.compact.md"),
-        focus: str | None = typer.Option(None, "--focus", help="Limit compact repomap and relevance ranking to files matching this path/content query and nearby imports"),
-        changed: bool = typer.Option(False, "--changed", help="Limit compact repomap and relevance ranking to changed files and nearby imports"),
+        output_dir: str = typer.Option(
+            "docs/ai", "--output-dir", help="Where to write repomap.md and graph.mmd"
+        ),
+        compact_budget: int = typer.Option(
+            4000,
+            "--compact-budget",
+            min=256,
+            help="Approximate token budget for repomap.compact.md",
+        ),
+        focus: str | None = typer.Option(
+            None,
+            "--focus",
+            help="Limit compact repomap and relevance ranking to files matching this path/content query and nearby imports",
+        ),
+        changed: bool = typer.Option(
+            False,
+            "--changed",
+            help="Limit compact repomap and relevance ranking to changed files and nearby imports",
+        ),
     ):
         out_dir = Path(output_dir)
         if not out_dir.is_absolute():
             out_dir = target / out_dir
-        results, payload = apply_understanding(target, output_dir=out_dir, compact_budget_tokens=compact_budget, focus=focus, changed_only=changed)
+        results, payload = apply_understanding(
+            target,
+            output_dir=out_dir,
+            compact_budget_tokens=compact_budget,
+            focus=focus,
+            changed_only=changed,
+        )
         errors = [row for row in results if row.action == "error"]
         response = {
             "version": 1,
@@ -77,20 +100,37 @@ def register_extra_commands(app: typer.Typer) -> None:
     @app.command()
     def analyze(
         url: str = typer.Argument(..., help="Website URL to analyze"),
-        target: Path = typer.Argument(Path("."), exists=True, file_okay=False, dir_okay=True),
+        target: Path = typer.Argument(
+            Path("."), exists=True, file_okay=False, dir_okay=True
+        ),
         format: str = typer.Option("text", "--format", help="Output format: text|json"),
-        output: Path | None = typer.Option(None, "--output", help="Output JSON file (default docs/ai/llmo-score.json)"),
-        use_ai: bool = typer.Option(False, "--use-ai", help="Add an advisory OpenAI review (requires OPENAI_API_KEY)"),
+        output: Path | None = typer.Option(
+            None, "--output", help="Output JSON file (default docs/ai/llmo-score.json)"
+        ),
+        use_ai: bool = typer.Option(
+            False,
+            "--use-ai",
+            help="Add an advisory OpenAI review (requires OPENAI_API_KEY)",
+        ),
         dry_run: bool = typer.Option(False, "--dry-run", help="Do not write files"),
     ):
         output_path = resolve_repo_file(target, output, "docs/ai/llmo-score.json")
         try:
-            results, payload = apply_analysis(target, url=url, output_path=output_path, use_ai=use_ai, dry_run=dry_run)
+            results, payload = apply_analysis(
+                target, url=url, output_path=output_path, use_ai=use_ai, dry_run=dry_run
+            )
         except ValueError as exc:
             err_console.print(f"ERROR: {exc}")
             raise typer.Exit(code=1)
         errors = [row for row in results if row.action == "error"]
-        response = {"version": 1, "command": "analyze", "path": str(target), "output": str(output_path), "result": payload, "results": results_payload(results)}
+        response = {
+            "version": 1,
+            "command": "analyze",
+            "path": str(target),
+            "output": str(output_path),
+            "result": payload,
+            "results": results_payload(results),
+        }
         validate_cli_analyze_response_payload(response)
         if format == "json":
             print_json(response)
@@ -111,19 +151,32 @@ def register_extra_commands(app: typer.Typer) -> None:
     @app.command()
     def meta(
         url: str = typer.Argument(..., help="Website URL to generate metadata for"),
-        target: Path = typer.Argument(Path("."), exists=True, file_okay=False, dir_okay=True),
+        target: Path = typer.Argument(
+            Path("."), exists=True, file_okay=False, dir_okay=True
+        ),
         format: str = typer.Option("text", "--format", help="Output format: text|json"),
-        output: Path | None = typer.Option(None, "--output", help="Output JSON file (default docs/ai/llmo-meta.json)"),
+        output: Path | None = typer.Option(
+            None, "--output", help="Output JSON file (default docs/ai/llmo-meta.json)"
+        ),
         dry_run: bool = typer.Option(False, "--dry-run", help="Do not write files"),
     ):
         output_path = resolve_repo_file(target, output, "docs/ai/llmo-meta.json")
         try:
-            results, payload = apply_metadata(target, url=url, output_path=output_path, dry_run=dry_run)
+            results, payload = apply_metadata(
+                target, url=url, output_path=output_path, dry_run=dry_run
+            )
         except ValueError as exc:
             err_console.print(f"ERROR: {exc}")
             raise typer.Exit(code=1)
         errors = [row for row in results if row.action == "error"]
-        response = {"version": 1, "command": "meta", "path": str(target), "output": str(output_path), "result": payload, "results": results_payload(results)}
+        response = {
+            "version": 1,
+            "command": "meta",
+            "path": str(target),
+            "output": str(output_path),
+            "result": payload,
+            "results": results_payload(results),
+        }
         validate_cli_meta_response_payload(response)
         if format == "json":
             print_json(response)
@@ -139,9 +192,15 @@ def register_extra_commands(app: typer.Typer) -> None:
 
     @app.command()
     def detect(
-        repo: Path = typer.Argument(Path("."), exists=True, file_okay=False, dir_okay=True),
+        repo: Path = typer.Argument(
+            Path("."), exists=True, file_okay=False, dir_okay=True
+        ),
         format: str = typer.Option("text", "--format", help="Output format: text|json"),
-        explain: bool = typer.Option(False, "--explain", help="Print rationale (why detection chose these values)"),
+        explain: bool = typer.Option(
+            False,
+            "--explain",
+            help="Print rationale (why detection chose these values)",
+        ),
     ):
         det = detect_repo(repo)
         validate_detect_result_payload(det.to_json())

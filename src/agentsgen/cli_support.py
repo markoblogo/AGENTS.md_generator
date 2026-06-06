@@ -126,7 +126,11 @@ def interactive_init(
 ):
     det = detect_repo(target)
     suggested = str(det.project.get("primary_stack", "static"))
-    confidence = "high" if (det.evidence.python or det.evidence.node or det.evidence.make) else "low"
+    confidence = (
+        "high"
+        if (det.evidence.python or det.evidence.node or det.evidence.make)
+        else "low"
+    )
     if suggested == "mixed":
         suggested = "static"
     if defaults:
@@ -176,7 +180,11 @@ def interactive_init(
     opt("Lint command (optional)", "lint", info.commands.get("lint", ""))
     opt("Format command (optional)", "format", info.commands.get("format", ""))
     opt("Build command (optional)", "build", info.commands.get("build", ""))
-    opt("Single test hint (optional)", "single_test", info.commands.get("single_test", ""))
+    opt(
+        "Single test hint (optional)",
+        "single_test",
+        info.commands.get("single_test", ""),
+    )
     info.source_dirs = parse_csv(
         typer.prompt(
             "Source dirs (comma-separated)",

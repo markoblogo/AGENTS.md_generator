@@ -4,6 +4,7 @@ from typing import Any
 
 from .contracts import validate_contract_payload
 
+
 def _require_mapping(name: str, value: object) -> dict[str, Any]:
     if not isinstance(value, dict):
         raise ValueError(f"{name} must be an object")

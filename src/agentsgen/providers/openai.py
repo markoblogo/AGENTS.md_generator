@@ -2,7 +2,12 @@ from __future__ import annotations
 
 import os
 
-from ..llm import LLMEnhancementRequest, LLMEnhancementResult, LLMEnhancer, build_repo_context
+from ..llm import (
+    LLMEnhancementRequest,
+    LLMEnhancementResult,
+    LLMEnhancer,
+    build_repo_context,
+)
 
 
 class OpenAIEnhancer(LLMEnhancer):

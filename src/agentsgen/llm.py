@@ -16,7 +16,9 @@ class LLMOptions:
     provider: str = ""
     model: str = ""
     timeout_seconds: int = 30
-    narrative_sections: tuple[str, ...] = field(default_factory=lambda: ("repo_context",))
+    narrative_sections: tuple[str, ...] = field(
+        default_factory=lambda: ("repo_context",)
+    )
 
     def normalized(self) -> "LLMOptions":
         provider = (self.provider or "").strip().lower()
@@ -62,7 +64,9 @@ class LLMEnhancementRequest:
     provider: str
     model: str = ""
     timeout_seconds: int = 30
-    narrative_sections: tuple[str, ...] = field(default_factory=lambda: ("repo_context",))
+    narrative_sections: tuple[str, ...] = field(
+        default_factory=lambda: ("repo_context",)
+    )
 
 
 @dataclass(frozen=True)

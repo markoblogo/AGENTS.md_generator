@@ -29,10 +29,13 @@ def test_golden_python_uv_outputs(tmp_path: Path) -> None:
     target = tmp_path / "repo"
     _copy_fixture(FIXTURES / "python_uv", target)
 
-    assert runner.invoke(
-        app,
-        ["init", str(target), "--defaults", "--autodetect", "--name", "repo"],
-    ).exit_code == 0
+    assert (
+        runner.invoke(
+            app,
+            ["init", str(target), "--defaults", "--autodetect", "--name", "repo"],
+        ).exit_code
+        == 0
+    )
     assert runner.invoke(app, ["pack", str(target), "--autodetect"]).exit_code == 0
     assert runner.invoke(app, ["understand", str(target)]).exit_code == 0
 

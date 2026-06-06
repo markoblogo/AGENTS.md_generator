@@ -156,10 +156,7 @@ def register_pack_commands(app: typer.Typer) -> None:
                     "plan": plan,
                 }
                 validate_cli_pack_plan_response_payload(payload)
-                sys.stdout.write(
-                    json.dumps(payload, indent=2)
-                    + "\n"
-                )
+                sys.stdout.write(json.dumps(payload, indent=2) + "\n")
             else:
                 _print_pack_plan_header(
                     target=target,
@@ -187,10 +184,7 @@ def register_pack_commands(app: typer.Typer) -> None:
                 "results": _results_payload(results),
             }
             validate_cli_pack_response_payload(payload)
-            sys.stdout.write(
-                json.dumps(payload, indent=2)
-                + "\n"
-            )
+            sys.stdout.write(json.dumps(payload, indent=2) + "\n")
         else:
             _print_results(results, print_diff=print_diff)
             console.print(summary)
@@ -230,9 +224,7 @@ def register_pack_commands(app: typer.Typer) -> None:
     ):
         """Generate or validate README snippet extracts from AGENTSGEN snippet markers."""
         readme_path = _resolve_repo_file(target, readme, "README.md")
-        output_path = _resolve_repo_file(
-            target, output, "README_SNIPPETS.generated.md"
-        )
+        output_path = _resolve_repo_file(target, output, "README_SNIPPETS.generated.md")
 
         report = generate_readme_snippets(
             target,

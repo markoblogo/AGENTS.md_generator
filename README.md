@@ -1,11 +1,12 @@
 # AGENTS.md Generator (`agentsgen`)
-Safe repo docs + PR Guard + AI docs bundle for coding agents.
+
+**Stop writing `AGENTS.md` by hand.** `agentsgen` generates and safely updates repo contracts for AI coding agents in seconds, without overwriting handwritten docs.
 
 [![CI](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/ci.yml/badge.svg)](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/ci.yml)
-[![Pages](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/pages/pages-build-deployment)
 [![Release](https://img.shields.io/github/v/release/markoblogo/AGENTS.md_generator?display_name=tag&sort=semver)](https://github.com/markoblogo/AGENTS.md_generator/releases)
 [![License](https://img.shields.io/github/license/markoblogo/AGENTS.md_generator)](LICENSE)
 [![Python](https://img.shields.io/badge/python-%3E%3D3.11-blue)](pyproject.toml)
+[![Pages](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/pages/pages-build-deployment)
 
 Landing: https://agentsmd.abvx.xyz/
 Manifest: https://github.com/markoblogo/AGENTS.md_generator/blob/main/docs/manifest.md
@@ -14,6 +15,26 @@ Listed on ABVX Lab: https://lab.abvx.xyz/
 Orchestrated with SET: https://github.com/markoblogo/SET
 Human context with ID: https://github.com/markoblogo/ID
 Reusable skills: https://github.com/markoblogo/abvx-agent-skills
+
+![agentsgen screenshot](docs/agentsmdscreen.png)
+
+## Why this exists
+
+Most agent tooling still asks teams to hand-maintain repo instructions, copy/paste prompts, and hope nothing drifts.
+`agentsgen` turns that into a small, reviewable system:
+
+- generate `AGENTS.md` and `RUNBOOK.md`
+- update only inside explicit markers
+- emit machine-readable repo context for CI, MCP, and pack workflows
+- fail safely to `*.generated.md` when a file is not marker-managed
+
+## Works great with
+
+- Cursor
+- Claude Code
+- Codex
+- Copilot Workspace
+- Aider
 
 `agentsgen` is the repo-intelligence runtime in the ABVX ecosystem: use it directly in a repo, or call it through `SET` when you want one thin orchestration entrypoint.
 It now ships a reliability-first core with split CLI/actions/understand modules, versioned JSON contracts across CLI and MCP surfaces, and opt-in LLM enhancement that falls back cleanly to local-only behavior.
@@ -25,6 +46,14 @@ Small, production-grade CLI to generate and safely update:
 - `AGENTS.md` (strict repo contract for coding agents)
 - `RUNBOOK.md` (human-friendly command/run cheatsheet)
 - proof-loop task artifacts under `docs/ai/tasks/`
+
+## Why teams adopt it
+
+| Option | Safe updates | Machine-readable output | Good for PR review | Repeatable across repos |
+| --- | --- | --- | --- | --- |
+| Handwritten `AGENTS.md` | No | No | Medium | Low |
+| Ad-hoc prompt files | No | No | Low | Low |
+| `agentsgen` | Yes | Yes | High | High |
 
 ## References
 
@@ -56,7 +85,21 @@ Marker format:
 <!-- AGENTSGEN:END section=commands -->
 ```
 
-## Install (from source, for contributors)
+## Install
+
+Current stable install path:
+
+```sh
+pipx install git+https://github.com/markoblogo/AGENTS.md_generator.git
+```
+
+PyPI publishing is prepared in CI via trusted publishing. Once the package is live on PyPI, the install path becomes:
+
+```sh
+pip install agentsgen
+```
+
+Contributor install:
 
 ```sh
 python3 -m venv .venv
@@ -74,7 +117,7 @@ pip install -e ".[llm,mcp]"
 
 Canonical onboarding path for a new repo:
 
-1. Install (`pipx` recommended):
+1. Install:
 
 ```sh
 pipx install git+https://github.com/markoblogo/AGENTS.md_generator.git
@@ -154,6 +197,20 @@ Deep dives:
 - Pack bundle details: `docs/llmo-pack.md`
 - Free AI visibility guide (PDF): `docs/assets/llmo-quick-start.pdf`
 - Release process: `docs/release-checklist.md`
+
+## Demo
+
+Fastest manual walkthrough:
+
+```sh
+mkdir -p /tmp/agentsgen-demo && cd /tmp/agentsgen-demo
+agentsgen init . --defaults --autodetect
+agentsgen status .
+agentsgen snippets .
+agentsgen check . --all --ci
+```
+
+Extended demo notes: [`demo/README.md`](demo/README.md)
 
 ## Presets
 

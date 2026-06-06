@@ -1227,7 +1227,9 @@ def _validate_schema(name: str, schema: Schema, value: object) -> None:
         _validate_scalar(name, schema_type, value)
         enum = schema.get("enum")
         if enum is not None and value not in enum:
-            raise ValueError(f"{name} must be one of: {', '.join(str(item) for item in enum)}")
+            raise ValueError(
+                f"{name} must be one of: {', '.join(str(item) for item in enum)}"
+            )
         return
     if schema_type == "array":
         if not isinstance(value, list):

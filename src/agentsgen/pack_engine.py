@@ -240,7 +240,9 @@ def _pack_notes(cfg: ToolConfig, stack_label: str) -> str:
             "- Commands are intentionally conservative.\n"
             "- Configure explicit values in `.agentsgen.json` under `commands` and `pack`."
         )
-    return "- Keep these files concise and command-accurate. Avoid speculative guidance."
+    return (
+        "- Keep these files concise and command-accurate. Avoid speculative guidance."
+    )
 
 
 def _entrypoint_title(command_id: str) -> str:
@@ -254,7 +256,9 @@ def _entrypoint_title(command_id: str) -> str:
         "typecheck": "Typecheck",
         "run": "Run",
     }
-    return labels.get(command_id, command_id.replace("_", " ").replace("-", " ").title())
+    return labels.get(
+        command_id, command_id.replace("_", " ").replace("-", " ").title()
+    )
 
 
 def _entrypoint_source_for_command(
@@ -294,7 +298,10 @@ def _stable_payload_without_timestamp(payload: dict[str, object]) -> str:
 
 def _utc_now_iso() -> str:
     return (
-        datetime.now(timezone.utc).replace(microsecond=0).isoformat().replace("+00:00", "Z")
+        datetime.now(timezone.utc)
+        .replace(microsecond=0)
+        .isoformat()
+        .replace("+00:00", "Z")
     )
 
 
@@ -313,7 +320,16 @@ def _pack_entrypoints_json(target: Path, cfg: ToolConfig, *, autodetect: bool) -
     )
     if stack not in {"python", "node", "static", "mixed", "unknown"}:
         stack = "unknown"
-    stable_ids = ["install", "dev", "test", "lint", "build", "format", "typecheck", "run"]
+    stable_ids = [
+        "install",
+        "dev",
+        "test",
+        "lint",
+        "build",
+        "format",
+        "typecheck",
+        "run",
+    ]
     extra_ids = [
         key
         for key in sorted(config_commands.keys())
@@ -353,7 +369,11 @@ def _pack_entrypoints_json(target: Path, cfg: ToolConfig, *, autodetect: bool) -
     if existing_path.exists():
         try:
             existing = read_json(existing_path)
-            if str(existing.get("generated_by", "")) == "agentsgen" and _stable_payload_without_timestamp(existing) == _stable_payload_without_timestamp(payload):
+            if str(
+                existing.get("generated_by", "")
+            ) == "agentsgen" and _stable_payload_without_timestamp(
+                existing
+            ) == _stable_payload_without_timestamp(payload):
                 payload["generated_at"] = str(existing.get("generated_at", "") or "")
             else:
                 payload["generated_at"] = _utc_now_iso()
@@ -388,7 +408,12 @@ def _pack_id_context_json(target: Path, cfg: ToolConfig, *, autodetect: bool) ->
         "version": 1,
         "generated_by": "agentsgen",
         "generated_at": "",
-        "repo": {"name": project_name, "path": ".", "stack": stack, "autodetect": autodetect},
+        "repo": {
+            "name": project_name,
+            "path": ".",
+            "stack": stack,
+            "autodetect": autodetect,
+        },
         "handoff": {
             "consumer": "ID",
             "target": "agentsmd",
@@ -404,14 +429,18 @@ def _pack_id_context_json(target: Path, cfg: ToolConfig, *, autodetect: bool) ->
                 "how_to_run": str(output_dir / "how-to-run.md").replace("\\", "/"),
                 "how_to_test": str(output_dir / "how-to-test.md").replace("\\", "/"),
                 "architecture": str(output_dir / "architecture.md").replace("\\", "/"),
-                "data_contracts": str(output_dir / "data-contracts.md").replace("\\", "/"),
+                "data_contracts": str(output_dir / "data-contracts.md").replace(
+                    "\\", "/"
+                ),
                 "security": "SECURITY_AI.md",
                 "contributing": "CONTRIBUTING_AI.md",
                 "readme_snippets": "README_SNIPPETS.md",
             },
             "optional_repo_artifacts": {
                 "repomap": str(output_dir / "repomap.md").replace("\\", "/"),
-                "repomap_compact": str(output_dir / "repomap.compact.md").replace("\\", "/"),
+                "repomap_compact": str(output_dir / "repomap.compact.md").replace(
+                    "\\", "/"
+                ),
                 "graph": str(output_dir / "graph.mmd").replace("\\", "/"),
                 "knowledge": "agents.knowledge.json",
                 "proof_tasks_dir": str(output_dir / "tasks").replace("\\", "/"),
@@ -438,7 +467,11 @@ def _pack_id_context_json(target: Path, cfg: ToolConfig, *, autodetect: bool) ->
     if existing_path.exists():
         try:
             existing = read_json(existing_path)
-            if str(existing.get("generated_by", "")) == "agentsgen" and _stable_payload_without_timestamp(existing) == _stable_payload_without_timestamp(payload):
+            if str(
+                existing.get("generated_by", "")
+            ) == "agentsgen" and _stable_payload_without_timestamp(
+                existing
+            ) == _stable_payload_without_timestamp(payload):
                 payload["generated_at"] = str(existing.get("generated_at", "") or "")
             else:
                 payload["generated_at"] = _utc_now_iso()
@@ -471,7 +504,9 @@ def _render_pack_file(cfg: ToolConfig, stack_tpl: str, template_name: str) -> st
         "source_dirs": _fmt_paths(list(paths.get("source_dirs", []) or [])),
         "config_locations": _fmt_paths(list(paths.get("config_locations", []) or [])),
         "docs_paths": _fmt_paths(list(paths.get("docs", []) or [])),
-        "ci_location": str(paths.get("ci", ".github/workflows/") or ".github/workflows/"),
+        "ci_location": str(
+            paths.get("ci", ".github/workflows/") or ".github/workflows/"
+        ),
         "cmd_install": _pack_command_value(cfg, "install", is_mixed),
         "cmd_dev": _pack_command_value(cfg, "dev", is_mixed),
         "cmd_test": _pack_command_value(cfg, "test", is_mixed),
@@ -521,7 +556,9 @@ def _pack_output_specs(
         (Path("CONTRIBUTING_AI.md"), "CONTRIBUTING_AI.md.tpl", ["contributing_ai"]),
         (Path("README_SNIPPETS.md"), "README_SNIPPETS.md.tpl", ["readme_snippets"]),
     ]
-    allow = [str(x).strip() for x in (cfg.pack.files or []) if str(x).strip()] or list(DEFAULT_PACK_FILES)
+    allow = [str(x).strip() for x in (cfg.pack.files or []) if str(x).strip()] or list(
+        DEFAULT_PACK_FILES
+    )
     allow_set = {x.lower() for x in allow}
     filtered: list[tuple[Path, str, list[str]]] = []
     for rel_path, tpl_name, required in specs:
@@ -543,11 +580,25 @@ def _pack_output_specs(
         if site_url and rel_path.name.lower() in {"llms.txt", "llms.md"}:
             rendered.append((rel_path, manifest_builder(site_url), required))
         elif tpl_name == "__generated_entrypoints_json__":
-            rendered.append((rel_path, _pack_entrypoints_json(target, cfg, autodetect=autodetect), required))
+            rendered.append(
+                (
+                    rel_path,
+                    _pack_entrypoints_json(target, cfg, autodetect=autodetect),
+                    required,
+                )
+            )
         elif tpl_name == "__generated_id_context_json__":
-            rendered.append((rel_path, _pack_id_context_json(target, cfg, autodetect=autodetect), required))
+            rendered.append(
+                (
+                    rel_path,
+                    _pack_id_context_json(target, cfg, autodetect=autodetect),
+                    required,
+                )
+            )
         else:
-            rendered.append((rel_path, _render_pack_file(cfg, stack_tpl, tpl_name), required))
+            rendered.append(
+                (rel_path, _render_pack_file(cfg, stack_tpl, tpl_name), required)
+            )
     return rendered
 
 
@@ -583,7 +634,14 @@ def apply_pack(
     print_diff: bool,
 ) -> list[FileResult]:
     if not cfg.pack.enabled:
-        return [FileResult(path=target, action="skipped", message="pack.disabled in config", changed=False)]
+        return [
+            FileResult(
+                path=target,
+                action="skipped",
+                message="pack.disabled in config",
+                changed=False,
+            )
+        ]
     results: list[FileResult] = []
     for rel_path, content, required in _pack_output_specs(
         target,
@@ -594,12 +652,30 @@ def apply_pack(
     ):
         out_path = _resolve_target_child(target, rel_path)
         if out_path is None:
-            results.append(FileResult(path=target / rel_path, action="error", message="pack output path escapes target directory"))
+            results.append(
+                FileResult(
+                    path=target / rel_path,
+                    action="error",
+                    message="pack output path escapes target directory",
+                )
+            )
             continue
         if rel_path.suffix == ".json":
-            results.append(handle_generated_json_artifact(out_path, content, dry_run=dry_run, print_diff=print_diff))
+            results.append(
+                handle_generated_json_artifact(
+                    out_path, content, dry_run=dry_run, print_diff=print_diff
+                )
+            )
         else:
-            results.append(handle_file(out_path, content, required=required, dry_run=dry_run, print_diff=print_diff))
+            results.append(
+                handle_file(
+                    out_path,
+                    content,
+                    required=required,
+                    dry_run=dry_run,
+                    print_diff=print_diff,
+                )
+            )
     return results
 
 
@@ -631,15 +707,26 @@ def check_repo(target: Path) -> tuple[int, list[str], list[str]]:
             continue
         for marker_problem in validate_markers(text):
             problems.append(f"{fname}: {marker_problem.message}")
-        required = required_sections(info.stack) if fname == AGENTS_FILENAME else required_runbook_sections()
+        required = (
+            required_sections(info.stack)
+            if fname == AGENTS_FILENAME
+            else required_runbook_sections()
+        )
         for sec in required:
             body = extract_section_content(text, sec)
             if body is None:
                 problems.append(f"{fname}: missing section markers for '{sec}'")
             elif not body.strip():
                 problems.append(f"{fname}: section '{sec}' is empty")
-            elif body.strip() in ("- (not specified)", "- (none)", "- (no commands configured)", "- (not set)"):
-                warnings.append(f"{fname}: section '{sec}' looks like a placeholder; fill it or remove the section")
+            elif body.strip() in (
+                "- (not specified)",
+                "- (none)",
+                "- (no commands configured)",
+                "- (not set)",
+            ):
+                warnings.append(
+                    f"{fname}: section '{sec}' looks like a placeholder; fill it or remove the section"
+                )
     return (1 if problems else 0), problems, warnings
 
 
@@ -653,7 +740,11 @@ def run_core_check(target: Path) -> dict[str, object]:
         "warnings_count": len(warnings),
         "results": [{"level": "problem", "message": item} for item in problems]
         + [{"level": "warning", "message": item} for item in warnings],
-        "raw": {"exit_code": code, "problems": list(problems), "warnings": list(warnings)},
+        "raw": {
+            "exit_code": code,
+            "problems": list(problems),
+            "warnings": list(warnings),
+        },
     }
 
 
@@ -667,7 +758,9 @@ def run_pack_check(target: Path) -> dict[str, object]:
         existing_pack = cfg.pack
         cfg = merge_detect_hints(cfg, det_cfg)
         cfg.pack = existing_pack
-        results = apply_pack(target, cfg, autodetect=True, dry_run=True, print_diff=False)
+        results = apply_pack(
+            target, cfg, autodetect=True, dry_run=True, print_diff=False
+        )
     except Exception as exc:
         return {
             "status": "error",
@@ -677,7 +770,11 @@ def run_pack_check(target: Path) -> dict[str, object]:
             "reason": str(exc),
         }
     errors = [r for r in results if r.action == "error"]
-    drift_results = [r for r in results if r.action in ("created", "updated", "generated") and r.changed]
+    drift_results = [
+        r
+        for r in results
+        if r.action in ("created", "updated", "generated") and r.changed
+    ]
     status = "error" if errors else ("drift" if drift_results else "ok")
     return {
         "status": status,
@@ -689,7 +786,13 @@ def run_pack_check(target: Path) -> dict[str, object]:
             "check": True,
             "dry_run": True,
             "results": [
-                {"path": str(r.path), "action": r.action, "message": r.message, "changed": bool(r.changed), "diff": r.diff or ""}
+                {
+                    "path": str(r.path),
+                    "action": r.action,
+                    "message": r.message,
+                    "changed": bool(r.changed),
+                    "diff": r.diff or "",
+                }
                 for r in results
             ],
         },
@@ -719,13 +822,23 @@ def aggregate_check(
     pack_check: bool,
     snippets_check: bool,
 ) -> AggregatedCheckReport:
-    checks: dict[str, object] = {"core": run_core_check(target), "pack": None, "snippets": None}
+    checks: dict[str, object] = {
+        "core": run_core_check(target),
+        "pack": None,
+        "snippets": None,
+    }
     if pack_check:
         checks["pack"] = run_pack_check(target)
     if snippets_check:
         checks["snippets"] = run_snippets_check(target)
-    enabled_checks = [checks["core"]] + [checks[name] for name in ("pack", "snippets") if checks[name] is not None]
-    statuses = [str(block.get("status", "ok")) for block in enabled_checks if isinstance(block, dict)]
+    enabled_checks = [checks["core"]] + [
+        checks[name] for name in ("pack", "snippets") if checks[name] is not None
+    ]
+    statuses = [
+        str(block.get("status", "ok"))
+        for block in enabled_checks
+        if isinstance(block, dict)
+    ]
     summary = {"ok": True, "drift_count": 0, "error_count": 0, "skipped_count": 0}
     for block in enabled_checks:
         if not isinstance(block, dict):
@@ -735,7 +848,9 @@ def aggregate_check(
         summary["error_count"] += int(block.get("error_count", 0))
         if status == "skipped":
             summary["skipped_count"] += 1
-    overall = "error" if "error" in statuses else ("drift" if "drift" in statuses else "ok")
+    overall = (
+        "error" if "error" in statuses else ("drift" if "drift" in statuses else "ok")
+    )
     summary["ok"] = overall == "ok"
     report = AggregatedCheckReport(
         version=1,
@@ -749,7 +864,9 @@ def aggregate_check(
     return report
 
 
-def _status_for_file(path: Path, *, generated_suffix: str) -> tuple[StatusFileReport, list[str], list[str]]:
+def _status_for_file(
+    path: Path, *, generated_suffix: str
+) -> tuple[StatusFileReport, list[str], list[str]]:
     findings: list[str] = []
     errors: list[str] = []
     generated = generated_sibling_path(path, generated_suffix).exists()
@@ -764,13 +881,21 @@ def _status_for_file(path: Path, *, generated_suffix: str) -> tuple[StatusFileRe
     markers_found = has_any_agentsgen_markers(text)
     marker_sections = count_agentsgen_marker_sections(text) if markers_found else 0
     if not markers_found:
-        findings.append(f"{path.name} has no AGENTSGEN markers (updates will go to generated siblings)")
+        findings.append(
+            f"{path.name} has no AGENTSGEN markers (updates will go to generated siblings)"
+        )
     else:
         for marker_problem in validate_markers(text):
             errors.append(f"{path.name}: {marker_problem.message}")
     if generated:
-        findings.append(f"Generated sibling exists for {path.name}: {generated_sibling_path(path, generated_suffix).name}")
-    return StatusFileReport(True, markers_found, marker_sections, generated), findings, errors
+        findings.append(
+            f"Generated sibling exists for {path.name}: {generated_sibling_path(path, generated_suffix).name}"
+        )
+    return (
+        StatusFileReport(True, markers_found, marker_sections, generated),
+        findings,
+        errors,
+    )
 
 
 def status_repo(target: Path) -> RepoStatusReport:
@@ -790,13 +915,19 @@ def status_repo(target: Path) -> RepoStatusReport:
             generated_suffix = tool_cfg.generated_suffix or ".generated"
         except Exception as exc:
             errors.append(f"Invalid {CONFIG_FILENAME}: {exc}")
-    agents_report, agent_findings, agent_errors = _status_for_file(target / AGENTS_FILENAME, generated_suffix=generated_suffix)
-    runbook_report, runbook_findings, runbook_errors = _status_for_file(target / RUNBOOK_FILENAME, generated_suffix=generated_suffix)
+    agents_report, agent_findings, agent_errors = _status_for_file(
+        target / AGENTS_FILENAME, generated_suffix=generated_suffix
+    )
+    runbook_report, runbook_findings, runbook_errors = _status_for_file(
+        target / RUNBOOK_FILENAME, generated_suffix=generated_suffix
+    )
     findings.extend(agent_findings)
     findings.extend(runbook_findings)
     errors.extend(agent_errors)
     errors.extend(runbook_errors)
-    generated_files = sorted(str(p.relative_to(target)) for p in target.rglob(f"*{generated_suffix}.*"))
+    generated_files = sorted(
+        str(p.relative_to(target)) for p in target.rglob(f"*{generated_suffix}.*")
+    )
     pack_findings: list[str] = []
     pack_errors: list[str] = []
     pack_status = "skipped" if tool_cfg is None and not cfg_path.exists() else "ok"
@@ -806,7 +937,9 @@ def status_repo(target: Path) -> RepoStatusReport:
             for rel_path, _content, _required in specs:
                 path = _resolve_target_child(target, rel_path)
                 if path is None:
-                    pack_errors.append(f"Pack output path escapes target directory: {rel_path.as_posix()}")
+                    pack_errors.append(
+                        f"Pack output path escapes target directory: {rel_path.as_posix()}"
+                    )
                     continue
                 if not path.exists():
                     pack_findings.append(f"Missing pack file: {rel_path.as_posix()}")
@@ -814,16 +947,24 @@ def status_repo(target: Path) -> RepoStatusReport:
                 try:
                     text = read_text(path)
                 except Exception as exc:
-                    pack_errors.append(f"Unreadable pack file {rel_path.as_posix()}: {exc}")
+                    pack_errors.append(
+                        f"Unreadable pack file {rel_path.as_posix()}: {exc}"
+                    )
                     continue
                 if not has_any_agentsgen_markers(text):
-                    pack_findings.append(f"Pack file has no AGENTSGEN markers: {rel_path.as_posix()}")
+                    pack_findings.append(
+                        f"Pack file has no AGENTSGEN markers: {rel_path.as_posix()}"
+                    )
                 else:
                     for marker_problem in validate_markers(text):
-                        pack_errors.append(f"{rel_path.as_posix()}: {marker_problem.message}")
+                        pack_errors.append(
+                            f"{rel_path.as_posix()}: {marker_problem.message}"
+                        )
                 gen_path = generated_sibling_path(path, generated_suffix)
                 if gen_path.exists():
-                    pack_findings.append(f"Generated sibling exists for pack file: {gen_path.relative_to(target).as_posix()}")
+                    pack_findings.append(
+                        f"Generated sibling exists for pack file: {gen_path.relative_to(target).as_posix()}"
+                    )
         except Exception as exc:
             pack_errors.append(f"Pack status error: {exc}")
     if pack_errors:
@@ -835,14 +976,19 @@ def status_repo(target: Path) -> RepoStatusReport:
     if generated_files:
         findings.append(f"Generated fallback files present: {len(generated_files)}")
     report = RepoStatusReport(
-        status="error" if (len(errors) + len(pack_errors)) else ("drift" if (len(findings) + len(pack_findings)) else "ok"),
+        status="error"
+        if (len(errors) + len(pack_errors))
+        else ("drift" if (len(findings) + len(pack_findings)) else "ok"),
         path=str(target),
         config=config,
         agents_md=agents_report,
         runbook_md=runbook_report,
         pack={"status": pack_status, "findings": pack_findings, "errors": pack_errors},
         generated={"count": len(generated_files), "files": generated_files},
-        summary={"drift": len(findings) + len(pack_findings), "errors": len(errors) + len(pack_errors)},
+        summary={
+            "drift": len(findings) + len(pack_findings),
+            "errors": len(errors) + len(pack_errors),
+        },
     )
     validate_repo_status_payload(report.to_json())
     return report

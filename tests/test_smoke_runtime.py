@@ -76,8 +76,12 @@ def test_update_preserves_outside_markers() -> None:
 def test_no_markers_creates_generated_files() -> None:
     with tempfile.TemporaryDirectory() as td:
         target = Path(td)
-        (target / "AGENTS.md").write_text("# Custom AGENTS\nNo markers here\n", encoding="utf-8")
-        (target / "RUNBOOK.md").write_text("# Custom RUNBOOK\nNo markers here\n", encoding="utf-8")
+        (target / "AGENTS.md").write_text(
+            "# Custom AGENTS\nNo markers here\n", encoding="utf-8"
+        )
+        (target / "RUNBOOK.md").write_text(
+            "# Custom RUNBOOK\nNo markers here\n", encoding="utf-8"
+        )
 
         info = ProjectInfo(project_name="demo", stack="node").normalized()
         info.package_manager = "npm"

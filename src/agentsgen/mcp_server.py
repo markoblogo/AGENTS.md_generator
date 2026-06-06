@@ -55,7 +55,9 @@ def _status_and_summary(tool: str, results: list[object]) -> tuple[str, str]:
     return status, summary
 
 
-def _write_policy(*, dry_run: bool, check: bool = False, writes_applied: bool) -> dict[str, object]:
+def _write_policy(
+    *, dry_run: bool, check: bool = False, writes_applied: bool
+) -> dict[str, object]:
     mode = "check" if check else ("dry-run" if dry_run else "apply")
     payload = {
         "mode": mode,
@@ -172,7 +174,8 @@ def build_mcp_init_response(
         "dry_run": dry_run,
         "write_policy": _write_policy(
             dry_run=dry_run,
-            writes_applied=outcome.config_written or any(row.changed for row in outcome.results),
+            writes_applied=outcome.config_written
+            or any(row.changed for row in outcome.results),
         ),
         "llm": {
             "request": llm_options.to_json(),
@@ -298,7 +301,9 @@ def serve_stdio() -> None:
         return build_mcp_detect_response(path)
 
     @server.tool()
-    def understand(path: str = ".", compact_budget_tokens: int = 4000) -> dict[str, object]:
+    def understand(
+        path: str = ".", compact_budget_tokens: int = 4000
+    ) -> dict[str, object]:
         return build_mcp_understand_response(
             path=path,
             compact_budget_tokens=compact_budget_tokens,

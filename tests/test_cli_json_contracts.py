@@ -44,9 +44,12 @@ def test_cli_status_and_check_json_match_contracts(tmp_path: Path) -> None:
     target = tmp_path / "repo"
     _copy_fixture(FIXTURES / "python_uv", target)
 
-    assert runner.invoke(
-        app, ["init", str(target), "--defaults", "--autodetect", "--name", "repo"]
-    ).exit_code == 0
+    assert (
+        runner.invoke(
+            app, ["init", str(target), "--defaults", "--autodetect", "--name", "repo"]
+        ).exit_code
+        == 0
+    )
     assert runner.invoke(app, ["pack", str(target), "--autodetect"]).exit_code == 0
 
     status_result = runner.invoke(app, ["status", str(target), "--format", "json"])
@@ -82,9 +85,12 @@ def test_cli_understand_and_task_json_contracts(tmp_path: Path) -> None:
     target = tmp_path / "repo"
     _copy_fixture(FIXTURES / "python_uv", target)
 
-    assert runner.invoke(
-        app, ["init", str(target), "--defaults", "--autodetect", "--name", "repo"]
-    ).exit_code == 0
+    assert (
+        runner.invoke(
+            app, ["init", str(target), "--defaults", "--autodetect", "--name", "repo"]
+        ).exit_code
+        == 0
+    )
 
     understand = runner.invoke(app, ["understand", str(target), "--format", "json"])
     assert understand.exit_code == 0
@@ -131,9 +137,7 @@ def test_cli_understand_and_task_json_contracts(tmp_path: Path) -> None:
     validate_cli_task_response_payload(json.loads(task_verdict.stdout))
 
 
-def test_cli_analyze_and_meta_json_contracts(
-    monkeypatch, tmp_path: Path
-) -> None:
+def test_cli_analyze_and_meta_json_contracts(monkeypatch, tmp_path: Path) -> None:
     target = tmp_path / "repo"
     _copy_fixture(FIXTURES / "python_uv", target)
 
@@ -152,7 +156,10 @@ def test_cli_analyze_and_meta_json_contracts(
             "evidence": {},
             "recommendations": [],
         }
-        return ([FileResult(path=Path("docs/ai/llmo-score.json"), action="created")], payload)
+        return (
+            [FileResult(path=Path("docs/ai/llmo-score.json"), action="created")],
+            payload,
+        )
 
     def _meta_stub(*args, **kwargs):
         payload = {
@@ -169,7 +176,10 @@ def test_cli_analyze_and_meta_json_contracts(
                 "shortDescription": "Short",
             },
         }
-        return ([FileResult(path=Path("docs/ai/llmo-meta.json"), action="created")], payload)
+        return (
+            [FileResult(path=Path("docs/ai/llmo-meta.json"), action="created")],
+            payload,
+        )
 
     monkeypatch.setattr(cli_extra_module, "apply_analysis", _analysis_stub)
     monkeypatch.setattr(cli_extra_module, "apply_metadata", _meta_stub)
@@ -180,8 +190,6 @@ def test_cli_analyze_and_meta_json_contracts(
     assert analyze.exit_code == 0
     validate_cli_analyze_response_payload(json.loads(analyze.stdout))
 
-    meta = runner.invoke(
-        app, ["meta", "example.com", str(target), "--format", "json"]
-    )
+    meta = runner.invoke(app, ["meta", "example.com", str(target), "--format", "json"])
     assert meta.exit_code == 0
     validate_cli_meta_response_payload(json.loads(meta.stdout))

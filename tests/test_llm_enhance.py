@@ -7,14 +7,21 @@ from typer.testing import CliRunner
 
 from agentsgen.cli import app
 import agentsgen.llm as llm_module
-from agentsgen.llm import LLMEnhancementRequest, LLMEnhancementResult, LLMEnhancer, enhance_sections
+from agentsgen.llm import (
+    LLMEnhancementRequest,
+    LLMEnhancementResult,
+    LLMEnhancer,
+    enhance_sections,
+)
 
 
 runner = CliRunner()
 
 
 class _StubEnhancer(LLMEnhancer):
-    def __init__(self, result: LLMEnhancementResult | None = None, exc: Exception | None = None):
+    def __init__(
+        self, result: LLMEnhancementResult | None = None, exc: Exception | None = None
+    ):
         self._result = result
         self._exc = exc
 
@@ -81,7 +88,9 @@ def test_enhancement_provider_error_falls_back(monkeypatch, tmp_path: Path) -> N
     assert "boom" in result.message
 
 
-def test_init_with_llm_enhance_injects_mocked_repo_context(monkeypatch, tmp_path: Path) -> None:
+def test_init_with_llm_enhance_injects_mocked_repo_context(
+    monkeypatch, tmp_path: Path
+) -> None:
     monkeypatch.setitem(
         llm_module.PROVIDER_FACTORIES,
         "openai",
@@ -114,7 +123,9 @@ def test_init_with_llm_enhance_injects_mocked_repo_context(monkeypatch, tmp_path
     assert "Injected LLM repo context" in agents
 
 
-def test_init_without_llm_enhance_does_not_call_provider(monkeypatch, tmp_path: Path) -> None:
+def test_init_without_llm_enhance_does_not_call_provider(
+    monkeypatch, tmp_path: Path
+) -> None:
     calls = {"count": 0}
 
     def _factory() -> LLMEnhancer:
@@ -147,7 +158,9 @@ def test_init_without_llm_enhance_does_not_call_provider(monkeypatch, tmp_path: 
     assert "should not appear" not in agents
 
 
-def test_update_with_llm_timeout_keeps_local_generation(monkeypatch, tmp_path: Path) -> None:
+def test_update_with_llm_timeout_keeps_local_generation(
+    monkeypatch, tmp_path: Path
+) -> None:
     init_result = runner.invoke(
         app,
         [
