@@ -87,6 +87,12 @@ Marker format:
 
 ## Install
 
+Homebrew:
+
+```sh
+brew install markoblogo/tap/agentsgen
+```
+
 Current stable install path:
 
 ```sh
