@@ -1,6 +1,6 @@
 [project]
 name = "agentsgen"
-version = "0.2.2"
+version = "0.3.0"
 description = "Generate and safely update AGENTS.md and RUNBOOK.md for coding agents"
 readme = "README.md"
 requires-python = ">=3.11"
