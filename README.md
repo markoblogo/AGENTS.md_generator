@@ -197,7 +197,7 @@ cat agents.entrypoints.json
 cat docs/ai/id-context.json
 ```
 
-The generated `docs/ai/id-context.json` now tells `ID`-compatible consumers to start with `profiles/<owner>/soul.md`, then widen into `profile.core.md` and `handshake.md` only when necessary.
+The generated `docs/ai/id-context.json` now tells `ID`-compatible consumers to start with `profiles/<owner>/soul.md`, then widen into `profile.core.md` and `handshake.md` only when necessary. In `SET`-orchestrated flows, that bridge can then be exported as a formal runtime packet at `docs/ai/id-bootstrap.json`.
 
 Optional OKF export:
 

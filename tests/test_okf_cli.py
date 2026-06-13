@@ -34,8 +34,13 @@ def test_okf_export_check_reports_drift_when_missing(tmp_path: Path) -> None:
     assert res.exit_code == 1
     payload = json.loads(res.stdout)
     assert payload["status"] == "drift"
-    assert any(str(row["path"]).endswith("docs/ai/okf/index.md") for row in payload["results"])
-    assert any(str(row["path"]).endswith("docs/ai/okf/repo/architecture.md") for row in payload["results"])
+    assert any(
+        str(row["path"]).endswith("docs/ai/okf/index.md") for row in payload["results"]
+    )
+    assert any(
+        str(row["path"]).endswith("docs/ai/okf/repo/architecture.md")
+        for row in payload["results"]
+    )
 
 
 def test_okf_export_writes_bundle_and_check_passes(tmp_path: Path) -> None:

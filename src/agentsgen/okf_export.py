@@ -98,9 +98,10 @@ def _render_index(title: str, entries: list[tuple[str, str]]) -> str:
 
 
 def _repo_overview_body(target: Path, cfg: ToolConfig, source_dir: Path) -> str:
-    stack = str((cfg.project or {}).get("primary_stack", "")).strip() or str(
-        cfg.project_info.stack or ""
-    ).strip()
+    stack = (
+        str((cfg.project or {}).get("primary_stack", "")).strip()
+        or str(cfg.project_info.stack or "").strip()
+    )
     commands = cfg.commands or {}
     docs = [
         "architecture.md",
@@ -185,7 +186,11 @@ def _entrypoints_body(target: Path) -> str:
 
 
 def _source_concepts(target: Path, source_dir: Path) -> list[OkfConceptSpec]:
-    cfg = load_tool_config(target) if (target / ".agentsgen.json").exists() else ToolConfig.from_detect(detect_repo(target))
+    cfg = (
+        load_tool_config(target)
+        if (target / ".agentsgen.json").exists()
+        else ToolConfig.from_detect(detect_repo(target))
+    )
     mapping = [
         (
             source_dir / "architecture.md",
@@ -296,9 +301,15 @@ def export_okf_bundle(
         elif concept.rel_path.parts[0] == "assets":
             assets_entries.append(entry)
 
-    payloads.insert(0, (output_dir / "index.md", _render_root_index(repo_entries, assets_entries)))
-    payloads.append((output_dir / "repo" / "index.md", _render_index("Repo", repo_entries)))
-    payloads.append((output_dir / "assets" / "index.md", _render_index("Assets", assets_entries)))
+    payloads.insert(
+        0, (output_dir / "index.md", _render_root_index(repo_entries, assets_entries))
+    )
+    payloads.append(
+        (output_dir / "repo" / "index.md", _render_index("Repo", repo_entries))
+    )
+    payloads.append(
+        (output_dir / "assets" / "index.md", _render_index("Assets", assets_entries))
+    )
 
     for path, content in payloads:
         changed, diff = write_or_diff(path, content, dry_run, print_diff)
