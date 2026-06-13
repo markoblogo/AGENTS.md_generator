@@ -67,6 +67,14 @@ Small, production-grade CLI to generate and safely update:
 - `SET` owns workflow execution: CI entrypoint, orchestration, registry flows, and proof loops.
 - `abvx-agent-skills` owns reusable agent capabilities: compact SKILL.md workflows for coding, frontend, audits, debugging, research, token economy, handoffs, and browser verification, with skill cards, attribution, validation, and risk gates.
 
+## Related projects
+
+- `lab.abvx` is the public hub for the stack: https://github.com/markoblogo/lab.abvx
+- `SET` is the thin orchestration layer: https://github.com/markoblogo/SET
+- `ID` is the portable human-context layer: https://github.com/markoblogo/ID
+- `abvx-agent-skills` is the reusable workflow layer: https://github.com/markoblogo/abvx-agent-skills
+- `decision-map` is a related strategy protocol, not part of the core runtime: https://github.com/markoblogo/decision-map
+
 ## Safety Model
 
 The tool is safe-by-default and follows a strict 3-mode policy per file:
