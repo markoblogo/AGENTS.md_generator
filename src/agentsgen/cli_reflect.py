@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from typing import cast
 
 import typer
 
@@ -39,13 +40,14 @@ def register_reflect_commands(app: typer.Typer) -> None:
             dry_run=dry_run,
             print_diff=print_diff,
         )
+        summary = cast(dict[str, object], signals_payload["summary"])
         response = {
             "version": 1,
             "command": "reflect sessions",
             "path": str(target),
             "output_dir": str(out_dir),
             "source": {"tool": "codex", "root": str(codex_root)},
-            "summary": dict(signals_payload["summary"]),
+            "summary": summary,
             "outputs": {
                 "sessions_json": str(out_dir / "agent-sessions.json"),
                 "signals_json": str(out_dir / "agent-signals.json"),
@@ -58,11 +60,10 @@ def register_reflect_commands(app: typer.Typer) -> None:
             print_json(response)
             return
         print_results(results, print_diff=print_diff)
-        summary = signals_payload["summary"]
         typer.echo(
             "reflect: "
-            f"sessions={summary['session_count']} "
-            f"prompts={summary['prompt_count']} "
-            f"plan_first={summary['plan_first_ratio']}% "
-            f"redirects={summary['redirect_count']}"
+            f"sessions={cast(int, summary['session_count'])} "
+            f"prompts={cast(int, summary['prompt_count'])} "
+            f"plan_first={cast(int, summary['plan_first_ratio'])}% "
+            f"redirects={cast(int, summary['redirect_count'])}"
         )

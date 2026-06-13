@@ -6,6 +6,7 @@ from collections import Counter
 from dataclasses import dataclass
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import cast
 
 from .generated_artifacts import handle_generated_json_artifact
 from .io_utils import read_text
@@ -97,14 +98,15 @@ def _plan_first(text: str) -> bool:
 def _render_patterns(
     summary: dict[str, object], top_short_prompts: list[dict[str, object]]
 ) -> str:
-    session_count = int(summary["session_count"])
-    prompt_count = int(summary["prompt_count"])
-    avg_prompt_chars = int(summary["avg_prompt_chars"])
-    redirects = int(summary["redirect_count"])
-    plan_first_ratio = int(summary["plan_first_ratio"])
-    long_sessions = int(summary["long_sessions"])
-    top_hours = [str(item["hour"]) for item in summary.get("top_hours", [])]
-    most_used = top_short_prompts[0]["prompt"] if top_short_prompts else ""
+    session_count = cast(int, summary["session_count"])
+    prompt_count = cast(int, summary["prompt_count"])
+    avg_prompt_chars = cast(int, summary["avg_prompt_chars"])
+    redirects = cast(int, summary["redirect_count"])
+    plan_first_ratio = cast(int, summary["plan_first_ratio"])
+    long_sessions = cast(int, summary["long_sessions"])
+    top_hours_items = cast(list[dict[str, object]], summary.get("top_hours", []))
+    top_hours = [str(cast(int, item["hour"])) for item in top_hours_items]
+    most_used = str(top_short_prompts[0]["prompt"]) if top_short_prompts else ""
 
     lines = [
         "---",
@@ -279,8 +281,8 @@ def reflect_sessions_payload(
     plan_first_sessions = sum(1 for item in sessions if item.plan_first)
     redirects = sum(item.redirects for item in sessions)
     long_sessions = sum(1 for item in sessions if item.long_session)
-    hour_counts = Counter()
-    short_prompt_counts = Counter()
+    hour_counts: Counter[int] = Counter()
+    short_prompt_counts: Counter[str] = Counter()
     for item in sessions:
         hour = _parse_timestamp(item.started_at)
         if hour is not None:
@@ -369,9 +371,11 @@ def apply_reflect_sessions(
     print_diff: bool,
 ) -> tuple[list[FileResult], dict[str, object], dict[str, object]]:
     session_payload, signals_payload = reflect_sessions_payload(target, codex_root)
-    patterns_md = _render_patterns(
-        signals_payload["summary"], signals_payload["top_short_prompts"]
+    summary = cast(dict[str, object], signals_payload["summary"])
+    top_short_prompts = cast(
+        list[dict[str, object]], signals_payload["top_short_prompts"]
     )
+    patterns_md = _render_patterns(summary, top_short_prompts)
 
     results = [
         handle_generated_json_artifact(
