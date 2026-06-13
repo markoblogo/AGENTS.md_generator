@@ -81,5 +81,6 @@ Notes:
 
 - `files` is an optional allowlist; empty means default bundle.
 - `docs/ai/id-context.json` is the bridge artifact between repo-scoped `agentsgen` output and human-scoped `ID` profiles.
+- `docs/ai/id-context.json` now also declares the preferred human bootstrap order for `ID` consumers: start with `soul.md`, then expand to `profile.core.md` and `handshake.md` only when needed.
 - Command detection is reused from existing autodetect (`Makefile > package.json scripts > Python heuristics`).
 - For mixed/monorepo detection, pack templates use conservative placeholders instead of invented commands.

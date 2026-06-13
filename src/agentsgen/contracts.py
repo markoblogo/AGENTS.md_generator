@@ -297,9 +297,10 @@ ID_CONTEXT_SCHEMA = _named(
             "usage": _object(
                 properties={
                     "preferred_inputs": _array(_string()),
+                    "preferred_human_bootstrap": _array(_string()),
                     "notes": _array(_string()),
                 },
-                required=["preferred_inputs", "notes"],
+                required=["preferred_inputs", "preferred_human_bootstrap", "notes"],
             ),
         },
         required=[

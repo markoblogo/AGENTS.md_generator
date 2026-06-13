@@ -169,6 +169,12 @@
             },
             "type": "array"
           },
+          "preferred_human_bootstrap": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
           "preferred_inputs": {
             "items": {
               "type": "string"
@@ -178,6 +184,7 @@
         },
         "required": [
           "preferred_inputs",
+          "preferred_human_bootstrap",
           "notes"
         ],
         "type": "object"

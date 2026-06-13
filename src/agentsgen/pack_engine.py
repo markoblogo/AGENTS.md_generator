@@ -456,10 +456,16 @@ def _pack_id_context_json(target: Path, cfg: ToolConfig, *, autodetect: bool) ->
                 str(output_dir / "architecture.md").replace("\\", "/"),
                 str(output_dir / "data-contracts.md").replace("\\", "/"),
             ],
+            "preferred_human_bootstrap": [
+                "profiles/<owner>/soul.md",
+                "profiles/<owner>/profile.core.md",
+                "profiles/<owner>/handshake.md",
+            ],
             "notes": [
                 "Use this manifest as the repo-local companion to an ID profile; it does not replace human-owned ID artifacts.",
                 "AGENTS.md Generator owns repo context, while ID owns portable person and policy context.",
                 "SET can route both layers together, but this manifest is useful even without SET.",
+                "If an ID profile is available, start with soul.md as the fast human bootstrap layer, then expand to profile.core.md and handshake.md when needed.",
             ],
         },
     }

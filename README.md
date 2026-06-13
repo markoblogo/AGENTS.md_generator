@@ -39,6 +39,7 @@ Most agent tooling still asks teams to hand-maintain repo instructions, copy/pas
 `agentsgen` is the repo-intelligence runtime in the ABVX ecosystem: use it directly in a repo, or call it through `SET` when you want one thin orchestration entrypoint.
 It now ships a reliability-first core with split CLI/actions/understand modules, versioned JSON contracts across CLI and MCP surfaces, and opt-in LLM enhancement that falls back cleanly to local-only behavior.
 Pair it with `ID` when you also need portable human-AI context and repo-local integration hooks across tools: `agentsgen pack` now emits a repo-local handoff manifest at `docs/ai/id-context.json` for that bridge. `ID` remains the human/profile layer: https://github.com/markoblogo/ID
+That bridge now explicitly supports `soul.md` as the preferred fast human bootstrap layer, before expanding into fuller `ID` profile files.
 Pair it with `abvx-agent-skills` when the agent needs reusable expert workflows for coding, frontend, audits, debugging, research, token economy, handoffs, and browser verification without bloating each repo's always-loaded AGENTS.md.
 
 Small, production-grade CLI to generate and safely update:
@@ -195,6 +196,8 @@ agentsgen pack . --autodetect
 cat agents.entrypoints.json
 cat docs/ai/id-context.json
 ```
+
+The generated `docs/ai/id-context.json` now tells `ID`-compatible consumers to start with `profiles/<owner>/soul.md`, then widen into `profile.core.md` and `handshake.md` only when necessary.
 
 Optional OKF export:
 

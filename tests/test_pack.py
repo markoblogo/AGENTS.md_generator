@@ -52,6 +52,8 @@ def test_pack_python_uv_generates_bundle(tmp_path: Path) -> None:
     assert entrypoints["commands"]
     assert id_context["handoff"]["consumer"] == "ID"
     assert id_context["bundle"]["pack"]["entrypoints"] == "agents.entrypoints.json"
+    assert id_context["usage"]["preferred_human_bootstrap"][0] == "profiles/<owner>/soul.md"
+    assert any("soul.md" in note for note in id_context["usage"]["notes"])
 
 
 def test_pack_node_pnpm_uses_detected_commands(tmp_path: Path) -> None:

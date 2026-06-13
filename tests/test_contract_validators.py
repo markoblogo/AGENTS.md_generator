@@ -190,7 +190,15 @@ def test_validate_other_payloads_accept_minimal_shapes() -> None:
                     "proof_tasks_dir": "docs/ai/tasks",
                 },
             },
-            "usage": {"preferred_inputs": [], "notes": []},
+            "usage": {
+                "preferred_inputs": [],
+                "preferred_human_bootstrap": [
+                    "profiles/<owner>/soul.md",
+                    "profiles/<owner>/profile.core.md",
+                    "profiles/<owner>/handshake.md",
+                ],
+                "notes": [],
+            },
         }
     )
     validate_task_contract_payload(
