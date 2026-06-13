@@ -215,6 +215,19 @@ agentsgen reflect skills .
 cat docs/ai/skill-usage.json
 ```
 
+Consumer-side path with `abvx-agent-skills`:
+
+```text
+agentsgen reflect sessions .
+  -> docs/ai/agent-signals.json
+  -> use skill: session-retrospective
+
+agentsgen reflect skills .
+  -> docs/ai/skill-usage.json
+  -> docs/ai/skill-effectiveness.md
+  -> use skill: skill-effectiveness-audit
+```
+
 For public website mode:
 
 ```sh
