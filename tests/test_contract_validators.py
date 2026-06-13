@@ -11,6 +11,7 @@ from agentsgen.validators import (
     validate_cli_pack_plan_response_payload,
     validate_cli_pack_response_payload,
     validate_cli_reflect_sessions_response_payload,
+    validate_cli_reflect_skills_response_payload,
     validate_cli_task_response_payload,
     validate_cli_understand_response_payload,
     validate_detect_result_payload,
@@ -29,6 +30,7 @@ from agentsgen.validators import (
     validate_metadata_payload,
     validate_reflect_sessions_payload,
     validate_reflect_signals_payload,
+    validate_reflect_skill_usage_payload,
     validate_repo_status_payload,
     validate_task_contract_payload,
     validate_task_evidence_payload,
@@ -502,6 +504,42 @@ def test_validate_other_payloads_accept_minimal_shapes() -> None:
             "results": [],
         }
     )
+    validate_reflect_skill_usage_payload(
+        {
+            "version": 1,
+            "generated_by": "agentsgen",
+            "generated_at": "",
+            "repo": {"path": "."},
+            "source": {"tool": "codex", "root": "/tmp/codex"},
+            "summary": {
+                "session_count": 0,
+                "sessions_with_skills": 0,
+                "skill_activation_count": 0,
+                "unique_skills": 0,
+            },
+            "skills": [],
+        }
+    )
+    validate_cli_reflect_skills_response_payload(
+        {
+            "version": 1,
+            "command": "reflect skills",
+            "path": ".",
+            "output_dir": "docs/ai",
+            "source": {"tool": "codex", "root": "/tmp/codex"},
+            "summary": {
+                "session_count": 0,
+                "sessions_with_skills": 0,
+                "skill_activation_count": 0,
+                "unique_skills": 0,
+            },
+            "outputs": {
+                "skill_usage_json": "docs/ai/skill-usage.json",
+                "skill_effectiveness_md": "docs/ai/skill-effectiveness.md",
+            },
+            "results": [],
+        }
+    )
     validate_llm_options_payload(
         {
             "enabled": True,
@@ -706,6 +744,7 @@ def test_schema_snapshots_catalog_contains_target_contracts() -> None:
         "cli_pack_plan_response",
         "cli_pack_response",
         "cli_reflect_sessions_response",
+        "cli_reflect_skills_response",
         "cli_task_response",
         "cli_understand_response",
         "detect_result",
@@ -725,6 +764,7 @@ def test_schema_snapshots_catalog_contains_target_contracts() -> None:
         "metadata_payload",
         "reflect_sessions_payload",
         "reflect_signals_payload",
+        "reflect_skill_usage_payload",
         "repo_status",
         "task_contract",
         "task_evidence",

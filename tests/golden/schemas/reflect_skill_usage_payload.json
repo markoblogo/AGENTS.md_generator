@@ -1,0 +1,137 @@
+{
+  "name": "reflect-skill-usage-payload",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "generated_at": {
+        "type": "string"
+      },
+      "generated_by": {
+        "type": "string"
+      },
+      "repo": {
+        "additional_properties": true,
+        "properties": {
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "type": "object"
+      },
+      "skills": {
+        "items": {
+          "additional_properties": true,
+          "properties": {
+            "activations": {
+              "type": "integer"
+            },
+            "bucket": {
+              "enum": [
+                "keep",
+                "watch",
+                "review",
+                "low-signal"
+              ],
+              "type": "string"
+            },
+            "long_session_ratio": {
+              "type": "integer"
+            },
+            "plan_first_ratio": {
+              "type": "integer"
+            },
+            "redirect_total": {
+              "type": "integer"
+            },
+            "redirects_per_session": {
+              "type": "number"
+            },
+            "session_ids": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "sessions": {
+              "type": "integer"
+            },
+            "skill": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "skill",
+            "sessions",
+            "activations",
+            "plan_first_ratio",
+            "redirect_total",
+            "redirects_per_session",
+            "long_session_ratio",
+            "bucket",
+            "session_ids"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "source": {
+        "additional_properties": true,
+        "properties": {
+          "root": {
+            "type": "string"
+          },
+          "tool": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "tool",
+          "root"
+        ],
+        "type": "object"
+      },
+      "summary": {
+        "additional_properties": true,
+        "properties": {
+          "session_count": {
+            "type": "integer"
+          },
+          "sessions_with_skills": {
+            "type": "integer"
+          },
+          "skill_activation_count": {
+            "type": "integer"
+          },
+          "unique_skills": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "session_count",
+          "sessions_with_skills",
+          "skill_activation_count",
+          "unique_skills"
+        ],
+        "type": "object"
+      },
+      "version": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "version",
+      "generated_by",
+      "generated_at",
+      "repo",
+      "source",
+      "summary",
+      "skills"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

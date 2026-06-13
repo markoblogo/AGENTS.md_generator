@@ -46,6 +46,12 @@ class SessionSummary:
     short_prompts: tuple[str, ...]
 
 
+@dataclass(frozen=True)
+class SessionTranscript:
+    summary: SessionSummary
+    user_messages: tuple[str, ...]
+
+
 def utc_now_iso() -> str:
     return (
         datetime.now(timezone.utc)
@@ -195,7 +201,7 @@ def _handle_generated_text_artifact(
     )
 
 
-def _summarize_session(path: Path, target: Path) -> SessionSummary | None:
+def _parse_session_transcript(path: Path, target: Path) -> SessionTranscript | None:
     meta: dict[str, object] | None = None
     user_messages: list[tuple[datetime | None, str]] = []
     last_event_at: datetime | None = None
@@ -249,32 +255,44 @@ def _summarize_session(path: Path, target: Path) -> SessionSummary | None:
     )
     duration_minutes = max(0, int((last_event_at - started_at).total_seconds() // 60))
 
-    return SessionSummary(
-        session_id=str(meta.get("id", "") or path.stem),
-        tool="codex",
-        originator=str(meta.get("originator", "") or ""),
-        source=str(meta.get("source", "") or ""),
-        cwd=cwd,
-        started_at=started_at.isoformat().replace("+00:00", "Z"),
-        last_event_at=last_event_at.isoformat().replace("+00:00", "Z"),
-        duration_minutes=duration_minutes,
-        user_messages=len(user_messages),
-        prompt_chars=prompt_chars,
-        prompt_words=prompt_words,
-        plan_first=bool(user_messages and _plan_first(user_messages[0][1])),
-        redirects=redirects,
-        long_session=duration_minutes >= LONG_SESSION_MINUTES,
-        short_prompts=short_prompts,
+    return SessionTranscript(
+        summary=SessionSummary(
+            session_id=str(meta.get("id", "") or path.stem),
+            tool="codex",
+            originator=str(meta.get("originator", "") or ""),
+            source=str(meta.get("source", "") or ""),
+            cwd=cwd,
+            started_at=started_at.isoformat().replace("+00:00", "Z"),
+            last_event_at=last_event_at.isoformat().replace("+00:00", "Z"),
+            duration_minutes=duration_minutes,
+            user_messages=len(user_messages),
+            prompt_chars=prompt_chars,
+            prompt_words=prompt_words,
+            plan_first=bool(user_messages and _plan_first(user_messages[0][1])),
+            redirects=redirects,
+            long_session=duration_minutes >= LONG_SESSION_MINUTES,
+            short_prompts=short_prompts,
+        ),
+        user_messages=tuple(text for _, text in user_messages),
     )
+
+
+def load_codex_session_transcripts(
+    target: Path, codex_root: Path
+) -> list[SessionTranscript]:
+    session_files = _iter_session_files(codex_root)
+    return [
+        item
+        for path in session_files
+        if (item := _parse_session_transcript(path, target))
+    ]
 
 
 def reflect_sessions_payload(
     target: Path, codex_root: Path
 ) -> tuple[dict[str, object], dict[str, object]]:
-    session_files = _iter_session_files(codex_root)
-    sessions = [
-        item for path in session_files if (item := _summarize_session(path, target))
-    ]
+    transcripts = load_codex_session_transcripts(target, codex_root)
+    sessions = [item.summary for item in transcripts]
 
     prompt_count = sum(item.user_messages for item in sessions)
     prompt_chars_total = sum(item.prompt_chars for item in sessions)

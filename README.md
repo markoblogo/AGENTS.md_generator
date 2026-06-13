@@ -211,6 +211,8 @@ Experimental local session reflection:
 ```sh
 agentsgen reflect sessions .
 cat docs/ai/agent-signals.json
+agentsgen reflect skills .
+cat docs/ai/skill-usage.json
 ```
 
 For public website mode:

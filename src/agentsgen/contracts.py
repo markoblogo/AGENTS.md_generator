@@ -24,6 +24,13 @@ def _integer(*, nullable: bool = False) -> Schema:
     return schema
 
 
+def _number(*, nullable: bool = False) -> Schema:
+    schema: Schema = {"type": "number"}
+    if nullable:
+        schema["nullable"] = True
+    return schema
+
+
 def _boolean() -> Schema:
     return {"type": "boolean"}
 
@@ -943,6 +950,75 @@ REFLECT_SIGNALS_PAYLOAD_SCHEMA = _named(
 )
 
 
+REFLECT_SKILL_USAGE_PAYLOAD_SCHEMA = _named(
+    "reflect-skill-usage-payload",
+    1,
+    _object(
+        properties={
+            "version": _integer(),
+            "generated_by": _string(),
+            "generated_at": _string(),
+            "repo": _object(properties={"path": _string()}, required=["path"]),
+            "source": _object(
+                properties={"tool": _string(), "root": _string()},
+                required=["tool", "root"],
+            ),
+            "summary": _object(
+                properties={
+                    "session_count": _integer(),
+                    "sessions_with_skills": _integer(),
+                    "skill_activation_count": _integer(),
+                    "unique_skills": _integer(),
+                },
+                required=[
+                    "session_count",
+                    "sessions_with_skills",
+                    "skill_activation_count",
+                    "unique_skills",
+                ],
+            ),
+            "skills": _array(
+                _object(
+                    properties={
+                        "skill": _string(),
+                        "sessions": _integer(),
+                        "activations": _integer(),
+                        "plan_first_ratio": _integer(),
+                        "redirect_total": _integer(),
+                        "redirects_per_session": _number(),
+                        "long_session_ratio": _integer(),
+                        "bucket": _string(
+                            enum=["keep", "watch", "review", "low-signal"]
+                        ),
+                        "session_ids": _array(_string()),
+                    },
+                    required=[
+                        "skill",
+                        "sessions",
+                        "activations",
+                        "plan_first_ratio",
+                        "redirect_total",
+                        "redirects_per_session",
+                        "long_session_ratio",
+                        "bucket",
+                        "session_ids",
+                    ],
+                )
+            ),
+        },
+        required=[
+            "version",
+            "generated_by",
+            "generated_at",
+            "repo",
+            "source",
+            "summary",
+            "skills",
+        ],
+    ),
+)
+
+
 CLI_UNDERSTAND_RESPONSE_SCHEMA = _named(
     "cli-understand-response",
     1,
@@ -1101,6 +1177,45 @@ CLI_REFLECT_SESSIONS_RESPONSE_SCHEMA = _named(
                     "patterns_md": _string(),
                 },
                 required=["sessions_json", "signals_json", "patterns_md"],
+            ),
+            "results": _array(FILE_RESULT_SCHEMA["schema"]),
+        },
+        required=[
+            "version",
+            "command",
+            "path",
+            "output_dir",
+            "source",
+            "summary",
+            "outputs",
+            "results",
+        ],
+    ),
+)
+
+
+CLI_REFLECT_SKILLS_RESPONSE_SCHEMA = _named(
+    "cli-reflect-skills-response",
+    1,
+    _object(
+        properties={
+            "version": _integer(),
+            "command": _string(),
+            "path": _string(),
+            "output_dir": _string(),
+            "source": _object(
+                properties={"tool": _string(), "root": _string()},
+                required=["tool", "root"],
+            ),
+            "summary": REFLECT_SKILL_USAGE_PAYLOAD_SCHEMA["schema"]["properties"][
+                "summary"
+            ],
+            "outputs": _object(
+                properties={
+                    "skill_usage_json": _string(),
+                    "skill_effectiveness_md": _string(),
+                },
+                required=["skill_usage_json", "skill_effectiveness_md"],
             ),
             "results": _array(FILE_RESULT_SCHEMA["schema"]),
         },
@@ -1355,12 +1470,14 @@ SCHEMAS: dict[str, Schema] = {
     "cli_pack_plan_response": CLI_PACK_PLAN_RESPONSE_SCHEMA,
     "cli_pack_response": CLI_PACK_RESPONSE_SCHEMA,
     "cli_reflect_sessions_response": CLI_REFLECT_SESSIONS_RESPONSE_SCHEMA,
+    "cli_reflect_skills_response": CLI_REFLECT_SKILLS_RESPONSE_SCHEMA,
     "cli_task_response": CLI_TASK_RESPONSE_SCHEMA,
     "cli_understand_response": CLI_UNDERSTAND_RESPONSE_SCHEMA,
     "detect_result": DETECT_RESULT_SCHEMA,
     "entrypoints": ENTRYPOINTS_SCHEMA,
     "file_result": FILE_RESULT_SCHEMA,
     "knowledge": KNOWLEDGE_SCHEMA,
+    "reflect_skill_usage_payload": REFLECT_SKILL_USAGE_PAYLOAD_SCHEMA,
     "reflect_sessions_payload": REFLECT_SESSION_PAYLOAD_SCHEMA,
     "reflect_signals_payload": REFLECT_SIGNALS_PAYLOAD_SCHEMA,
     "llm_enhancement_result": LLM_ENHANCEMENT_RESULT_SCHEMA,
@@ -1400,6 +1517,8 @@ def _validate_scalar(name: str, expected: str, value: object) -> None:
         raise ValueError(f"{name} must be a string")
     if expected == "integer" and not isinstance(value, int):
         raise ValueError(f"{name} must be an integer")
+    if expected == "number" and not isinstance(value, (int, float)):
+        raise ValueError(f"{name} must be a number")
     if expected == "boolean" and not isinstance(value, bool):
         raise ValueError(f"{name} must be a boolean")
 
@@ -1410,7 +1529,7 @@ def _validate_schema(name: str, schema: Schema, value: object) -> None:
             return
         raise ValueError(f"{name} may not be null")
     schema_type = str(schema.get("type", ""))
-    if schema_type in {"string", "integer", "boolean"}:
+    if schema_type in {"string", "integer", "number", "boolean"}:
         _validate_scalar(name, schema_type, value)
         enum = schema.get("enum")
         if enum is not None and value not in enum:
