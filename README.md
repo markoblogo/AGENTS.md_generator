@@ -196,6 +196,13 @@ cat agents.entrypoints.json
 cat docs/ai/id-context.json
 ```
 
+Optional OKF export:
+
+```sh
+agentsgen okf export .
+find docs/ai/okf -maxdepth 3 -type f | sort
+```
+
 For public website mode:
 
 ```sh
@@ -404,6 +411,34 @@ Use --print-plan to preview what pack will write.
 
 What it is:
 - a compact, agent-first context bundle for coding agents and LLM indexing.
+
+## Experimental OKF export
+
+`agentsgen okf export` derives an [Open Knowledge Format](https://github.com/GoogleCloudPlatform/knowledge-catalog/tree/main/okf) style markdown bundle from the repo-local AI docs that `agentsgen pack` already generates.
+
+Current export target:
+
+- `docs/ai/okf/index.md`
+- `docs/ai/okf/repo/overview.md`
+- `docs/ai/okf/repo/architecture.md`
+- `docs/ai/okf/repo/runbook.md`
+- `docs/ai/okf/repo/test-flow.md`
+- `docs/ai/okf/repo/contracts.md`
+- `docs/ai/okf/assets/entrypoints.md`
+
+Usage:
+
+```sh
+agentsgen pack . --autodetect
+agentsgen okf export .
+agentsgen okf export . --check
+```
+
+Why it exists:
+
+- keep `docs/ai/` as the primary repo-facing output
+- add a portable markdown+frontmatter bundle for downstream catalogs, viewers, and agents
+- avoid turning OKF into a required internal source format too early
 
 ## Repo understanding artifacts
 
