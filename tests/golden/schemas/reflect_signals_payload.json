@@ -1,0 +1,128 @@
+{
+  "name": "reflect-signals-payload",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "generated_at": {
+        "type": "string"
+      },
+      "generated_by": {
+        "type": "string"
+      },
+      "repo": {
+        "additional_properties": true,
+        "properties": {
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "type": "object"
+      },
+      "source": {
+        "additional_properties": true,
+        "properties": {
+          "root": {
+            "type": "string"
+          },
+          "tool": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "tool",
+          "root"
+        ],
+        "type": "object"
+      },
+      "summary": {
+        "additional_properties": true,
+        "properties": {
+          "avg_prompt_chars": {
+            "type": "integer"
+          },
+          "long_sessions": {
+            "type": "integer"
+          },
+          "plan_first_ratio": {
+            "type": "integer"
+          },
+          "prompt_count": {
+            "type": "integer"
+          },
+          "redirect_count": {
+            "type": "integer"
+          },
+          "session_count": {
+            "type": "integer"
+          },
+          "top_hours": {
+            "items": {
+              "additional_properties": true,
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "hour": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "hour",
+                "count"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "session_count",
+          "prompt_count",
+          "avg_prompt_chars",
+          "plan_first_ratio",
+          "redirect_count",
+          "long_sessions",
+          "top_hours"
+        ],
+        "type": "object"
+      },
+      "top_short_prompts": {
+        "items": {
+          "additional_properties": true,
+          "properties": {
+            "count": {
+              "type": "integer"
+            },
+            "prompt": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "prompt",
+            "count"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "version": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "version",
+      "generated_by",
+      "generated_at",
+      "repo",
+      "source",
+      "summary",
+      "top_short_prompts"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

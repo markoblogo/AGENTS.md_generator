@@ -206,6 +206,13 @@ agentsgen okf export .
 find docs/ai/okf -maxdepth 3 -type f | sort
 ```
 
+Experimental local session reflection:
+
+```sh
+agentsgen reflect sessions .
+cat docs/ai/agent-signals.json
+```
+
 For public website mode:
 
 ```sh

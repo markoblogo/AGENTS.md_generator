@@ -77,7 +77,7 @@
     },
     {
       "path": "docs/ai/id-context.json",
-      "size": 1772,
+      "size": 2083,
       "language": "json",
       "symbols_count": 0
     },
@@ -146,7 +146,7 @@
       "path": "docs/ai/id-context.json",
       "score": 1,
       "signals": [
-        "size:1772"
+        "size:2083"
       ],
       "distance_from_entrypoint": null,
       "changed": false,

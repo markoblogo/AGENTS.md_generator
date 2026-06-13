@@ -8,6 +8,7 @@ from .cli_core import register_core_commands
 from .cli_extra import register_extra_commands
 from .cli_okf import register_okf_commands
 from .cli_pack import register_pack_commands
+from .cli_reflect import register_reflect_commands
 from .cli_task import register_task_commands
 
 
@@ -25,12 +26,18 @@ okf_app = typer.Typer(
     add_completion=False,
     help="Export Open Knowledge Format bundles from repo AI artifacts.",
 )
+reflect_app = typer.Typer(
+    add_completion=False,
+    help="Experimental local reflection over agent session transcripts.",
+)
 app.add_typer(task_app, name="task")
 app.add_typer(okf_app, name="okf")
+app.add_typer(reflect_app, name="reflect")
 register_core_commands(app)
 register_pack_commands(app)
 register_task_commands(task_app)
 register_okf_commands(okf_app)
+register_reflect_commands(reflect_app)
 register_extra_commands(app)
 
 

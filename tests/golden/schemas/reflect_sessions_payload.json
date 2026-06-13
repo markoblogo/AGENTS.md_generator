@@ -1,0 +1,167 @@
+{
+  "name": "reflect-sessions-payload",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "generated_at": {
+        "type": "string"
+      },
+      "generated_by": {
+        "type": "string"
+      },
+      "repo": {
+        "additional_properties": true,
+        "properties": {
+          "path": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "path"
+        ],
+        "type": "object"
+      },
+      "sessions": {
+        "items": {
+          "additional_properties": true,
+          "properties": {
+            "cwd": {
+              "type": "string"
+            },
+            "duration_minutes": {
+              "type": "integer"
+            },
+            "last_event_at": {
+              "type": "string"
+            },
+            "long_session": {
+              "type": "boolean"
+            },
+            "originator": {
+              "type": "string"
+            },
+            "plan_first": {
+              "type": "boolean"
+            },
+            "prompt_chars": {
+              "type": "integer"
+            },
+            "prompt_words": {
+              "type": "integer"
+            },
+            "redirects": {
+              "type": "integer"
+            },
+            "session_id": {
+              "type": "string"
+            },
+            "short_prompts": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "source": {
+              "type": "string"
+            },
+            "started_at": {
+              "type": "string"
+            },
+            "tool": {
+              "type": "string"
+            },
+            "user_messages": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "session_id",
+            "tool",
+            "originator",
+            "source",
+            "cwd",
+            "started_at",
+            "last_event_at",
+            "duration_minutes",
+            "user_messages",
+            "prompt_chars",
+            "prompt_words",
+            "plan_first",
+            "redirects",
+            "long_session",
+            "short_prompts"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "source": {
+        "additional_properties": true,
+        "properties": {
+          "root": {
+            "type": "string"
+          },
+          "tool": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "tool",
+          "root"
+        ],
+        "type": "object"
+      },
+      "summary": {
+        "additional_properties": true,
+        "properties": {
+          "avg_prompt_chars": {
+            "type": "integer"
+          },
+          "long_sessions": {
+            "type": "integer"
+          },
+          "plan_first_sessions": {
+            "type": "integer"
+          },
+          "prompt_chars_total": {
+            "type": "integer"
+          },
+          "prompt_count": {
+            "type": "integer"
+          },
+          "redirect_count": {
+            "type": "integer"
+          },
+          "session_count": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "session_count",
+          "prompt_count",
+          "prompt_chars_total",
+          "avg_prompt_chars",
+          "plan_first_sessions",
+          "redirect_count",
+          "long_sessions"
+        ],
+        "type": "object"
+      },
+      "version": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "version",
+      "generated_by",
+      "generated_at",
+      "repo",
+      "source",
+      "sessions",
+      "summary"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

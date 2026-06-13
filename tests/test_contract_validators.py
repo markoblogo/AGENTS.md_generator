@@ -10,6 +10,7 @@ from agentsgen.validators import (
     validate_cli_meta_response_payload,
     validate_cli_pack_plan_response_payload,
     validate_cli_pack_response_payload,
+    validate_cli_reflect_sessions_response_payload,
     validate_cli_task_response_payload,
     validate_cli_understand_response_payload,
     validate_detect_result_payload,
@@ -26,6 +27,8 @@ from agentsgen.validators import (
     validate_mcp_understand_response_payload,
     validate_mcp_update_response_payload,
     validate_metadata_payload,
+    validate_reflect_sessions_payload,
+    validate_reflect_signals_payload,
     validate_repo_status_payload,
     validate_task_contract_payload,
     validate_task_evidence_payload,
@@ -437,6 +440,68 @@ def test_validate_other_payloads_accept_minimal_shapes() -> None:
             "plan": [],
         }
     )
+    validate_reflect_sessions_payload(
+        {
+            "version": 1,
+            "generated_by": "agentsgen",
+            "generated_at": "",
+            "repo": {"path": "."},
+            "source": {"tool": "codex", "root": "/tmp/codex"},
+            "sessions": [],
+            "summary": {
+                "session_count": 0,
+                "prompt_count": 0,
+                "prompt_chars_total": 0,
+                "avg_prompt_chars": 0,
+                "plan_first_sessions": 0,
+                "redirect_count": 0,
+                "long_sessions": 0,
+            },
+        }
+    )
+    validate_reflect_signals_payload(
+        {
+            "version": 1,
+            "generated_by": "agentsgen",
+            "generated_at": "",
+            "repo": {"path": "."},
+            "source": {"tool": "codex", "root": "/tmp/codex"},
+            "summary": {
+                "session_count": 0,
+                "prompt_count": 0,
+                "avg_prompt_chars": 0,
+                "plan_first_ratio": 0,
+                "redirect_count": 0,
+                "long_sessions": 0,
+                "top_hours": [],
+            },
+            "top_short_prompts": [],
+        }
+    )
+    validate_cli_reflect_sessions_response_payload(
+        {
+            "version": 1,
+            "command": "reflect sessions",
+            "path": ".",
+            "output_dir": "docs/ai",
+            "source": {"tool": "codex", "root": "/tmp/codex"},
+            "summary": {
+                "session_count": 0,
+                "prompt_count": 0,
+                "avg_prompt_chars": 0,
+                "plan_first_ratio": 0,
+                "redirect_count": 0,
+                "long_sessions": 0,
+                "top_hours": [],
+            },
+            "outputs": {
+                "sessions_json": "docs/ai/agent-sessions.json",
+                "signals_json": "docs/ai/agent-signals.json",
+                "patterns_md": "docs/ai/agent-patterns.md",
+            },
+            "results": [],
+        }
+    )
     validate_llm_options_payload(
         {
             "enabled": True,
@@ -640,6 +705,7 @@ def test_schema_snapshots_catalog_contains_target_contracts() -> None:
         "cli_meta_response",
         "cli_pack_plan_response",
         "cli_pack_response",
+        "cli_reflect_sessions_response",
         "cli_task_response",
         "cli_understand_response",
         "detect_result",
@@ -657,6 +723,8 @@ def test_schema_snapshots_catalog_contains_target_contracts() -> None:
         "mcp_understand_response",
         "mcp_update_response",
         "metadata_payload",
+        "reflect_sessions_payload",
+        "reflect_signals_payload",
         "repo_status",
         "task_contract",
         "task_evidence",

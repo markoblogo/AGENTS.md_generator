@@ -1,0 +1,152 @@
+{
+  "name": "cli-reflect-sessions-response",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "command": {
+        "type": "string"
+      },
+      "output_dir": {
+        "type": "string"
+      },
+      "outputs": {
+        "additional_properties": true,
+        "properties": {
+          "patterns_md": {
+            "type": "string"
+          },
+          "sessions_json": {
+            "type": "string"
+          },
+          "signals_json": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "sessions_json",
+          "signals_json",
+          "patterns_md"
+        ],
+        "type": "object"
+      },
+      "path": {
+        "type": "string"
+      },
+      "results": {
+        "items": {
+          "additional_properties": true,
+          "properties": {
+            "action": {
+              "type": "string"
+            },
+            "changed": {
+              "type": "boolean"
+            },
+            "diff": {
+              "type": "string"
+            },
+            "message": {
+              "type": "string"
+            },
+            "path": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "path",
+            "action",
+            "message",
+            "changed",
+            "diff"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "source": {
+        "additional_properties": true,
+        "properties": {
+          "root": {
+            "type": "string"
+          },
+          "tool": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "tool",
+          "root"
+        ],
+        "type": "object"
+      },
+      "summary": {
+        "additional_properties": true,
+        "properties": {
+          "avg_prompt_chars": {
+            "type": "integer"
+          },
+          "long_sessions": {
+            "type": "integer"
+          },
+          "plan_first_ratio": {
+            "type": "integer"
+          },
+          "prompt_count": {
+            "type": "integer"
+          },
+          "redirect_count": {
+            "type": "integer"
+          },
+          "session_count": {
+            "type": "integer"
+          },
+          "top_hours": {
+            "items": {
+              "additional_properties": true,
+              "properties": {
+                "count": {
+                  "type": "integer"
+                },
+                "hour": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "hour",
+                "count"
+              ],
+              "type": "object"
+            },
+            "type": "array"
+          }
+        },
+        "required": [
+          "session_count",
+          "prompt_count",
+          "avg_prompt_chars",
+          "plan_first_ratio",
+          "redirect_count",
+          "long_sessions",
+          "top_hours"
+        ],
+        "type": "object"
+      },
+      "version": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "version",
+      "command",
+      "path",
+      "output_dir",
+      "source",
+      "summary",
+      "outputs",
+      "results"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

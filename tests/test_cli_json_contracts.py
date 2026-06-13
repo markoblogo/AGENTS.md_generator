@@ -15,6 +15,7 @@ from agentsgen.validators import (
     validate_cli_meta_response_payload,
     validate_cli_pack_plan_response_payload,
     validate_cli_pack_response_payload,
+    validate_cli_reflect_sessions_response_payload,
     validate_cli_task_response_payload,
     validate_cli_understand_response_payload,
     validate_detect_result_payload,
@@ -193,3 +194,53 @@ def test_cli_analyze_and_meta_json_contracts(monkeypatch, tmp_path: Path) -> Non
     meta = runner.invoke(app, ["meta", "example.com", str(target), "--format", "json"])
     assert meta.exit_code == 0
     validate_cli_meta_response_payload(json.loads(meta.stdout))
+
+
+def test_cli_reflect_sessions_json_contract(tmp_path: Path) -> None:
+    target = tmp_path / "repo"
+    target.mkdir()
+    codex_root = tmp_path / "codex"
+    session_path = codex_root / "2026/06/13/demo.jsonl"
+    session_path.parent.mkdir(parents=True, exist_ok=True)
+    session_path.write_text(
+        "\n".join(
+            [
+                json.dumps(
+                    {
+                        "timestamp": "2026-06-13T10:00:00Z",
+                        "type": "session_meta",
+                        "payload": {
+                            "id": "demo",
+                            "timestamp": "2026-06-13T10:00:00Z",
+                            "cwd": str(target),
+                            "originator": "Codex Desktop",
+                            "source": "vscode",
+                        },
+                    }
+                ),
+                json.dumps(
+                    {
+                        "timestamp": "2026-06-13T10:01:00Z",
+                        "type": "event_msg",
+                        "payload": {"type": "user_message", "message": "plan this"},
+                    }
+                ),
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+    response = runner.invoke(
+        app,
+        [
+            "reflect",
+            "sessions",
+            str(target),
+            "--codex-root",
+            str(codex_root),
+            "--format",
+            "json",
+        ],
+    )
+    assert response.exit_code == 0
+    validate_cli_reflect_sessions_response_payload(json.loads(response.stdout))

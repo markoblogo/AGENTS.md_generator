@@ -800,6 +800,149 @@ METADATA_PAYLOAD_SCHEMA = _named(
 )
 
 
+REFLECT_SESSION_PAYLOAD_SCHEMA = _named(
+    "reflect-sessions-payload",
+    1,
+    _object(
+        properties={
+            "version": _integer(),
+            "generated_by": _string(),
+            "generated_at": _string(),
+            "repo": _object(properties={"path": _string()}, required=["path"]),
+            "source": _object(
+                properties={"tool": _string(), "root": _string()},
+                required=["tool", "root"],
+            ),
+            "sessions": _array(
+                _object(
+                    properties={
+                        "session_id": _string(),
+                        "tool": _string(),
+                        "originator": _string(),
+                        "source": _string(),
+                        "cwd": _string(),
+                        "started_at": _string(),
+                        "last_event_at": _string(),
+                        "duration_minutes": _integer(),
+                        "user_messages": _integer(),
+                        "prompt_chars": _integer(),
+                        "prompt_words": _integer(),
+                        "plan_first": _boolean(),
+                        "redirects": _integer(),
+                        "long_session": _boolean(),
+                        "short_prompts": _array(_string()),
+                    },
+                    required=[
+                        "session_id",
+                        "tool",
+                        "originator",
+                        "source",
+                        "cwd",
+                        "started_at",
+                        "last_event_at",
+                        "duration_minutes",
+                        "user_messages",
+                        "prompt_chars",
+                        "prompt_words",
+                        "plan_first",
+                        "redirects",
+                        "long_session",
+                        "short_prompts",
+                    ],
+                )
+            ),
+            "summary": _object(
+                properties={
+                    "session_count": _integer(),
+                    "prompt_count": _integer(),
+                    "prompt_chars_total": _integer(),
+                    "avg_prompt_chars": _integer(),
+                    "plan_first_sessions": _integer(),
+                    "redirect_count": _integer(),
+                    "long_sessions": _integer(),
+                },
+                required=[
+                    "session_count",
+                    "prompt_count",
+                    "prompt_chars_total",
+                    "avg_prompt_chars",
+                    "plan_first_sessions",
+                    "redirect_count",
+                    "long_sessions",
+                ],
+            ),
+        },
+        required=[
+            "version",
+            "generated_by",
+            "generated_at",
+            "repo",
+            "source",
+            "sessions",
+            "summary",
+        ],
+    ),
+)
+
+
+REFLECT_SIGNALS_PAYLOAD_SCHEMA = _named(
+    "reflect-signals-payload",
+    1,
+    _object(
+        properties={
+            "version": _integer(),
+            "generated_by": _string(),
+            "generated_at": _string(),
+            "repo": _object(properties={"path": _string()}, required=["path"]),
+            "source": _object(
+                properties={"tool": _string(), "root": _string()},
+                required=["tool", "root"],
+            ),
+            "summary": _object(
+                properties={
+                    "session_count": _integer(),
+                    "prompt_count": _integer(),
+                    "avg_prompt_chars": _integer(),
+                    "plan_first_ratio": _integer(),
+                    "redirect_count": _integer(),
+                    "long_sessions": _integer(),
+                    "top_hours": _array(
+                        _object(
+                            properties={"hour": _integer(), "count": _integer()},
+                            required=["hour", "count"],
+                        )
+                    ),
+                },
+                required=[
+                    "session_count",
+                    "prompt_count",
+                    "avg_prompt_chars",
+                    "plan_first_ratio",
+                    "redirect_count",
+                    "long_sessions",
+                    "top_hours",
+                ],
+            ),
+            "top_short_prompts": _array(
+                _object(
+                    properties={"prompt": _string(), "count": _integer()},
+                    required=["prompt", "count"],
+                )
+            ),
+        },
+        required=[
+            "version",
+            "generated_by",
+            "generated_at",
+            "repo",
+            "source",
+            "summary",
+            "top_short_prompts",
+        ],
+    ),
+)
+
+
 CLI_UNDERSTAND_RESPONSE_SCHEMA = _named(
     "cli-understand-response",
     1,
@@ -930,6 +1073,46 @@ CLI_PACK_PLAN_RESPONSE_SCHEMA = _named(
             "dry_run",
             "print_plan",
             "plan",
+        ],
+    ),
+)
+
+
+CLI_REFLECT_SESSIONS_RESPONSE_SCHEMA = _named(
+    "cli-reflect-sessions-response",
+    1,
+    _object(
+        properties={
+            "version": _integer(),
+            "command": _string(),
+            "path": _string(),
+            "output_dir": _string(),
+            "source": _object(
+                properties={"tool": _string(), "root": _string()},
+                required=["tool", "root"],
+            ),
+            "summary": REFLECT_SIGNALS_PAYLOAD_SCHEMA["schema"]["properties"][
+                "summary"
+            ],
+            "outputs": _object(
+                properties={
+                    "sessions_json": _string(),
+                    "signals_json": _string(),
+                    "patterns_md": _string(),
+                },
+                required=["sessions_json", "signals_json", "patterns_md"],
+            ),
+            "results": _array(FILE_RESULT_SCHEMA["schema"]),
+        },
+        required=[
+            "version",
+            "command",
+            "path",
+            "output_dir",
+            "source",
+            "summary",
+            "outputs",
+            "results",
         ],
     ),
 )
@@ -1171,12 +1354,15 @@ SCHEMAS: dict[str, Schema] = {
     "cli_meta_response": CLI_META_RESPONSE_SCHEMA,
     "cli_pack_plan_response": CLI_PACK_PLAN_RESPONSE_SCHEMA,
     "cli_pack_response": CLI_PACK_RESPONSE_SCHEMA,
+    "cli_reflect_sessions_response": CLI_REFLECT_SESSIONS_RESPONSE_SCHEMA,
     "cli_task_response": CLI_TASK_RESPONSE_SCHEMA,
     "cli_understand_response": CLI_UNDERSTAND_RESPONSE_SCHEMA,
     "detect_result": DETECT_RESULT_SCHEMA,
     "entrypoints": ENTRYPOINTS_SCHEMA,
     "file_result": FILE_RESULT_SCHEMA,
     "knowledge": KNOWLEDGE_SCHEMA,
+    "reflect_sessions_payload": REFLECT_SESSION_PAYLOAD_SCHEMA,
+    "reflect_signals_payload": REFLECT_SIGNALS_PAYLOAD_SCHEMA,
     "llm_enhancement_result": LLM_ENHANCEMENT_RESULT_SCHEMA,
     "llm_options": LLM_OPTIONS_SCHEMA,
     "write_policy": WRITE_POLICY_SCHEMA,

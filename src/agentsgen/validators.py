@@ -124,6 +124,10 @@ def validate_cli_pack_response_payload(payload: dict[str, Any]) -> None:
     validate_contract_payload("cli_pack_response", payload)
 
 
+def validate_cli_reflect_sessions_response_payload(payload: dict[str, Any]) -> None:
+    validate_contract_payload("cli_reflect_sessions_response", payload)
+
+
 def validate_cli_pack_plan_response_payload(payload: dict[str, Any]) -> None:
     validate_contract_payload("cli_pack_plan_response", payload)
 
@@ -166,3 +170,11 @@ def validate_mcp_update_response_payload(payload: dict[str, Any]) -> None:
 
 def validate_mcp_pack_response_payload(payload: dict[str, Any]) -> None:
     validate_contract_payload("mcp_pack_response", payload)
+
+
+def validate_reflect_sessions_payload(payload: dict[str, Any]) -> None:
+    validate_contract_payload("reflect_sessions_payload", payload)
+
+
+def validate_reflect_signals_payload(payload: dict[str, Any]) -> None:
+    validate_contract_payload("reflect_signals_payload", payload)
