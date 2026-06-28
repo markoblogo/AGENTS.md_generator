@@ -114,6 +114,12 @@ PyPI publishing is prepared in CI via trusted publishing. Once the package is li
 pip install agentsgen
 ```
 
+If PyPI is temporarily unavailable after the package is published, use GitVerse's PyPI mirror as a one-command fallback, not as a global default:
+
+```sh
+python -m pip install agentsgen --index-url https://pypi-mirror.gitverse.ru/simple/
+```
+
 Contributor install:
 
 ```sh
