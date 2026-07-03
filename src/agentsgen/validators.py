@@ -64,6 +64,10 @@ def validate_aggregated_check_payload(payload: dict[str, Any]) -> None:
     validate_contract_payload("aggregated_check", payload)
 
 
+def validate_fleet_scan_report_payload(payload: dict[str, Any]) -> None:
+    validate_contract_payload("fleet_scan_report", payload)
+
+
 def validate_entrypoints_payload(payload: dict[str, Any]) -> None:
     validate_contract_payload("entrypoints", payload)
 

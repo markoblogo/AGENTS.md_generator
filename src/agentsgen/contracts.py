@@ -691,6 +691,81 @@ REPO_STATUS_SCHEMA = _named(
 )
 
 
+FLEET_SCAN_REPORT_SCHEMA = _named(
+    "fleet-scan-report",
+    1,
+    _object(
+        properties={
+            "version": _integer(),
+            "command": _string(),
+            "meta": _object(
+                properties={
+                    "timestamp": _string(),
+                    "roots": _array(_string()),
+                    "max_depth": _integer(),
+                },
+                required=["timestamp", "roots", "max_depth"],
+            ),
+            "summary": _object(
+                properties={
+                    "repos_count": _integer(),
+                    "failed_count": _integer(),
+                    "needs_init_count": _integer(),
+                    "needs_manual_markers_count": _integer(),
+                    "changed_count": _integer(),
+                },
+                required=[
+                    "repos_count",
+                    "failed_count",
+                    "needs_init_count",
+                    "needs_manual_markers_count",
+                    "changed_count",
+                ],
+            ),
+            "repos": _array(
+                _object(
+                    properties={
+                        "repo": _string(),
+                        "agents_mode": _string(),
+                        "runbook_mode": _string(),
+                        "has_config": _boolean(),
+                        "detect": _object(properties={}, required=[]),
+                        "plan": _array(
+                            _object(
+                                properties={
+                                    "path": _string(),
+                                    "action": _string(),
+                                    "message": _string(),
+                                    "changed": _boolean(),
+                                },
+                                required=["path", "action", "message", "changed"],
+                            )
+                        ),
+                        "changed_count": _integer(),
+                        "needs_manual_markers": _boolean(),
+                        "errors": _array(_string()),
+                        "recommended_next": _string(),
+                    },
+                    required=[
+                        "repo",
+                        "agents_mode",
+                        "runbook_mode",
+                        "has_config",
+                        "detect",
+                        "plan",
+                        "changed_count",
+                        "needs_manual_markers",
+                        "errors",
+                        "recommended_next",
+                    ],
+                )
+            ),
+        },
+        required=["version", "command", "meta", "summary", "repos"],
+    ),
+)
+
+
 UNDERSTAND_PAYLOAD_SCHEMA = _named(
     "understand-payload",
     1,
@@ -1476,6 +1551,7 @@ SCHEMAS: dict[str, Schema] = {
     "detect_result": DETECT_RESULT_SCHEMA,
     "entrypoints": ENTRYPOINTS_SCHEMA,
     "file_result": FILE_RESULT_SCHEMA,
+    "fleet_scan_report": FLEET_SCAN_REPORT_SCHEMA,
     "knowledge": KNOWLEDGE_SCHEMA,
     "reflect_skill_usage_payload": REFLECT_SKILL_USAGE_PAYLOAD_SCHEMA,
     "reflect_sessions_payload": REFLECT_SESSION_PAYLOAD_SCHEMA,

@@ -1,0 +1,156 @@
+{
+  "name": "fleet-scan-report",
+  "schema": {
+    "additional_properties": true,
+    "properties": {
+      "command": {
+        "type": "string"
+      },
+      "meta": {
+        "additional_properties": true,
+        "properties": {
+          "max_depth": {
+            "type": "integer"
+          },
+          "roots": {
+            "items": {
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "timestamp": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "timestamp",
+          "roots",
+          "max_depth"
+        ],
+        "type": "object"
+      },
+      "repos": {
+        "items": {
+          "additional_properties": true,
+          "properties": {
+            "agents_mode": {
+              "type": "string"
+            },
+            "changed_count": {
+              "type": "integer"
+            },
+            "detect": {
+              "additional_properties": true,
+              "properties": {},
+              "required": [],
+              "type": "object"
+            },
+            "errors": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "has_config": {
+              "type": "boolean"
+            },
+            "needs_manual_markers": {
+              "type": "boolean"
+            },
+            "plan": {
+              "items": {
+                "additional_properties": true,
+                "properties": {
+                  "action": {
+                    "type": "string"
+                  },
+                  "changed": {
+                    "type": "boolean"
+                  },
+                  "message": {
+                    "type": "string"
+                  },
+                  "path": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "path",
+                  "action",
+                  "message",
+                  "changed"
+                ],
+                "type": "object"
+              },
+              "type": "array"
+            },
+            "recommended_next": {
+              "type": "string"
+            },
+            "repo": {
+              "type": "string"
+            },
+            "runbook_mode": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "repo",
+            "agents_mode",
+            "runbook_mode",
+            "has_config",
+            "detect",
+            "plan",
+            "changed_count",
+            "needs_manual_markers",
+            "errors",
+            "recommended_next"
+          ],
+          "type": "object"
+        },
+        "type": "array"
+      },
+      "summary": {
+        "additional_properties": true,
+        "properties": {
+          "changed_count": {
+            "type": "integer"
+          },
+          "failed_count": {
+            "type": "integer"
+          },
+          "needs_init_count": {
+            "type": "integer"
+          },
+          "needs_manual_markers_count": {
+            "type": "integer"
+          },
+          "repos_count": {
+            "type": "integer"
+          }
+        },
+        "required": [
+          "repos_count",
+          "failed_count",
+          "needs_init_count",
+          "needs_manual_markers_count",
+          "changed_count"
+        ],
+        "type": "object"
+      },
+      "version": {
+        "type": "integer"
+      }
+    },
+    "required": [
+      "version",
+      "command",
+      "meta",
+      "summary",
+      "repos"
+    ],
+    "type": "object"
+  },
+  "schema_format_version": 1,
+  "version": 1
+}

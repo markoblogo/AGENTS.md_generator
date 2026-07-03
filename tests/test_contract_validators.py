@@ -750,6 +750,7 @@ def test_schema_snapshots_catalog_contains_target_contracts() -> None:
         "detect_result",
         "entrypoints",
         "file_result",
+        "fleet_scan_report",
         "id_context",
         "knowledge",
         "llm_enhancement_result",

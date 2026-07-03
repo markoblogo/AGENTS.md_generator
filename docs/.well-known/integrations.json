@@ -51,7 +51,7 @@
           "source": "https://agentsmd.abvx.xyz/.well-known/integrations.json"
         }
       },
-      "notes": "Run `agentsgen mcp` after installing optional MCP extras for a local stdio MCP server. This is intentionally not declared as a remote MCP endpoint because it runs on the user's machine."
+      "notes": "Stable repo loop: `agentsgen check . --all --report` then `agentsgen fix . --all`. Team rollout loop: `agentsgen fleet scan ~/code --max-depth 2`. Run `agentsgen mcp` after installing optional MCP extras for a local stdio MCP server. This is intentionally not declared as a remote MCP endpoint because it runs on the user's machine."
     },
     {
       "slug": "agentsgen-github-action",

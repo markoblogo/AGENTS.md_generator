@@ -412,6 +412,8 @@ agentsgen check . --all --report
 agentsgen check . --format json
 agentsgen fix . --all
 agentsgen fix . --all --dry-run --print-diff
+agentsgen fleet scan ~/code --max-depth 2
+agentsgen fleet scan ~/code --format json
 agentsgen doctor . --all --ci
 agentsgen status .
 agentsgen status . --format json
@@ -449,13 +451,25 @@ Invalid `.agentsgen.json` files now fail as structured CLI errors instead of raw
 
 It does not invent commands, rewrite unmarked docs, or mutate repo code. If `.agentsgen.json` is missing, run `agentsgen init` first.
 
-Team/fleet work starts with the dry-run scanner:
+## Team / fleet mode
+
+`agentsgen fleet scan` is the read-only portfolio view for teams that want to roll out repo contracts across many repositories.
+It walks git repos under one or more roots, runs the same dry-run planning engine, and reports which repos need init, marker review, or safe fixes.
 
 ```sh
-python scripts/scan_repos.py --root ~/code --max-depth 2
+agentsgen fleet scan ~/code --max-depth 2
+agentsgen fleet scan ~/code ~/work --max-depth 3 --format json
+agentsgen fleet scan ~/code --out /tmp/agentsgen-fleet.md --json-out /tmp/agentsgen-fleet.json
 ```
 
-That script reports which repos have configs, markers, generated siblings, and migration plans. It is intentionally kept outside the stable CLI until the team-mode contract is ready.
+The JSON payload is validated as `fleet_scan_report` and includes:
+
+- repo count, failed scans, repos needing init, repos needing manual marker review, and planned changed-file count;
+- one row per repo with `AGENTS.md` / `RUNBOOK.md` marker state;
+- dry-run plan actions;
+- a `recommended_next` command for each repo.
+
+This mode does not write to scanned repos. The legacy `scripts/scan_repos.py` wrapper still exists for automation that already calls it, but the stable API is now `agentsgen fleet scan`.
 
 ## Experimental surfaces
 
