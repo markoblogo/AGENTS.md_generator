@@ -55,7 +55,9 @@ def test_fleet_scan_json_reports_repo_readiness_without_writes(tmp_path: Path) -
     repos = {Path(row["repo"]).name: row for row in payload["repos"]}
     assert repos["ready"]["has_config"] is True
     assert repos["raw"]["has_config"] is False
-    assert repos["raw"]["recommended_next"] == "agentsgen init . --defaults --autodetect"
+    assert (
+        repos["raw"]["recommended_next"] == "agentsgen init . --defaults --autodetect"
+    )
     assert not (raw / ".agentsgen.json").exists()
 
 
