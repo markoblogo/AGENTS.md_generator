@@ -278,6 +278,7 @@
               <li><strong>Serve agents:</strong> emit pack artifacts, manifests, and local MCP surfaces.</li>
               <li><strong>Fail safely:</strong> write sibling generated files when markers are missing.</li>
             </ul>
+            <div class="note">Readiness is not the full delivery loop. Pair this with delivery gates for <code>spec -> slices -> proof -> review -> release</code> when the change itself needs explicit evidence.</div>
           </div>
           <div class="card code-card" data-ascii-role="card">
             <div class="code-head">

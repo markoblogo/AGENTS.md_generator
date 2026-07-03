@@ -38,6 +38,14 @@ Most agent tooling still asks teams to hand-maintain repo instructions, copy/pas
 
 The product goal is simple: make any repo reliably interpretable by coding agents.
 
+Readiness is not the whole delivery loop. `agentsgen` owns the repo-readiness loop, while delivery still needs gates around the actual change:
+
+```text
+spec -> slices -> proof -> review -> release
+```
+
+Pair `agentsgen check --report`, `agentsgen fix --all`, and `agentsgen fleet scan` with `abvx-agent-skills` workflows such as `idea-to-ship-gates`, `plan-to-issues`, `delivery-preflight-gate`, and `delivery-baseline-audit` when a team needs the change itself to move through explicit proof and review gates.
+
 ## Works great with
 
 | Agent/tool | CLI docs | CI guard | Pack bundle | MCP surface |

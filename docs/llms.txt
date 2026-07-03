@@ -38,6 +38,13 @@ Core commands:
 - agentsgen detect . --format json
 - agentsgen mcp
 
+Delivery concept:
+- agentsgen handles repo readiness; delivery still needs a gated change flow:
+  spec -> slices -> proof -> review -> release.
+- Pair with ABVX Agent Skills such as idea-to-ship-gates, plan-to-issues,
+  delivery-preflight-gate, and delivery-baseline-audit for explicit delivery
+  discipline.
+
 Companion layers:
 - SET orchestrates agentsgen in CI and registry workflows: https://github.com/markoblogo/SET
 - ID carries portable human/operator context: https://github.com/markoblogo/ID
