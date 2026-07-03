@@ -49,6 +49,36 @@ def test_check_aggregate_core_ok_pack_drift_json_and_ci(tmp_path: Path) -> None:
     assert "agentsgen pack . --autodetect" in ci.stdout
 
 
+def test_check_report_prints_readiness_score_and_remediation(tmp_path: Path) -> None:
+    target = tmp_path / "repo"
+    _copy_fixture(FIXTURES / "check_aggregate_core_ok_pack_drift", target)
+    _init_repo(target)
+
+    res = runner.invoke(app, ["check", str(target), "--pack-check", "--report"])
+
+    assert res.exit_code == 1
+    assert "Agent Readiness Score:" in res.stdout
+    assert "Readiness level:" in res.stdout
+    assert "Recommended fixes:" in res.stdout
+    assert "agentsgen fix . --pack" in res.stdout
+
+
+def test_fix_all_applies_marker_safe_docs_pack_and_snippets(tmp_path: Path) -> None:
+    target = tmp_path / "repo"
+    _copy_fixture(FIXTURES / "check_aggregate_snippets", target)
+    _init_repo(target)
+    (target / "AGENTS.md").unlink()
+
+    res = runner.invoke(app, ["fix", str(target), "--all"])
+
+    assert res.exit_code == 0, res.stdout
+    assert (target / "AGENTS.md").exists()
+    assert (target / "RUNBOOK.md").exists()
+    assert (target / "agents.entrypoints.json").exists()
+    assert (target / "README_SNIPPETS.generated.md").exists()
+    assert "fix:ok" in res.stdout
+
+
 def test_check_aggregate_core_drift_pack_ok_json(tmp_path: Path) -> None:
     target = tmp_path / "repo"
     _copy_fixture(FIXTURES / "check_aggregate_core_drift_pack_ok", target)

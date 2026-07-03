@@ -287,11 +287,12 @@
             <pre id="qs-code"><code>pipx install agentsgen
 cd your-repo
 agentsgen init . --defaults --autodetect
-agentsgen check . --all --ci
+agentsgen check . --all --report
+agentsgen fix . --all
 agentsgen pack . --autodetect
 cat agents.entrypoints.json
 cat docs/ai/id-context.json</code></pre>
-            <div class="note">Bootstrap, check, then emit optional agent-facing surfaces.</div>
+            <div class="note">Bootstrap, score readiness, apply conservative remediation, then emit optional agent-facing surfaces.</div>
             <div class="note quickstart-meta">Outputs: <code>AGENTS.md</code>, <code>RUNBOOK.md</code>, <code>.agentsgen.json</code>, <code>agents.entrypoints.json</code>, and <code>docs/ai/id-context.json</code>.</div>
           </div>
         </div>
@@ -311,6 +312,7 @@ cat docs/ai/id-context.json</code></pre>
             <ul class="bullets">
               <li>Install with <code>pipx install agentsgen</code>.</li>
               <li>Use in CI through the reusable GitHub Action.</li>
+              <li>Run <code>check --report</code> and <code>fix --all</code> for the local readiness loop.</li>
               <li>Run locally as a stdio MCP server.</li>
             </ul>
           </div>

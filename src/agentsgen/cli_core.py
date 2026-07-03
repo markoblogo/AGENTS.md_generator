@@ -7,12 +7,20 @@ from pathlib import Path
 import typer
 
 from . import __version__
-from .actions import aggregate_check, load_tool_config, save_tool_config, status_repo
+from .actions import (
+    aggregate_check,
+    apply_pack,
+    generate_readme_snippets,
+    load_tool_config,
+    save_tool_config,
+    status_repo,
+)
 from .cli_support import (
     console,
     err_console,
     interactive_init as _interactive_init,
     print_results as _print_results,
+    results_payload as _results_payload,
 )
 from .config import ToolConfig, merge_detect_hints
 from .constants import (
@@ -25,6 +33,84 @@ from .constants import (
 from .detect import detect_repo
 from .patch_engine import apply_config, update_from_config
 from .presets import list_presets, load_preset_config
+
+
+def _enabled_check_blocks(report) -> list[tuple[str, dict[str, object]]]:
+    blocks: list[tuple[str, dict[str, object]]] = []
+    for name, block in report.checks.items():
+        if isinstance(block, dict):
+            blocks.append((str(name), block))
+    return blocks
+
+
+def _readiness_score(report) -> tuple[int, str]:
+    drift = sum(
+        1
+        for _name, block in _enabled_check_blocks(report)
+        if str(block.get("status")) == "drift"
+    )
+    errors = sum(
+        1
+        for _name, block in _enabled_check_blocks(report)
+        if str(block.get("status")) == "error"
+    )
+    warnings = sum(
+        int(block.get("warnings_count", 0))
+        for _name, block in _enabled_check_blocks(report)
+    )
+    score = max(0, 100 - errors * 35 - drift * 20 - warnings * 5)
+    if errors:
+        level = "blocked"
+    elif score >= 90:
+        level = "ready"
+    elif score >= 70:
+        level = "reviewable"
+    else:
+        level = "needs work"
+    return score, level
+
+
+def _remediation_commands(report) -> list[str]:
+    commands: list[str] = []
+    core = report.checks.get("core")
+    pack = report.checks.get("pack")
+    snippets = report.checks.get("snippets")
+    if isinstance(core, dict) and str(core.get("status")) == "drift":
+        commands.append("agentsgen fix .")
+    if isinstance(pack, dict) and str(pack.get("status")) == "drift":
+        commands.append("agentsgen fix . --pack")
+    if isinstance(snippets, dict) and str(snippets.get("status")) == "drift":
+        commands.append("agentsgen fix . --snippets")
+    if len(commands) > 1:
+        commands.append("agentsgen fix . --all")
+    return commands
+
+
+def _print_readiness_report(report) -> None:
+    score, level = _readiness_score(report)
+    console.print(f"Agent Readiness Score: {score}/100")
+    console.print(f"Readiness level: {level}")
+    console.print(f"Overall status: {report.status}")
+    for name, block in _enabled_check_blocks(report):
+        status = str(block.get("status", "ok"))
+        drift = int(block.get("drift_count", 0))
+        errors = int(block.get("error_count", 0))
+        warnings = int(block.get("warnings_count", 0))
+        suffix = []
+        if drift:
+            suffix.append(f"drift={drift}")
+        if errors:
+            suffix.append(f"errors={errors}")
+        if warnings:
+            suffix.append(f"warnings={warnings}")
+        detail = f" ({', '.join(suffix)})" if suffix else ""
+        console.print(f"- {name}: {status}{detail}")
+
+    commands = _remediation_commands(report)
+    if commands:
+        console.print("Recommended fixes:")
+        for command in commands:
+            console.print(f"  {command}")
 
 
 def register_core_commands(app: typer.Typer) -> None:
@@ -241,6 +327,11 @@ def register_core_commands(app: typer.Typer) -> None:
         run_all: bool = typer.Option(
             False, "--all", help="Enable both --pack-check and --snippets-check"
         ),
+        report_mode: bool = typer.Option(
+            False,
+            "--report",
+            help="Print agent-readiness score and remediation commands",
+        ),
     ):
         """Validate that repo is agentsgen-ready. Non-zero exit code on problems."""
         effective_pack_check = pack_check or run_all
@@ -252,13 +343,23 @@ def register_core_commands(app: typer.Typer) -> None:
         )
 
         if format == "json":
-            sys.stdout.write(json.dumps(report.to_json(), indent=2) + "\n")
+            payload = report.to_json()
+            if report_mode:
+                score, level = _readiness_score(report)
+                payload["readiness"] = {
+                    "score": score,
+                    "level": level,
+                    "remediation": _remediation_commands(report),
+                }
+            sys.stdout.write(json.dumps(payload, indent=2) + "\n")
         else:
             core = report.checks["core"]
             pack = report.checks["pack"]
             snippets = report.checks["snippets"]
 
-            if ci:
+            if report_mode:
+                _print_readiness_report(report)
+            elif ci:
                 status_line = report.status.upper()
                 print(f"agentsgen check: {status_line}")
 
@@ -329,6 +430,11 @@ def register_core_commands(app: typer.Typer) -> None:
         run_all: bool = typer.Option(
             False, "--all", help="Enable both --pack-check and --snippets-check"
         ),
+        report_mode: bool = typer.Option(
+            False,
+            "--report",
+            help="Print agent-readiness score and remediation commands",
+        ),
     ):
         """Alias for check."""
         ctx = typer.get_current_context()
@@ -340,7 +446,118 @@ def register_core_commands(app: typer.Typer) -> None:
             pack_check=pack_check,
             snippets_check=snippets_check,
             run_all=run_all,
+            report_mode=report_mode,
         )
+
+    @app.command()
+    def fix(
+        target: Path = typer.Argument(
+            Path("."), exists=True, file_okay=False, dir_okay=True
+        ),
+        pack: bool = typer.Option(
+            False, "--pack", help="Also refresh pack artifacts with autodetect"
+        ),
+        snippets: bool = typer.Option(
+            False, "--snippets", help="Also refresh README snippet output"
+        ),
+        run_all: bool = typer.Option(
+            False, "--all", help="Enable both --pack and --snippets"
+        ),
+        autodetect: bool = typer.Option(
+            True,
+            "--autodetect/--no-autodetect",
+            help="Use read-only detection before rendering pack artifacts",
+        ),
+        dry_run: bool = typer.Option(False, "--dry-run", help="Do not write files"),
+        print_diff: bool = typer.Option(
+            False, "--print-diff", help="Print unified diff"
+        ),
+        format: str = typer.Option("text", "--format", help="Output format: text|json"),
+    ):
+        """Safely remediate common agentsgen drift using marker-owned updates."""
+        try:
+            doc_results = update_from_config(
+                target, dry_run=dry_run, print_diff=print_diff
+            )
+        except FileNotFoundError:
+            err_console.print("ERROR: Missing .agentsgen.json. Run: agentsgen init")
+            raise typer.Exit(code=1)
+        except Exception as exc:
+            err_console.print(f"ERROR: Invalid {CONFIG_FILENAME}: {exc}")
+            raise typer.Exit(code=1)
+
+        effective_pack = pack or run_all
+        effective_snippets = snippets or run_all
+        pack_results = []
+        snippets_payload: dict[str, object] | None = None
+
+        if effective_pack:
+            cfg = load_tool_config(target)
+            if autodetect:
+                det_cfg = ToolConfig.from_detect(detect_repo(target))
+                existing_pack = cfg.pack
+                cfg = merge_detect_hints(cfg, det_cfg)
+                cfg.pack = existing_pack
+            pack_results = apply_pack(
+                target,
+                cfg,
+                autodetect=autodetect,
+                dry_run=dry_run,
+                print_diff=print_diff,
+            )
+
+        if effective_snippets:
+            snippet_report = generate_readme_snippets(
+                target,
+                readme_path=target / "README.md",
+                output_path=target / "README_SNIPPETS.generated.md",
+                check=False,
+                dry_run=dry_run,
+                print_diff=print_diff,
+            )
+            snippets_payload = snippet_report.to_json()
+
+        all_results = list(doc_results) + list(pack_results)
+        errors = [r for r in all_results if r.action == "error"]
+        snippet_errors: list[str] = []
+        if snippets_payload and snippets_payload.get("status") == "error":
+            snippet_errors.append(
+                str(snippets_payload.get("message", "snippets error"))
+            )
+        changed = sum(1 for r in all_results if bool(r.changed))
+        status = "error" if errors or snippet_errors else "ok"
+        error_count = len(errors) + len(snippet_errors)
+        summary = f"fix:{status} (changed={changed}, errors={error_count})"
+
+        if format == "json":
+            payload = {
+                "version": 1,
+                "command": "fix",
+                "status": status,
+                "summary": summary,
+                "dry_run": dry_run,
+                "docs": _results_payload(doc_results),
+                "pack": _results_payload(pack_results),
+                "snippets": snippets_payload,
+            }
+            sys.stdout.write(json.dumps(payload, indent=2) + "\n")
+        else:
+            _print_results(all_results, print_diff=print_diff)
+            if snippets_payload is not None:
+                output_path = snippets_payload.get("output_path")
+                console.print(
+                    f"Snippets: {snippets_payload.get('status')} ({output_path})"
+                )
+                if snippets_payload.get("diff"):
+                    console.print(str(snippets_payload["diff"]))
+            console.print(summary)
+
+        for error in errors:
+            err_console.print(f"ERROR: {error.path}: {error.message}")
+        for error in snippet_errors:
+            err_console.print(f"ERROR: {target / 'README.md'}: {error}")
+        if errors or snippet_errors:
+            raise typer.Exit(code=1)
 
     @app.command()
     def status(

@@ -203,7 +203,8 @@ agentsgen init . --preset nextjs
 3. Check readiness locally:
 
 ```sh
-agentsgen check . --all --ci
+agentsgen check . --all --report
+agentsgen fix . --all
 ```
 
 Expected first outputs:
@@ -219,6 +220,7 @@ Then choose the mode you need:
 - **AI visibility mode:** run `agentsgen pack . --autodetect`.
 - **MCP mode:** run `agentsgen mcp` as a local stdio server.
 - **Docs mode:** run `agentsgen snippets .` for README-safe extracts.
+- **Remediation mode:** run `agentsgen fix . --all` after a readiness report.
 
 Add PR guard workflow (`.github/workflows/agentsgen-ci.yml`):
 
@@ -406,7 +408,10 @@ agentsgen snippets . --check
 agentsgen check
 agentsgen check . --pack-check
 agentsgen check . --all --ci
+agentsgen check . --all --report
 agentsgen check . --format json
+agentsgen fix . --all
+agentsgen fix . --all --dry-run --print-diff
 agentsgen doctor . --all --ci
 agentsgen status .
 agentsgen status . --format json
@@ -430,9 +435,27 @@ Invalid `.agentsgen.json` files now fail as structured CLI errors instead of raw
 `agentsgen check` can also aggregate optional drift checks:
 - `agentsgen check . --pack-check` adds `pack --check`
 - `agentsgen check . --all` enables both pack and snippets checks
+- `agentsgen check . --all --report` prints an Agent Readiness Score and recommended fix commands
 - `agentsgen check . --format json` emits a stable machine-readable payload
 - `agentsgen check . --ci` prints a compact CI summary without path-heavy log noise
 - `agentsgen pack . --site https://example.com` generates a site-oriented `llms.txt` from the homepage and sitemap
+
+`agentsgen fix` is deliberately conservative:
+- `agentsgen fix .` updates only marker-managed `AGENTS.md` / `RUNBOOK.md` sections from `.agentsgen.json`
+- `agentsgen fix . --pack` also refreshes pack artifacts
+- `agentsgen fix . --snippets` also refreshes `README_SNIPPETS.generated.md`
+- `agentsgen fix . --all` enables both pack and snippets remediation
+- `--dry-run --print-diff` previews the exact writes
+
+It does not invent commands, rewrite unmarked docs, or mutate repo code. If `.agentsgen.json` is missing, run `agentsgen init` first.
+
+Team/fleet work starts with the dry-run scanner:
+
+```sh
+python scripts/scan_repos.py --root ~/code --max-depth 2
+```
+
+That script reports which repos have configs, markers, generated siblings, and migration plans. It is intentionally kept outside the stable CLI until the team-mode contract is ready.
 
 ## Experimental surfaces
 
