@@ -4,8 +4,8 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <!-- Primary SEO -->
-  <title>AGENTS.md Generator (agentsgen) — Stop writing AGENTS.md by hand</title>
-  <meta name="description" content="Stop writing AGENTS.md by hand. agentsgen safely generates and updates AGENTS.md / RUNBOOK.md for AI coding agents with marker-based edits, PR guard checks, and machine-readable repo context." />
+  <title>AGENTS.md Generator (agentsgen) — Agent contract layer for AI-ready repos</title>
+  <meta name="description" content="agentsgen is an agent contract layer for AI-ready repos: safe AGENTS.md / RUNBOOK.md updates, PR guard checks, pack artifacts, and machine-readable repo context." />
   <link rel="canonical" href="https://agentsmd.abvx.xyz/" />
 
   <!-- Robots -->
@@ -14,7 +14,7 @@
   <!-- Open Graph -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="AGENTS.md Generator (agentsgen)" />
-  <meta property="og:description" content="Stop writing AGENTS.md by hand. Safe marker-based updates, PR guard checks, repo context outputs, and AI coding agent workflows." />
+  <meta property="og:description" content="Agent contract layer for AI-ready repos. Safe marker-based updates, PR guard checks, repo context outputs, and AI coding agent workflows." />
   <meta property="og:url" content="https://agentsmd.abvx.xyz/" />
   <meta property="og:image" content="https://agentsmd.abvx.xyz/og.png" />
   <meta property="og:image:width" content="1200" />
@@ -23,7 +23,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="AGENTS.md Generator (agentsgen)" />
-  <meta name="twitter:description" content="Stop writing AGENTS.md by hand. Generate and safely update repo contracts for AI coding agents." />
+  <meta name="twitter:description" content="Agent contract layer for AI-ready repos. Generate and safely update repo contracts for AI coding agents." />
   <meta name="twitter:image" content="https://agentsmd.abvx.xyz/og.png" />
 
   <!-- Favicons -->
@@ -40,7 +40,7 @@
     "name": "AGENTS.md Generator (agentsgen)",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "macOS, Linux, Windows",
-    "description": "Generate and safely update AGENTS.md / RUNBOOK.md for AI coding agents with marker-based edits, PR guard workflows, machine-readable repo context, and opt-in LLM enhancement.",
+    "description": "Agent contract layer for AI-ready repos: generate and safely update AGENTS.md / RUNBOOK.md with marker-based edits, PR guard workflows, machine-readable repo context, and opt-in LLM enhancement.",
     "url": "https://agentsmd.abvx.xyz/",
     "codeRepository": "https://github.com/markoblogo/AGENTS.md_generator",
     "license": "https://github.com/markoblogo/AGENTS.md_generator/blob/main/LICENSE",
@@ -166,13 +166,13 @@
                 </div>
 
                 <div class="sticker sticker-micro" data-ascii-sticker="LANDING REFRESH">
-                  V0.2.1
+                  V0.3.0
                 </div>
               </div>
-              <h1>Stop writing AGENTS.md by hand</h1>
+              <h1>Agent contract layer for AI-ready repos</h1>
             </div>
             <p class="lede">
-              <strong>agentsgen</strong> generates and safely updates <strong>AGENTS.md</strong> and <strong>RUNBOOK.md</strong> for AI coding agents.
+              <strong>agentsgen</strong> generates, updates, and checks <strong>AGENTS.md</strong> and <strong>RUNBOOK.md</strong> for AI coding agents.
               Use it when you want repo instructions that are reviewable, marker-safe, CI-checkable, and reusable across Cursor, Claude Code, Codex, Copilot Workspace, and Aider.
             </p>
 
@@ -209,6 +209,7 @@
           </div>
         </div>
         <p class="note hero-boundary-note">
+          <span><code>init -> check -> guard</code></span>
           <span><code>agentsgen</code> = repo</span>
           <span><code>ID</code> = human</span>
           <span><code>SET</code> = orchestration</span>
@@ -270,13 +271,12 @@
 
         <div class="grid-2 quickstart-grid">
           <div class="card quickstart-copy" data-ascii-role="card">
-            <h3>What you get fast</h3>
+            <h3>Agent-readiness loop</h3>
             <ul class="bullets">
-              <li>Repo-level agent contract with safe updates.</li>
-              <li>Reviewable diffs and read-only status before writing changes.</li>
-              <li>Machine-readable command and handoff manifests.</li>
-              <li>Canonical README snippets with CI drift detection.</li>
-              <li>One compact bridge from repo docs into <code>ID</code>-compatible flows.</li>
+              <li><strong>Bootstrap:</strong> create marker-safe repo docs.</li>
+              <li><strong>Enforce:</strong> run checks locally and in PRs.</li>
+              <li><strong>Serve agents:</strong> emit pack artifacts, manifests, and local MCP surfaces.</li>
+              <li><strong>Fail safely:</strong> write sibling generated files when markers are missing.</li>
             </ul>
           </div>
           <div class="card code-card" data-ascii-role="card">
@@ -284,15 +284,43 @@
               <span class="code-label">Quickstart</span>
               <button class="copy" type="button" data-copy-target="#qs-code">Copy</button>
             </div>
-            <pre id="qs-code"><code>pipx install git+https://github.com/markoblogo/AGENTS.md_generator
+            <pre id="qs-code"><code>pipx install agentsgen
 cd your-repo
-agentsgen init --preset nextjs
+agentsgen init . --defaults --autodetect
+agentsgen check . --all --ci
 agentsgen pack . --autodetect
 cat agents.entrypoints.json
-cat docs/ai/id-context.json
-agentsgen check . --all --ci</code></pre>
-            <div class="note">Generate the repo bundle, inspect the command manifest, inspect the <code>ID</code> bridge, then enforce drift in CI.</div>
-            <div class="note quickstart-meta">Outputs: <code>AGENTS.md</code>, <code>agents.entrypoints.json</code>, and <code>docs/ai/id-context.json</code>.</div>
+cat docs/ai/id-context.json</code></pre>
+            <div class="note">Bootstrap, check, then emit optional agent-facing surfaces.</div>
+            <div class="note quickstart-meta">Outputs: <code>AGENTS.md</code>, <code>RUNBOOK.md</code>, <code>.agentsgen.json</code>, <code>agents.entrypoints.json</code>, and <code>docs/ai/id-context.json</code>.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="trust">
+      <div class="container">
+        <div class="section-head">
+          <h2>Platform signals</h2>
+          <p>Small tool, platform-shaped surfaces.</p>
+        </div>
+
+        <div class="grid-2 use-cases-grid">
+          <div class="card" data-ascii-role="card">
+            <h3>Distribution</h3>
+            <ul class="bullets">
+              <li>Install with <code>pipx install agentsgen</code>.</li>
+              <li>Use in CI through the reusable GitHub Action.</li>
+              <li>Run locally as a stdio MCP server.</li>
+            </ul>
+          </div>
+          <div class="card" data-ascii-role="card">
+            <h3>Compatibility</h3>
+            <ul class="bullets">
+              <li>Works with Cursor, Claude Code, Codex, Copilot Workspace, and Aider.</li>
+              <li>Exposes CLI docs, pack artifacts, JSON contracts, and discovery files.</li>
+              <li>Keeps hosted discovery separate from local-only MCP execution.</li>
+            </ul>
           </div>
         </div>
       </div>

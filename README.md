@@ -1,6 +1,6 @@
 # AGENTS.md Generator (`agentsgen`)
 
-**Stop writing `AGENTS.md` by hand.** `agentsgen` generates and safely updates repo contracts for AI coding agents in seconds, without overwriting handwritten docs.
+**Agent contract layer for AI-ready repos.** `agentsgen` generates, updates, and checks repo instructions for coding agents without overwriting handwritten docs.
 
 [![CI](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/ci.yml/badge.svg)](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/ci.yml)
 [![Release](https://img.shields.io/github/v/release/markoblogo/AGENTS.md_generator?display_name=tag&sort=semver)](https://github.com/markoblogo/AGENTS.md_generator/releases)
@@ -8,35 +8,45 @@
 [![Python](https://img.shields.io/badge/python-%3E%3D3.11-blue)](pyproject.toml)
 [![Pages](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/pages/pages-build-deployment)
 
-Landing: https://agentsmd.abvx.xyz/
-Agent discovery: https://agentsmd.abvx.xyz/.well-known/integrations.json
-Agent card: https://agentsmd.abvx.xyz/.well-known/agent-card.json
-Manifest: https://github.com/markoblogo/AGENTS.md_generator/blob/main/docs/manifest.md
-ID integration: https://github.com/markoblogo/ID/blob/main/docs/AGENTSGEN_INTEGRATION.md
-Listed on ABVX Lab: https://lab.abvx.xyz/
-Orchestrated with SET: https://github.com/markoblogo/SET
-Human context with ID: https://github.com/markoblogo/ID
-Reusable skills: https://github.com/markoblogo/abvx-agent-skills
+60-second path:
+
+```sh
+pipx install agentsgen
+agentsgen init . --defaults --autodetect
+agentsgen check . --all --ci
+```
+
+Primary links:
+
+- Landing: https://agentsmd.abvx.xyz/
+- Agent discovery: https://agentsmd.abvx.xyz/.well-known/integrations.json
+- Agent card: https://agentsmd.abvx.xyz/.well-known/agent-card.json
+- Manifest: https://github.com/markoblogo/AGENTS.md_generator/blob/main/docs/manifest.md
+- Listed on ABVX Lab: https://lab.abvx.xyz/
 
 ![agentsgen screenshot](docs/agentsmdscreen.png)
 
-## Why this exists
+## What it does
 
 Most agent tooling still asks teams to hand-maintain repo instructions, copy/paste prompts, and hope nothing drifts.
-`agentsgen` turns that into a small, reviewable system:
+`agentsgen` turns that into a small, reviewable agent-readiness loop:
 
-- generate `AGENTS.md` and `RUNBOOK.md`
-- update only inside explicit markers
-- emit machine-readable repo context for CI, MCP, and pack workflows
-- fail safely to `*.generated.md` when a file is not marker-managed
+- **Bootstrap:** generate `AGENTS.md` and `RUNBOOK.md` from conservative repo detection or presets.
+- **Enforce:** run `check`, `doctor`, and the GitHub Action guard to catch drift in PRs.
+- **Serve agents:** emit `pack` docs, `agents.entrypoints.json`, `docs/ai/id-context.json`, and local MCP surfaces.
+- **Fail safely:** update only inside explicit markers; write `*.generated.md` when a file is not marker-managed.
+
+The product goal is simple: make any repo reliably interpretable by coding agents.
 
 ## Works great with
 
-- Cursor
-- Claude Code
-- Codex
-- Copilot Workspace
-- Aider
+| Agent/tool | CLI docs | CI guard | Pack bundle | MCP surface |
+| --- | --- | --- | --- | --- |
+| Cursor | Yes | Yes | Yes | Local stdio |
+| Claude Code | Yes | Yes | Yes | Local stdio |
+| Codex | Yes | Yes | Yes | Local stdio |
+| Copilot Workspace | Yes | Yes | Yes | Local stdio |
+| Aider | Yes | Yes | Yes | Local stdio |
 
 `agentsgen` is the repo-intelligence runtime in the ABVX ecosystem: use it directly in a repo, or call it through `SET` when you want one thin orchestration entrypoint.
 It now ships a reliability-first core with split CLI/actions/understand modules, versioned JSON contracts across CLI and MCP surfaces, and opt-in LLM enhancement that falls back cleanly to local-only behavior.
@@ -57,6 +67,22 @@ Small, production-grade CLI to generate and safely update:
 | Handwritten `AGENTS.md` | No | No | Medium | Low |
 | Ad-hoc prompt files | No | No | Low | Low |
 | `agentsgen` | Yes | Yes | High | High |
+
+Why not just write `AGENTS.md` by hand?
+
+- Manual docs drift when commands, tooling, or repo layout changes.
+- Handwritten context rarely gives agents structured entrypoints and machine-readable manifests.
+- Reviewers need diffs and CI checks, not another prompt file to trust by memory.
+- Marker ownership lets teams keep handcrafted prose while regenerating the boring parts.
+
+## Adoption examples
+
+| Repo shape | Before | After `agentsgen` |
+| --- | --- | --- |
+| Python CLI | Commands live in README, CI, and maintainer memory. | `AGENTS.md`, `RUNBOOK.md`, explicit test/build commands, PR guard. |
+| Next.js app | Agent guesses package manager and scripts. | Preset-backed commands, pack docs, `agents.entrypoints.json`. |
+| Monorepo | Mixed workspace context confuses agents. | Conservative detection, explicit config, per-repo guardrails without fake commands. |
+| Docs-heavy repo | Long instructions bloat startup context. | Compact always-loaded contract plus on-demand `docs/ai` bundle. |
 
 ## References
 
@@ -174,7 +200,27 @@ Or start from a built-in preset:
 agentsgen init . --preset nextjs
 ```
 
-3. Add PR guard workflow (`.github/workflows/agentsgen-ci.yml`):
+3. Check readiness locally:
+
+```sh
+agentsgen check . --all --ci
+```
+
+Expected first outputs:
+
+- `AGENTS.md`: strict repo contract for coding agents.
+- `RUNBOOK.md`: human-readable command/run cheatsheet.
+- `.agentsgen.json`: editable source config for generated sections.
+- `*.generated.md`: safe fallback files when existing docs have no markers.
+
+Then choose the mode you need:
+
+- **CI mode:** add the PR guard workflow below.
+- **AI visibility mode:** run `agentsgen pack . --autodetect`.
+- **MCP mode:** run `agentsgen mcp` as a local stdio server.
+- **Docs mode:** run `agentsgen snippets .` for README-safe extracts.
+
+Add PR guard workflow (`.github/workflows/agentsgen-ci.yml`):
 
 ```yaml
 name: agentsgen guard + pack check
@@ -201,19 +247,19 @@ jobs:
           pack_format: "json"
 ```
 
-4. Read-only repo snapshot:
+Read-only repo snapshot:
 
 ```sh
 agentsgen status .
 ```
 
-5. Canonical README extracts for agents and CI:
+Canonical README extracts for agents and CI:
 
 ```sh
 agentsgen snippets .
 ```
 
-6. Optional AI docs bundle:
+Optional AI docs bundle:
 
 ```sh
 agentsgen pack . --autodetect
@@ -260,7 +306,7 @@ agentsgen pack . --site https://example.com
 
 Companion guide for site-oriented AI visibility work: `docs/assets/llmo-quick-start.pdf`. For multi-repo orchestration, use `SET`: `https://github.com/markoblogo/SET`. For portable human-AI context across tools, pair with `ID`: `https://github.com/markoblogo/ID`
 
-7. Profit: fewer agent mistakes, safer updates, better indexable repo context, and a stable machine-readable surface for CI/MCP callers.
+Result: fewer agent mistakes, safer updates, better indexable repo context, and a stable machine-readable surface for CI/MCP callers.
 
 Deep dives:
 - Action options: `docs/gh-action.md`
