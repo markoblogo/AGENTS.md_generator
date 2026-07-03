@@ -1,0 +1,48 @@
+Project: AGENTS.md Generator
+Canonical URL: https://agentsmd.abvx.xyz/
+Repository: https://github.com/markoblogo/AGENTS.md_generator
+Listed in ABVX Lab: https://lab.abvx.xyz/tools/agentsgen/
+
+Purpose:
+agentsgen generates and safely updates repo-facing agent context: AGENTS.md,
+RUNBOOK.md, docs/ai bundles, llms.txt, command manifests, snippets, checks, and
+proof-loop artifacts. It is the repo-intelligence/runtime layer in the ABVX
+stack.
+
+Primary surfaces:
+- Product page: https://agentsmd.abvx.xyz/
+- Manifest: https://agentsmd.abvx.xyz/manifest.md
+- Agent guidelines: https://agentsmd.abvx.xyz/agent-guidelines.md
+- LLMO pack docs: https://agentsmd.abvx.xyz/llmo-pack.md
+- GitHub Action docs: https://agentsmd.abvx.xyz/gh-action.md
+- Release checklist: https://agentsmd.abvx.xyz/release-checklist.md
+- Integration declaration: https://agentsmd.abvx.xyz/.well-known/integrations.json
+- Agent card: https://agentsmd.abvx.xyz/.well-known/agent-card.json
+
+Install:
+- Homebrew: brew install markoblogo/tap/agentsgen
+- PyPI/pipx: pipx install agentsgen
+- PyPI/pip: pip install agentsgen
+- Source fallback: pipx install git+https://github.com/markoblogo/AGENTS.md_generator.git
+- Contributor path: pip install -e ".[dev]"
+- Optional local MCP extras: pip install -e ".[mcp]"
+
+Core commands:
+- agentsgen init . --defaults --autodetect
+- agentsgen update .
+- agentsgen check . --all --ci
+- agentsgen pack . --autodetect
+- agentsgen status . --format json
+- agentsgen detect . --format json
+- agentsgen mcp
+
+Companion layers:
+- SET orchestrates agentsgen in CI and registry workflows: https://github.com/markoblogo/SET
+- ID carries portable human/operator context: https://github.com/markoblogo/ID
+- ABVX Agent Skills provides reusable agent workflows: https://github.com/markoblogo/abvx-agent-skills
+- ABVX Lab presents the public stack: https://lab.abvx.xyz/
+
+Safety model:
+agentsgen updates only explicit AGENTSGEN marker sections. If a target file
+exists without markers, it writes a generated sibling instead of overwriting
+handwritten content.

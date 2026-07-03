@@ -1,0 +1,76 @@
+{
+  "version": 3,
+  "summary": "AGENTS.md Generator (agentsgen) exposes a public documentation site, a local CLI, a GitHub Action, and an optional local stdio MCP server for managing AI-ready repo context.",
+  "surfaces": [
+    {
+      "slug": "agentsgen-site",
+      "name": "AGENTS.md Generator documentation site",
+      "type": "http",
+      "docs": "https://agentsmd.abvx.xyz/",
+      "url": "https://agentsmd.abvx.xyz/",
+      "basis": {
+        "via": "declared",
+        "source": "https://agentsmd.abvx.xyz/.well-known/integrations.json"
+      },
+      "auth": {
+        "status": "none",
+        "basis": {
+          "via": "declared",
+          "source": "https://agentsmd.abvx.xyz/.well-known/integrations.json"
+        }
+      }
+    },
+    {
+      "slug": "agentsgen-cli",
+      "name": "agentsgen CLI",
+      "type": "cli",
+      "docs": "https://agentsmd.abvx.xyz/",
+      "command": "agentsgen",
+      "packages": [
+        {
+          "registryType": "brew",
+          "identifier": "markoblogo/tap/agentsgen"
+        },
+        {
+          "registryType": "pypi",
+          "identifier": "agentsgen"
+        },
+        {
+          "registryType": "other",
+          "identifier": "pipx install git+https://github.com/markoblogo/AGENTS.md_generator.git"
+        }
+      ],
+      "basis": {
+        "via": "declared",
+        "source": "https://agentsmd.abvx.xyz/.well-known/integrations.json"
+      },
+      "auth": {
+        "status": "none",
+        "basis": {
+          "via": "declared",
+          "source": "https://agentsmd.abvx.xyz/.well-known/integrations.json"
+        }
+      },
+      "notes": "Run `agentsgen mcp` after installing optional MCP extras for a local stdio MCP server. This is intentionally not declared as a remote MCP endpoint because it runs on the user's machine."
+    },
+    {
+      "slug": "agentsgen-github-action",
+      "name": "agentsgen guard GitHub Action",
+      "type": "http",
+      "docs": "https://agentsmd.abvx.xyz/gh-action.html",
+      "url": "https://github.com/markoblogo/AGENTS.md_generator/tree/main/.github/actions/agentsgen-guard",
+      "basis": {
+        "via": "declared",
+        "source": "https://agentsmd.abvx.xyz/.well-known/integrations.json"
+      },
+      "auth": {
+        "status": "none",
+        "basis": {
+          "via": "declared",
+          "source": "https://agentsmd.abvx.xyz/.well-known/integrations.json"
+        }
+      },
+      "notes": "The action runs in GitHub Actions and uses the repository checkout. GitHub workflow permissions are configured in the consuming repository."
+    }
+  ]
+}

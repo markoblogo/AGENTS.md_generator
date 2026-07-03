@@ -9,6 +9,8 @@
 [![Pages](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/pages/pages-build-deployment/badge.svg)](https://github.com/markoblogo/AGENTS.md_generator/actions/workflows/pages/pages-build-deployment)
 
 Landing: https://agentsmd.abvx.xyz/
+Agent discovery: https://agentsmd.abvx.xyz/.well-known/integrations.json
+Agent card: https://agentsmd.abvx.xyz/.well-known/agent-card.json
 Manifest: https://github.com/markoblogo/AGENTS.md_generator/blob/main/docs/manifest.md
 ID integration: https://github.com/markoblogo/ID/blob/main/docs/AGENTSGEN_INTEGRATION.md
 Listed on ABVX Lab: https://lab.abvx.xyz/
@@ -68,6 +70,16 @@ Small, production-grade CLI to generate and safely update:
 - `SET` owns workflow execution: CI entrypoint, orchestration, registry flows, and proof loops.
 - `abvx-agent-skills` owns reusable agent capabilities: compact SKILL.md workflows for coding, frontend, audits, debugging, research, token economy, handoffs, and browser verification, with skill cards, attribution, validation, and risk gates.
 
+## Agent discovery
+
+The product site publishes small machine-readable discovery files for agents:
+
+- `https://agentsmd.abvx.xyz/llms.txt`
+- `https://agentsmd.abvx.xyz/.well-known/integrations.json`
+- `https://agentsmd.abvx.xyz/.well-known/agent-card.json`
+
+`integrations.json` declares the public docs, CLI install paths, GitHub Action surface, and the local-only MCP caveat. `agentsgen mcp` is intentionally a local stdio server, not a hosted remote MCP endpoint.
+
 ## Related projects
 
 - `lab.abvx` is the public hub for the stack: https://github.com/markoblogo/lab.abvx
@@ -105,10 +117,10 @@ brew install markoblogo/tap/agentsgen
 Current stable install path:
 
 ```sh
-pipx install git+https://github.com/markoblogo/AGENTS.md_generator.git
+pipx install agentsgen
 ```
 
-PyPI publishing is prepared in CI via trusted publishing. Once the package is live on PyPI, the install path becomes:
+Python package install:
 
 ```sh
 pip install agentsgen
@@ -118,6 +130,12 @@ If PyPI is temporarily unavailable after the package is published, use GitVerse'
 
 ```sh
 python -m pip install agentsgen --index-url https://pypi-mirror.gitverse.ru/simple/
+```
+
+Source install from GitHub:
+
+```sh
+pipx install git+https://github.com/markoblogo/AGENTS.md_generator.git
 ```
 
 Contributor install:
@@ -141,7 +159,7 @@ Canonical onboarding path for a new repo:
 1. Install:
 
 ```sh
-pipx install git+https://github.com/markoblogo/AGENTS.md_generator.git
+pipx install agentsgen
 ```
 
 2. Bootstrap docs with autodetect:

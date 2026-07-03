@@ -1,0 +1,17 @@
+{
+  "name": "AGENTS.md Generator",
+  "domain": "agentsmd.abvx.xyz",
+  "description": "Safe repo context generation and drift checks for AI coding agents.",
+  "url": "https://agentsmd.abvx.xyz/",
+  "repository": "https://github.com/markoblogo/AGENTS.md_generator",
+  "llmsTxt": "https://agentsmd.abvx.xyz/llms.txt",
+  "integrations": "https://agentsmd.abvx.xyz/.well-known/integrations.json",
+  "primaryTools": [
+    "agentsgen init",
+    "agentsgen update",
+    "agentsgen check",
+    "agentsgen pack",
+    "agentsgen status",
+    "agentsgen mcp"
+  ]
+}
