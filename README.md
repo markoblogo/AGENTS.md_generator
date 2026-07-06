@@ -46,6 +46,8 @@ spec -> slices -> proof -> review -> release
 
 Pair `agentsgen check --report`, `agentsgen fix --all`, and `agentsgen fleet scan` with `abvx-agent-skills` workflows such as `idea-to-ship-gates`, `plan-to-issues`, `delivery-preflight-gate`, and `delivery-baseline-audit` when a team needs the change itself to move through explicit proof and review gates.
 
+`agentsgen` also prepares the source material that stronger engineering skills need: repo commands, architecture notes, docs entrypoints, task proof, and review guidelines. Skills can then run shared-language/ADR work, red-green-refactor implementation, architecture reports, or Standards-vs-Spec review against a stable repo contract instead of rediscovering the same context.
+
 `AGENTS.md` also does not replace MCP or CLI tooling. It gives them repo-specific rules:
 
 - **MCP** is the access layer for external services, auth, and hosted tool surfaces.
@@ -110,6 +112,7 @@ Why not just write `AGENTS.md` by hand?
 - `SET` owns workflow execution: CI entrypoint, orchestration, registry flows, and proof loops.
 - `abvx-agent-skills` owns reusable agent capabilities: compact SKILL.md workflows for coding, frontend, audits, debugging, research, token economy, handoffs, and browser verification, with skill cards, attribution, validation, and risk gates.
 - MCP, CLI, and Skills are treated as companion layers rather than rivals: MCP connects services, CLI performs work, and skills/AGENTS.md encode the project rules and gates around both.
+- `agentsgen` does not replace domain-modeling, architecture-review, TDD, or code-review skills; it gives those skills the compact repo surface they need to run with fewer guesses.
 
 ## Agent discovery
 
