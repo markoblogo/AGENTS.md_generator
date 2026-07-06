@@ -38,6 +38,8 @@ Most agent tooling still asks teams to hand-maintain repo instructions, copy/pas
 
 The product goal is simple: make any repo reliably interpretable by coding agents.
 
+In harness terms, `agentsgen` makes the repo contract readable to the runtime: commands, architecture notes, proof artifacts, approval boundaries, and docs entrypoints become stable inputs for an agent harness instead of ad-hoc prompt context. See [docs/harness-readable-repo-contract.md](docs/harness-readable-repo-contract.md).
+
 Readiness is not the whole delivery loop. `agentsgen` owns the repo-readiness loop, while delivery still needs gates around the actual change:
 
 ```text
@@ -116,6 +118,7 @@ Why not just write `AGENTS.md` by hand?
 - MCP, CLI, and Skills are treated as companion layers rather than rivals: MCP connects services, CLI performs work, and skills/AGENTS.md encode the project rules and gates around both.
 - `agentsgen` does not replace domain-modeling, architecture-review, TDD, or code-review skills; it gives those skills the compact repo surface they need to run with fewer guesses.
 - Personal workspace routers can sit above repo-local contracts when one operator works across multiple repos or domains; keep those routers compact and load domain context only on demand.
+- Agent harnesses can sit above `agentsgen` outputs: the harness owns loops, tools, memory, permissions, sandboxing, scheduling, observability, and evals; `agentsgen` owns the repo-local contract the harness reads.
 
 ## Agent discovery
 
