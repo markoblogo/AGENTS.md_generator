@@ -54,6 +54,8 @@ Pair `agentsgen check --report`, `agentsgen fix --all`, and `agentsgen fleet sca
 - **CLI** is the execution layer for local commands, batch work, and heavy operations.
 - **AGENTS.md** is the discipline layer that tells agents when to use each tool, which commands are safe, and which checks prove the work.
 
+For local multi-domain work, the same pattern can sit one layer above repos: a root personal workspace router points to on-demand domain contexts, user-triggered memory, a decision log, and routing corrections. See [docs/personal-workspace-router.md](docs/personal-workspace-router.md).
+
 ## Works great with
 
 | Agent/tool | CLI docs | CI guard | Pack bundle | MCP surface |
@@ -113,6 +115,7 @@ Why not just write `AGENTS.md` by hand?
 - `abvx-agent-skills` owns reusable agent capabilities: compact SKILL.md workflows for coding, frontend, audits, debugging, research, token economy, handoffs, and browser verification, with skill cards, attribution, validation, and risk gates.
 - MCP, CLI, and Skills are treated as companion layers rather than rivals: MCP connects services, CLI performs work, and skills/AGENTS.md encode the project rules and gates around both.
 - `agentsgen` does not replace domain-modeling, architecture-review, TDD, or code-review skills; it gives those skills the compact repo surface they need to run with fewer guesses.
+- Personal workspace routers can sit above repo-local contracts when one operator works across multiple repos or domains; keep those routers compact and load domain context only on demand.
 
 ## Agent discovery
 
