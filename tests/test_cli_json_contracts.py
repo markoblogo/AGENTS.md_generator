@@ -139,6 +139,26 @@ def test_cli_understand_and_task_json_contracts(tmp_path: Path) -> None:
     validate_cli_task_response_payload(json.loads(task_verdict.stdout))
 
 
+def test_cli_rabbithole_seed_writes_repo_context_seed(tmp_path: Path) -> None:
+    target = tmp_path / "repo"
+    _copy_fixture(FIXTURES / "python_uv", target)
+    assert (
+        runner.invoke(
+            app, ["init", str(target), "--defaults", "--autodetect", "--name", "repo"]
+        ).exit_code
+        == 0
+    )
+
+    result = runner.invoke(app, ["rabbithole-seed", str(target), "--format", "json"])
+    assert result.exit_code == 0
+    payload = json.loads(result.stdout)
+    output = Path(payload["output"])
+    assert payload["command"] == "rabbithole-seed"
+    assert "AGENTS.md" in payload["source_files"]
+    assert output.is_file()
+    assert "# Rabbithole Seed" in output.read_text(encoding="utf-8")
+
+
 def test_cli_analyze_and_meta_json_contracts(monkeypatch, tmp_path: Path) -> None:
     target = tmp_path / "repo"
     _copy_fixture(FIXTURES / "python_uv", target)

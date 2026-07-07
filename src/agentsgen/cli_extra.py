@@ -16,6 +16,7 @@ from .cli_support import (
 from .detect import detect_repo
 from .mcp_server import serve_stdio
 from .meta import apply_metadata
+from .rabbithole_seed import write_rabbithole_seed
 from .understand_context import apply_understanding
 from .validators import (
     validate_cli_analyze_response_payload,
@@ -26,6 +27,46 @@ from .validators import (
 
 
 def register_extra_commands(app: typer.Typer) -> None:
+    @app.command()
+    def rabbithole_seed(
+        target: Path = typer.Argument(
+            Path("."), exists=True, file_okay=False, dir_okay=True
+        ),
+        output: Path | None = typer.Option(
+            None,
+            "--output",
+            help="Output markdown file (default docs/ai/rabbithole.seed.md)",
+        ),
+        max_chars_per_file: int = typer.Option(
+            6000,
+            "--max-chars-per-file",
+            min=512,
+            help="Maximum excerpt size per source file",
+        ),
+        dry_run: bool = typer.Option(False, "--dry-run", help="Do not write files"),
+        format: str = typer.Option("text", "--format", help="Output format: text|json"),
+    ):
+        result = write_rabbithole_seed(
+            target,
+            output_path=output,
+            max_chars_per_file=max_chars_per_file,
+            dry_run=dry_run,
+        )
+        payload = {
+            "version": 1,
+            "command": "rabbithole-seed",
+            "path": str(target),
+            "output": str(result.output_path),
+            "dry_run": result.dry_run,
+            "source_files": result.source_files,
+        }
+        if format == "json":
+            print_json(payload)
+            return
+        action = "would_write" if dry_run else "wrote"
+        console.print(f"{action}: {result.output_path}")
+        console.print(f"source_files: {len(result.source_files)}")
+
     @app.command()
     def understand(
         target: Path = typer.Argument(
