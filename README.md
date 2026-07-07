@@ -74,7 +74,7 @@ Pair it with `ID` when you also need portable human-AI context and repo-local in
 That bridge now explicitly supports `soul.md` as the preferred fast human bootstrap layer, before expanding into fuller `ID` profile files.
 Pair it with `abvx-agent-skills` when the agent needs reusable expert workflows for coding, frontend, audits, debugging, research, token economy, handoffs, and browser verification without bloating each repo's always-loaded AGENTS.md.
 
-Pair it with Rabbithole for local interactive review of generated context. `agentsgen rabbithole-seed` writes `docs/ai/rabbithole.seed.md` from AGENTS/RUNBOOK/repomap/ID context so a local MCP canvas can branch into questions without making Rabbithole a CI dependency.
+Pair it with Rabbithole for local interactive review of generated context. `agentsgen rabbithole-seed` writes `docs/ai/rabbithole.seed.md` from AGENTS/RUNBOOK/repomap/ID context so a local MCP canvas can branch into questions without making Rabbithole a CI dependency. The seed points reviewers toward compact ABVX lenses such as `assumption-excavation`, `pipeline-readiness-gate`, and `confidence-fragility-review`.
 
 Small, production-grade CLI to generate and safely update:
 
@@ -247,7 +247,7 @@ Then choose the mode you need:
 - **MCP mode:** run `agentsgen mcp` as a local stdio server.
 - **Docs mode:** run `agentsgen snippets .` for README-safe extracts.
 - **Remediation mode:** run `agentsgen fix . --all` after a readiness report.
-- **Rabbithole mode:** run `agentsgen rabbithole-seed .` and open `docs/ai/rabbithole.seed.md` in a local Rabbithole MCP canvas.
+- **Rabbithole/review-lens mode:** run `agentsgen rabbithole-seed .` and open `docs/ai/rabbithole.seed.md` in a local Rabbithole MCP canvas, then use `assumption-excavation`, `pipeline-readiness-gate`, or `confidence-fragility-review` where useful.
 
 Add PR guard workflow (`.github/workflows/agentsgen-ci.yml`):
 

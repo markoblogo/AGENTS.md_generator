@@ -57,6 +57,12 @@ def build_rabbithole_seed(
         "",
         "Rabbithole is optional. This file is a navigation aid, not a source of truth.",
         "",
+        "## Suggested Review Lenses",
+        "",
+        "- `assumption-excavation`: surface hidden assumptions in repo contracts and plans.",
+        "- `pipeline-readiness-gate`: choose a compact pre/post/ship gate for the work.",
+        "- `confidence-fragility-review`: check whether confident claims are backed by evidence.",
+        "",
         "## Source Files",
         "",
     ]
