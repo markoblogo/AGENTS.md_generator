@@ -73,14 +73,16 @@ def build_rabbithole_seed(
         lines.append("- No standard agentsgen context files found.")
 
     for rel, excerpt in included:
-        lines.extend([
-            "",
-            f"## {rel}",
-            "",
-            "```text",
-            excerpt,
-            "```",
-        ])
+        lines.extend(
+            [
+                "",
+                f"## {rel}",
+                "",
+                "```text",
+                excerpt,
+                "```",
+            ]
+        )
     return "\n".join(lines).rstrip() + "\n", [rel for rel, _ in included]
 
 
