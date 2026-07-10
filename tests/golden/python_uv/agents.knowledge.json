@@ -1,7 +1,7 @@
 {
   "version": 1,
   "repo_path": ".",
-  "generated_at": "2026-06-06T17:27:36Z",
+  "generated_at": "2026-07-10T19:33:29Z",
   "files": [
     {
       "path": ".agentsgen.json",
@@ -11,7 +11,7 @@
     },
     {
       "path": "AGENTS.md",
-      "size": 7371,
+      "size": 7709,
       "language": "markdown",
       "symbols_count": 0
     },
@@ -134,9 +134,9 @@
   "relevance": [
     {
       "path": "AGENTS.md",
-      "score": 4,
+      "score": 5,
       "signals": [
-        "size:7371"
+        "size:7709"
       ],
       "distance_from_entrypoint": null,
       "changed": false,

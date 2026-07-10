@@ -128,12 +128,17 @@ When responding, include:
 - Avoid unrelated formatting churn.
 - Prefer refactoring after the fix works, not before.
 
-#### 4) Verification loop
+#### 4) Reversible work
+- For risky or multi-file changes, prefer a proposal/worktree/draft branch before mutating the main workspace.
+- Keep generated outputs inspectable until the operator explicitly applies or discards them.
+- Treat `select`, `apply`, and `discard` as separate decisions when a runner or review bundle supports them.
+
+#### 5) Verification loop
 - Run fast checks after each meaningful change.
 - Run full checks before finalizing.
 - If you cannot run checks, explain why and what to run.
 
-#### 5) Commit / PR discipline (even if you don't actually commit)
+#### 6) Commit / PR discipline (even if you don't actually commit)
 Think like you're preparing a PR:
 - Clear intent
 - Small diff
@@ -144,7 +149,7 @@ Think like you're preparing a PR:
 - Allowed types: feat, fix, test, docs, refactor
 - Example: `fix: handle empty input in parser`
 
-#### 6) Communication rules
+#### 7) Communication rules
 - If the task is blocked by missing info: ask one concrete question.
 - If you make an assumption: state it explicitly and keep it reversible.
 <!-- AGENTSGEN:END section=workflow -->
