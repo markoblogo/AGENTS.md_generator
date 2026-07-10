@@ -156,7 +156,9 @@ def test_cli_rabbithole_seed_writes_repo_context_seed(tmp_path: Path) -> None:
     assert payload["command"] == "rabbithole-seed"
     assert "AGENTS.md" in payload["source_files"]
     assert output.is_file()
-    assert "# Rabbithole Seed" in output.read_text(encoding="utf-8")
+    content = output.read_text(encoding="utf-8")
+    assert "# Rabbithole Seed" in content
+    assert "reversible-agent-task" in content
 
 
 def test_cli_analyze_and_meta_json_contracts(monkeypatch, tmp_path: Path) -> None:

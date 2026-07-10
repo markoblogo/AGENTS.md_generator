@@ -62,6 +62,7 @@ def build_rabbithole_seed(
         "- `assumption-excavation`: surface hidden assumptions in repo contracts and plans.",
         "- `pipeline-readiness-gate`: choose a compact pre/post/ship gate for the work.",
         "- `confidence-fragility-review`: check whether confident claims are backed by evidence.",
+        "- `reversible-agent-task`: keep risky agent output in a proposal/worktree until inspect -> select/apply/discard.",
         "",
         "## Source Files",
         "",

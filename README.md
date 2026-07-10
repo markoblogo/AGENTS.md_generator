@@ -74,7 +74,9 @@ Pair it with `ID` when you also need portable human-AI context and repo-local in
 That bridge now explicitly supports `soul.md` as the preferred fast human bootstrap layer, before expanding into fuller `ID` profile files.
 Pair it with `abvx-agent-skills` when the agent needs reusable expert workflows for coding, frontend, audits, debugging, research, token economy, handoffs, and browser verification without bloating each repo's always-loaded AGENTS.md.
 
-Pair it with Rabbithole for local interactive review of generated context. `agentsgen rabbithole-seed` writes `docs/ai/rabbithole.seed.md` from AGENTS/RUNBOOK/repomap/ID context so a local MCP canvas can branch into questions without making Rabbithole a CI dependency. The seed points reviewers toward compact ABVX lenses such as `assumption-excavation`, `pipeline-readiness-gate`, and `confidence-fragility-review`.
+Pair it with Rabbithole for local interactive review of generated context. `agentsgen rabbithole-seed` writes `docs/ai/rabbithole.seed.md` from AGENTS/RUNBOOK/repomap/ID context so a local MCP canvas can branch into questions without making Rabbithole a CI dependency. The seed points reviewers toward compact ABVX lenses such as `assumption-excavation`, `pipeline-readiness-gate`, `confidence-fragility-review`, and `reversible-agent-task`.
+
+Generated workflow sections also include a reversible-work rule: risky or multi-file agent work should happen in a proposal, worktree, or draft branch first, then move through inspect -> select/apply/discard instead of mutating the main workspace by default.
 
 Small, production-grade CLI to generate and safely update:
 
