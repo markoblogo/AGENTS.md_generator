@@ -72,7 +72,7 @@ For local multi-domain work, the same pattern can sit one layer above repos: a r
 It now ships a reliability-first core with split CLI/actions/understand modules, versioned JSON contracts across CLI and MCP surfaces, and opt-in LLM enhancement that falls back cleanly to local-only behavior.
 Pair it with `ID` when you also need portable human-AI context and repo-local integration hooks across tools: `agentsgen pack` now emits a repo-local handoff manifest at `docs/ai/id-context.json` for that bridge. `ID` remains the human/profile layer: https://github.com/markoblogo/ID
 That bridge now explicitly supports `soul.md` as the preferred fast human bootstrap layer, before expanding into fuller `ID` profile files.
-Pair it with `abvx-agent-skills` when the agent needs reusable expert workflows for coding, frontend, audits, debugging, research, token economy, handoffs, and browser verification without bloating each repo's always-loaded AGENTS.md.
+Pair it with `abvx-agent-skills` when the agent needs reusable expert workflows for coding, frontend, audits, debugging, research, token economy, handoffs, and browser verification without bloating each repo's always-loaded AGENTS.md. In ABVX usage, generated AGENTS.md files should also point agents toward review lenses such as `context-degradation-review`, `agent-tool-contract-review`, `bounded-evaluation`, and `loop-readiness-review` when the task crosses durable context, tool contracts, validation gates, or recurring loops.
 
 Pair it with Rabbithole for local interactive review of generated context. `agentsgen rabbithole-seed` writes `docs/ai/rabbithole.seed.md` from AGENTS/RUNBOOK/repomap/ID context so a local MCP canvas can branch into questions without making Rabbithole a CI dependency. The seed points reviewers toward compact ABVX lenses such as `assumption-excavation`, `pipeline-readiness-gate`, `confidence-fragility-review`, and `reversible-agent-task`.
 
@@ -118,7 +118,7 @@ Why not just write `AGENTS.md` by hand?
 - `agentsgen` owns repo-scoped agent context: AGENTS.md, RUNBOOK.md, pack docs, command manifests, and drift checks.
 - `ID` owns portable human context: preferences, privacy, handshakes, and cross-tool continuity.
 - `SET` owns workflow execution: CI entrypoint, orchestration, registry flows, and proof loops.
-- `abvx-agent-skills` owns reusable agent capabilities: compact SKILL.md workflows for coding, frontend, audits, debugging, research, token economy, handoffs, and browser verification, with skill cards, attribution, validation, and risk gates.
+- `abvx-agent-skills` owns reusable agent capabilities: compact SKILL.md workflows for coding, frontend, audits, debugging, research, token economy, handoffs, browser verification, knowledge-base enrichment, context degradation review, bounded evaluation, and loop-readiness gates.
 - MCP, CLI, and Skills are treated as companion layers rather than rivals: MCP connects services, CLI performs work, and skills/AGENTS.md encode the project rules and gates around both.
 - `agentsgen` does not replace domain-modeling, architecture-review, TDD, or code-review skills; it gives those skills the compact repo surface they need to run with fewer guesses.
 - Personal workspace routers can sit above repo-local contracts when one operator works across multiple repos or domains; keep those routers compact and load domain context only on demand.
