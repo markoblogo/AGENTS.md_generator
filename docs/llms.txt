@@ -20,7 +20,7 @@ Primary surfaces:
 - Agent card: https://agentsmd.abvx.xyz/.well-known/agent-card.json
 
 Install:
-- Homebrew: brew install markoblogo/tap/agentsgen
+- PyPI/uv: uv tool install agentsgen
 - PyPI/pipx: pipx install agentsgen
 - PyPI/pip: pip install agentsgen
 - Source fallback: pipx install git+https://github.com/markoblogo/AGENTS.md_generator.git

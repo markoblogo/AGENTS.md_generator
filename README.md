@@ -162,13 +162,13 @@ Marker format:
 
 ## Install
 
-Homebrew:
+Recommended user install:
 
 ```sh
-brew install markoblogo/tap/agentsgen
+uv tool install agentsgen
 ```
 
-Current stable install path:
+Alternative user install:
 
 ```sh
 pipx install agentsgen
