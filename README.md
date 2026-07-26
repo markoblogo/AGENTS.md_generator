@@ -348,6 +348,7 @@ Deep dives:
 - Harness capability matrix: `docs/harness-capability-matrix.md`
 - Generated artifact registry: `docs/generated-artifact-registry.md`
 - Export validation and projection rules: `docs/export-validation-and-projection-rules.md`
+- Repo route hints and generated boundary: `docs/repo-route-hints-and-generated-boundary.md`
 - Free AI visibility guide (PDF): `docs/assets/llmo-quick-start.pdf`
 - Release process: `docs/release-checklist.md`
 
