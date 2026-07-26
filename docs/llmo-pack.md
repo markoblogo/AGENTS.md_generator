@@ -85,3 +85,24 @@ Notes:
 - In `SET`-orchestrated flows, this repo-side bridge can be lifted into a concrete runtime packet at `docs/ai/id-bootstrap.json`; `agentsgen` owns the repo contract, while `SET` owns the resolved runtime export.
 - Command detection is reused from existing autodetect (`Makefile > package.json scripts > Python heuristics`).
 - For mixed/monorepo detection, pack templates use conservative placeholders instead of invented commands.
+
+## Example route-hint projection
+
+One safe generated surface for route hints is `docs/ai/data-contracts.md`.
+
+Example:
+
+```md
+## Repository hints
+- Config locations: `Makefile`, `pyproject.toml`, `.github/workflows/`
+- Source dirs: `src`
+
+## Route hints
+- `repo_direct`: normal repo edits and verification happen here.
+- `review_contract`: if behavior, safety, or release confidence is unclear, route to the repo's review contract first.
+- `set_orchestration`: if work needs cross-repo packaging, explicit approval gates, or reusable route receipts, escalate to `SET`.
+- `local_reference_only`: generated hints describe next governing files, not execution authority.
+```
+
+This is guidance only. The generated surface may point to the next governing
+file, but it must not pretend to approve a route or execute it.
