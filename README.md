@@ -40,6 +40,8 @@ The product goal is simple: make any repo reliably interpretable by coding agent
 
 In harness terms, `agentsgen` makes the repo contract readable to the runtime: commands, architecture notes, proof artifacts, approval boundaries, and docs entrypoints become stable inputs for an agent harness instead of ad-hoc prompt context. See [docs/harness-readable-repo-contract.md](docs/harness-readable-repo-contract.md).
 
+When the same repo contract needs to surface differently across agent clients, keep one source layer and allow harness-native projections instead of flattening everything into one weakest-format export. See [docs/multi-harness-export-contract.md](docs/multi-harness-export-contract.md).
+
 Readiness is not the whole delivery loop. `agentsgen` owns the repo-readiness loop, while delivery still needs gates around the actual change:
 
 ```text
@@ -342,6 +344,7 @@ Result: fewer agent mistakes, safer updates, better indexable repo context, and 
 Deep dives:
 - Action options: `docs/gh-action.md`
 - Pack bundle details: `docs/llmo-pack.md`
+- Multi-harness export contract: `docs/multi-harness-export-contract.md`
 - Free AI visibility guide (PDF): `docs/assets/llmo-quick-start.pdf`
 - Release process: `docs/release-checklist.md`
 
