@@ -349,6 +349,7 @@ Deep dives:
 - Generated artifact registry: `docs/generated-artifact-registry.md`
 - Export validation and projection rules: `docs/export-validation-and-projection-rules.md`
 - Repo route hints and generated boundary: `docs/repo-route-hints-and-generated-boundary.md`
+- Security-review repo targeting belongs in `SET`: `docs/codex-security-repo-selection-matrix.md`
 - Free AI visibility guide (PDF): `docs/assets/llmo-quick-start.pdf`
 - Release process: `docs/release-checklist.md`
 
