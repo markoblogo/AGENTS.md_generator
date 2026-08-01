@@ -350,6 +350,7 @@ Deep dives:
 - Export validation and projection rules: `docs/export-validation-and-projection-rules.md`
 - Repo route hints and generated boundary: `docs/repo-route-hints-and-generated-boundary.md`
 - Superpowers harness projection note: `docs/superpowers-harness-projection-note.md`
+- Source-to-multi-target export contract: `docs/source-to-multi-target-export-contract.md`
 - Security-review repo targeting belongs in `SET`: `docs/codex-security-repo-selection-matrix.md`
 - Free AI visibility guide (PDF): `docs/assets/llmo-quick-start.pdf`
 - Release process: `docs/release-checklist.md`
