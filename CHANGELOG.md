@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.5.0 (2026-09-07)
+
+Stricter command-reference and generated-section checks, working minimal onboarding, installed-wheel release gates, reproducible demos, and an optional pinned SET integration. Includes Rabbithole seed export and reversible-work guidance. See [release notes](RELEASES/v0.5.0.md).
+
+
 ## [0.3.0](https://github.com/markoblogo/AGENTS.md_generator/compare/v0.2.2...v0.3.0) (2026-06-13)
 
 

@@ -59,11 +59,26 @@ jobs:
           print(f"Publishing {expected}")
           PY
 
+      - name: Validate release source
+        run: |
+          python -m pip install -e ".[dev]"
+          ruff check .
+          ruff format --check .
+          mypy src
+          pytest -q
+          agentsgen check . --all --ci
+
       - name: Build package
         run: |
           python -m pip install --upgrade pip build twine
           python -m build
           twine check dist/*
+
+      - name: Verify installed wheel
+        run: |
+          python -m venv /tmp/agentsgen-wheel
+          /tmp/agentsgen-wheel/bin/pip install dist/*.whl
+          python scripts/release_smoke.py --exe /tmp/agentsgen-wheel/bin/agentsgen
 
       - name: Publish to PyPI
         uses: pypa/gh-action-pypi-publish@release/v1

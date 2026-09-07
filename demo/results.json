@@ -1,0 +1,24 @@
+{
+  "version": 1,
+  "measurement": "local CLI wall time; not an AI performance benchmark",
+  "results": [
+    {
+      "demo": "handwritten",
+      "seconds": 0.146,
+      "original_sha256": "9cf6eb7adc15d2ef64a7f8cb75c87ad7156b881cc7861fa72a442713af352fd9",
+      "preserved": true
+    },
+    {
+      "demo": "stale-command",
+      "seconds": 0.294,
+      "valid_exit": 0,
+      "deleted_script_exit": 1
+    },
+    {
+      "demo": "clean-start",
+      "seconds": 0.55,
+      "second_fix_changed_files": 0,
+      "full_check_exit": 0
+    }
+  ]
+}

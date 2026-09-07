@@ -697,6 +697,11 @@ def check_repo(target: Path) -> tuple[int, list[str], list[str]]:
     except Exception as exc:
         problems.append(f"Invalid {CONFIG_FILENAME}: {exc}")
         return 2, problems, warnings
+    from .command_checks import check_command_references
+
+    command_problems, command_warnings = check_command_references(target, tool_cfg)
+    problems.extend(command_problems)
+    warnings.extend(command_warnings)
     info = tool_cfg.project_info
     for fname in [AGENTS_FILENAME, RUNBOOK_FILENAME]:
         path = target / fname
@@ -732,6 +737,16 @@ def check_repo(target: Path) -> tuple[int, list[str], list[str]]:
             ):
                 warnings.append(
                     f"{fname}: section '{sec}' looks like a placeholder; fill it or remove the section"
+                )
+    if not problems:
+        from .patch_engine import update_from_config
+
+        for result in update_from_config(target, dry_run=True, print_diff=False):
+            if result.action == "error":
+                problems.append(f"{result.path.name}: {result.message}")
+            elif result.changed:
+                problems.append(
+                    f"{result.path.name}: generated sections differ from config; run agentsgen update"
                 )
     return (1 if problems else 0), problems, warnings
 
@@ -806,6 +821,24 @@ def run_pack_check(target: Path) -> dict[str, object]:
 
 
 def run_snippets_check(target: Path) -> dict[str, object]:
+    if not (target / "README.md").exists():
+        return {
+            "status": "skipped",
+            "drift_count": 0,
+            "error_count": 0,
+            "reason": "README.md is absent; snippets are optional",
+            "raw": ReadmeSnippetsReport(
+                status="skipped",
+                check=True,
+                dry_run=True,
+                format_version=1,
+                readme_path=str(target / "README.md"),
+                output_path=str(target / "README_SNIPPETS.generated.md"),
+                snippets_count=0,
+                snippets=[],
+                message="README.md is absent; snippets are optional",
+            ).to_json(),
+        }
     report = generate_readme_snippets(
         target,
         readme_path=target / "README.md",

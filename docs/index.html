@@ -288,8 +288,8 @@
             <pre id="qs-code"><code>pipx install agentsgen
 cd your-repo
 agentsgen init . --defaults --autodetect
-agentsgen check . --all --report
-agentsgen fix . --all
+agentsgen check . --report
+agentsgen update .
 agentsgen fleet scan ~/code --max-depth 2
 agentsgen pack . --autodetect
 cat agents.entrypoints.json
@@ -314,7 +314,7 @@ cat docs/ai/id-context.json</code></pre>
             <ul class="bullets">
               <li>Install with <code>pipx install agentsgen</code>.</li>
               <li>Use in CI through the reusable GitHub Action.</li>
-              <li>Run <code>check --report</code> and <code>fix --all</code> for the local readiness loop.</li>
+              <li>Run <code>check --report</code> and <code>update</code> for the local readiness loop.</li>
               <li>Run <code>fleet scan</code> for a read-only team rollout report.</li>
               <li>Run locally as a stdio MCP server.</li>
             </ul>

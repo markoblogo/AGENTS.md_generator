@@ -9,4 +9,6 @@ This file is generated from README.md snippet markers. Do not edit by hand.
 
 Source: README.md (snippet: install)
 
-python -m pip install -e ".[dev]"
+```sh
+pipx install agentsgen
+```
