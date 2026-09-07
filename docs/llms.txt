@@ -30,8 +30,8 @@ Install:
 Core commands:
 - agentsgen init . --defaults --autodetect
 - agentsgen update .
-- agentsgen check . --all --report
-- agentsgen fix . --all
+- agentsgen check . --report
+- agentsgen update .
 - agentsgen fleet scan ~/code --max-depth 2
 - agentsgen pack . --autodetect
 - agentsgen status . --format json

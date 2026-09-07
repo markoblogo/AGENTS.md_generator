@@ -31,3 +31,12 @@ jobs:
       - name: Unit tests
         run: |
           pytest -q
+
+      - name: Build and verify installed wheel
+        run: |
+          pip install build twine
+          python -m build
+          twine check dist/*
+          python -m venv /tmp/agentsgen-wheel
+          /tmp/agentsgen-wheel/bin/pip install dist/*.whl
+          python scripts/release_smoke.py --exe /tmp/agentsgen-wheel/bin/agentsgen

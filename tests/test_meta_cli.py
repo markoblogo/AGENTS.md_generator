@@ -76,7 +76,8 @@ def test_meta_writes_llmo_meta_json(monkeypatch, tmp_path: Path) -> None:
     ]
 
 
-def test_meta_requires_api_key(tmp_path: Path) -> None:
+def test_meta_requires_api_key(monkeypatch, tmp_path: Path) -> None:
+    monkeypatch.delenv("OPENAI_API_KEY", raising=False)
     target = tmp_path / "repo"
     target.mkdir()
 

@@ -506,7 +506,7 @@ def register_core_commands(app: typer.Typer) -> None:
                 print_diff=print_diff,
             )
 
-        if effective_snippets:
+        if effective_snippets and (target / "README.md").exists():
             snippet_report = generate_readme_snippets(
                 target,
                 readme_path=target / "README.md",
@@ -516,6 +516,12 @@ def register_core_commands(app: typer.Typer) -> None:
                 print_diff=print_diff,
             )
             snippets_payload = snippet_report.to_json()
+
+        if effective_snippets and snippets_payload is None:
+            snippets_payload = {
+                "status": "skipped",
+                "message": "README.md is absent; snippets are optional",
+            }
 
         all_results = list(doc_results) + list(pack_results)
         errors = [r for r in all_results if r.action == "error"]
