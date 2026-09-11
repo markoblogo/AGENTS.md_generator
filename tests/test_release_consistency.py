@@ -44,3 +44,12 @@ def test_workflow_action_versions_are_current() -> None:
     combined = workflow_text + action
     assert not re.search(r"actions/checkout@v[1-6](?:\D|$)", combined)
     assert "actions/setup-python@v7" in combined
+
+
+def test_release_and_dependabot_configs_are_separate() -> None:
+    release = (ROOT / ".github" / "workflows" / "release.yml").read_text(
+        encoding="utf-8"
+    )
+    dependabot = (ROOT / ".github" / "dependabot.yml").read_text(encoding="utf-8")
+    assert "package-ecosystem" not in release
+    assert "package-ecosystem" in dependabot
