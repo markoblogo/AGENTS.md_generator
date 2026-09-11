@@ -1,7 +1,7 @@
 {
   "version": 1,
   "repo_path": ".",
-  "generated_at": "2026-09-11T16:42:26Z",
+  "generated_at": "2026-09-11T16:44:21Z",
   "files": [
     {
       "path": ".agentsgen.json",
@@ -35,7 +35,7 @@
     },
     {
       "path": ".github/workflows/agentsgen-guard.example.yml",
-      "size": 535,
+      "size": 501,
       "language": "yaml",
       "symbols_count": 0
     },
@@ -2719,66 +2719,7 @@
     }
   ],
   "changed_files": [
-    ".github/actions/agentsgen-guard/action.yml",
-    ".github/dependabot.yml",
-    ".github/workflows/agentsgen-ci.yml",
-    ".github/workflows/agentsgen-guard.example.yml",
-    ".github/workflows/ci.yml",
-    ".github/workflows/publish-pypi.yml",
-    ".github/workflows/release-please.yml",
-    ".github/workflows/release.yml",
-    ".github/workflows/set.yml",
-    "AGENTS.md",
-    "CHANGELOG.md",
-    "README.md",
-    "README_SNIPPETS.generated.md",
-    "RELEASES/v0.5.1.md",
-    "SECURITY.md",
-    "agents.knowledge.json",
-    "demo/README.md",
-    "demo/results.json",
-    "docs/ai/graph.mmd",
-    "docs/ai/id-context.json",
-    "docs/ai/okf/assets/entrypoints.md",
-    "docs/ai/okf/repo/contracts.md",
-    "docs/ai/okf/repo/overview.md",
-    "docs/ai/repomap.compact.md",
-    "docs/ai/repomap.md",
-    "docs/ecosystem-integrations.md",
-    "docs/gh-action.md",
-    "docs/index.html",
-    "docs/llms.txt",
-    "docs/release-checklist.md",
-    "docs/set-integration.md",
-    "pyproject.toml",
-    "recipes/cli-tool/README.md",
-    "recipes/monorepo-js/README.md",
-    "recipes/nextjs-app/README.md",
-    "recipes/python-lib/README.md",
-    "scripts/release_smoke.py",
-    "src/agentsgen/__init__.py",
-    "src/agentsgen/contracts.py",
-    "src/agentsgen/generate.py",
-    "src/agentsgen/mcp_server.py",
-    "src/agentsgen/okf_export.py",
-    "src/agentsgen/pack_engine.py",
-    "src/agentsgen/shared_sections.py",
-    "src/agentsgen/templates/shared/guardrails.md.j2",
-    "src/agentsgen/templates/shared/repo_context.md.j2",
-    "src/agentsgen/templates/shared/style.md.j2",
-    "src/agentsgen/templates/shared/verification.md.j2",
-    "src/agentsgen/templates/shared/workflow.md.j2",
-    "tests/golden/python_uv/AGENTS.md",
-    "tests/golden/python_uv/agents.knowledge.json",
-    "tests/golden/repo/README_SNIPPETS.generated.md",
-    "tests/golden/schemas/id_context.json",
-    "tests/test_contract_validators.py",
-    "tests/test_golden_outputs.py",
-    "tests/test_mcp_contracts.py",
-    "tests/test_okf_cli.py",
-    "tests/test_pack.py",
-    "tests/test_pack_cli.py",
-    "tests/test_release_consistency.py"
+    ".github/workflows/agentsgen-guard.example.yml"
   ],
   "entrypoint_files": [],
   "slice": {
@@ -2786,54 +2727,7 @@
     "focus_matches": [],
     "changed_only": false,
     "changed_matches": [
-      ".github/actions/agentsgen-guard/action.yml",
-      ".github/dependabot.yml",
-      ".github/workflows/agentsgen-ci.yml",
-      ".github/workflows/agentsgen-guard.example.yml",
-      ".github/workflows/ci.yml",
-      ".github/workflows/publish-pypi.yml",
-      ".github/workflows/release.yml",
-      ".github/workflows/set.yml",
-      "AGENTS.md",
-      "CHANGELOG.md",
-      "README.md",
-      "README_SNIPPETS.generated.md",
-      "RELEASES/v0.5.1.md",
-      "SECURITY.md",
-      "demo/README.md",
-      "demo/results.json",
-      "docs/ai/id-context.json",
-      "docs/ai/okf/assets/entrypoints.md",
-      "docs/ai/okf/repo/contracts.md",
-      "docs/ai/okf/repo/overview.md",
-      "docs/ai/repomap.compact.md",
-      "docs/ecosystem-integrations.md",
-      "docs/gh-action.md",
-      "docs/release-checklist.md",
-      "docs/set-integration.md",
-      "pyproject.toml",
-      "recipes/cli-tool/README.md",
-      "recipes/monorepo-js/README.md",
-      "recipes/nextjs-app/README.md",
-      "recipes/python-lib/README.md",
-      "scripts/release_smoke.py",
-      "src/agentsgen/__init__.py",
-      "src/agentsgen/contracts.py",
-      "src/agentsgen/generate.py",
-      "src/agentsgen/mcp_server.py",
-      "src/agentsgen/okf_export.py",
-      "src/agentsgen/pack_engine.py",
-      "src/agentsgen/shared_sections.py",
-      "tests/golden/python_uv/AGENTS.md",
-      "tests/golden/repo/README_SNIPPETS.generated.md",
-      "tests/golden/schemas/id_context.json",
-      "tests/test_contract_validators.py",
-      "tests/test_golden_outputs.py",
-      "tests/test_mcp_contracts.py",
-      "tests/test_okf_cli.py",
-      "tests/test_pack.py",
-      "tests/test_pack_cli.py",
-      "tests/test_release_consistency.py"
+      ".github/workflows/agentsgen-guard.example.yml"
     ]
   },
   "relevance": [
@@ -2877,86 +2771,6 @@
       "entrypoint": false
     },
     {
-      "path": "src/agentsgen/pack_engine.py",
-      "score": 57,
-      "signals": [
-        "git-changed",
-        "inbound:3",
-        "outbound:16",
-        "symbols:25",
-        "size:37945"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
-      "entrypoint": false
-    },
-    {
-      "path": "src/agentsgen/__init__.py",
-      "score": 54,
-      "signals": [
-        "git-changed",
-        "inbound:8"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
-      "entrypoint": false
-    },
-    {
-      "path": "src/agentsgen/mcp_server.py",
-      "score": 54,
-      "signals": [
-        "git-changed",
-        "inbound:2",
-        "outbound:6",
-        "symbols:20",
-        "size:11580"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
-      "entrypoint": false
-    },
-    {
-      "path": "src/agentsgen/contracts.py",
-      "score": 53,
-      "signals": [
-        "git-changed",
-        "inbound:3",
-        "symbols:12",
-        "size:52441"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
-      "entrypoint": false
-    },
-    {
-      "path": "src/agentsgen/okf_export.py",
-      "score": 51,
-      "signals": [
-        "git-changed",
-        "inbound:1",
-        "outbound:7",
-        "symbols:11",
-        "size:10602"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
-      "entrypoint": false
-    },
-    {
-      "path": "src/agentsgen/generate.py",
-      "score": 50,
-      "signals": [
-        "git-changed",
-        "inbound:2",
-        "outbound:2",
-        "symbols:7",
-        "size:8369"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
-      "entrypoint": false
-    },
-    {
       "path": "src/agentsgen/patch_engine.py",
       "score": 45,
       "signals": [
@@ -2982,58 +2796,6 @@
       "entrypoint": false
     },
     {
-      "path": "tests/test_mcp_contracts.py",
-      "score": 45,
-      "signals": [
-        "git-changed",
-        "outbound:3",
-        "symbols:13",
-        "size:6827"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
-      "entrypoint": false
-    },
-    {
-      "path": "tests/test_pack_cli.py",
-      "score": 44,
-      "signals": [
-        "git-changed",
-        "outbound:2",
-        "symbols:11",
-        "size:6543"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
-      "entrypoint": false
-    },
-    {
-      "path": "src/agentsgen/shared_sections.py",
-      "score": 42,
-      "signals": [
-        "git-changed",
-        "inbound:1",
-        "symbols:6",
-        "size:5265"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
-      "entrypoint": false
-    },
-    {
-      "path": "tests/test_contract_validators.py",
-      "score": 42,
-      "signals": [
-        "git-changed",
-        "outbound:2",
-        "symbols:4",
-        "size:24006"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
-      "entrypoint": false
-    },
-    {
       "path": "src/agentsgen/detect/__init__.py",
       "score": 41,
       "signals": [
@@ -3042,32 +2804,6 @@
       ],
       "distance_from_entrypoint": null,
       "changed": false,
-      "entrypoint": false
-    },
-    {
-      "path": "tests/test_pack.py",
-      "score": 41,
-      "signals": [
-        "git-changed",
-        "outbound:3",
-        "symbols:5",
-        "size:5174"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
-      "entrypoint": false
-    },
-    {
-      "path": "tests/test_okf_cli.py",
-      "score": 38,
-      "signals": [
-        "git-changed",
-        "outbound:1",
-        "symbols:5",
-        "size:3494"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
       "entrypoint": false
     },
     {
@@ -3090,6 +2826,152 @@
         "inbound:10",
         "symbols:5",
         "size:3187"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/llm.py",
+      "score": 36,
+      "signals": [
+        "inbound:7",
+        "outbound:4",
+        "symbols:14",
+        "size:4715"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/actions.py",
+      "score": 33,
+      "signals": [
+        "inbound:9",
+        "outbound:3",
+        "symbols:2",
+        "size:1688"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": ".github/workflows/agentsgen-guard.example.yml",
+      "score": 30,
+      "signals": [
+        "git-changed"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": true,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/io_utils.py",
+      "score": 28,
+      "signals": [
+        "inbound:8",
+        "symbols:4"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/pack_engine.py",
+      "score": 27,
+      "signals": [
+        "inbound:3",
+        "outbound:16",
+        "symbols:25",
+        "size:37945"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/understand_context.py",
+      "score": 27,
+      "signals": [
+        "inbound:3",
+        "outbound:8",
+        "symbols:30",
+        "size:29323"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/analyze.py",
+      "score": 26,
+      "signals": [
+        "inbound:3",
+        "outbound:3",
+        "symbols:21",
+        "size:11671"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/constants.py",
+      "score": 26,
+      "signals": [
+        "inbound:8",
+        "symbols:2"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/generated_artifacts.py",
+      "score": 26,
+      "signals": [
+        "inbound:7",
+        "outbound:3",
+        "symbols:1",
+        "size:1546"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/__init__.py",
+      "score": 24,
+      "signals": [
+        "inbound:8"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/markers.py",
+      "score": 24,
+      "signals": [
+        "inbound:4",
+        "outbound:1",
+        "symbols:8",
+        "size:4835"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/mcp_server.py",
+      "score": 24,
+      "signals": [
+        "inbound:2",
+        "outbound:6",
+        "symbols:20",
+        "size:11580"
       ],
       "distance_from_entrypoint": null,
       "changed": false,

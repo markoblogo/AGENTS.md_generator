@@ -15,7 +15,7 @@ jobs:
       - uses: actions/checkout@v7
 
       - name: AGENTS docs guard
-        uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@main
+        uses: ./.github/actions/agentsgen-guard
         with:
           path: "."
           files: "AGENTS.md,RUNBOOK.md"
