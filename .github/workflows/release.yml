@@ -60,15 +60,3 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: gh workflow run publish-pypi.yml --ref main -f tag="$GITHUB_REF_NAME"
-version: 2
-updates:
-  - package-ecosystem: pip
-    directory: "/"
-    schedule:
-      interval: monthly
-    open-pull-requests-limit: 5
-  - package-ecosystem: github-actions
-    directory: "/"
-    schedule:
-      interval: monthly
-    open-pull-requests-limit: 5
