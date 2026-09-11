@@ -1,43 +1,9 @@
 {% set project_name = project.name|default("this repo") %}
-{% set thin_slices = defaults.workflow.thin_slices|default(true) %}
-{% set commit_types = defaults.workflow.recommended_commit_types|default(["feat","fix","test","docs","refactor"]) %}
 
-### Workflow (how we ship changes in {{ project_name }})
+### Workflow
 
-#### 1) Start with reality
-- Read the nearest README / docs / existing patterns.
-- If there’s a failing case: reproduce it (or create a minimal reproduction).
-
-#### 2) Work in thin slices
-{% if thin_slices %}
-- Prefer **one small working increment** over a “big redesign”.
-- Change one thing, verify, then move to the next.
-{% else %}
-- Keep the approach incremental and testable.
-{% endif %}
-
-#### 3) Make changes reviewable
-- Keep diffs minimal.
-- Avoid unrelated formatting churn.
-- Prefer refactoring *after* the fix works, not before.
-
-#### 4) Verification loop
-- Run “fast checks” after each meaningful change.
-- Run “full checks” before finalizing.
-- If you cannot run checks, explain why and what to run.
-
-#### 5) Commit / PR discipline (even if you don’t actually commit)
-Think like you’re preparing a PR:
-- Clear intent
-- Small diff
-- Tests included
-- No breaking changes without warning
-
-**Commit message style (suggested):**
-- Allowed types: {{ commit_types|join(", ") }}
-- Example: `fix: handle empty input in parser`
-
-#### 6) Communication rules
-- If the task is blocked by missing info: ask one concrete question.
-- If you make an assumption: state it explicitly and keep it reversible.
-
+1. Read the nearest instructions and reproduce the current behavior.
+2. Implement the smallest coherent change and keep generated output reviewable.
+3. Run the narrowest useful check, then the full project checks before finalizing.
+4. Update docs and contracts when behavior changes.
+5. Report changed behavior, verification, and any material limitation.

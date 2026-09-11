@@ -190,3 +190,18 @@ def test_mcp_serve_stdio_registers_protocol_tools(monkeypatch, tmp_path: Path) -
     pack_payload = server.tools["pack"](path=str(target), check=True)
     validate_mcp_pack_response_payload(pack_payload)
     assert pack_payload["write_policy"]["mode"] == "check"
+
+
+def test_mcp_server_loader_supports_v2(monkeypatch) -> None:
+    class _FakeMCPServer:
+        pass
+
+    mcp_module = types.ModuleType("mcp")
+    server_module = types.ModuleType("mcp.server")
+    server_module.MCPServer = _FakeMCPServer
+    monkeypatch.setitem(sys.modules, "mcp", mcp_module)
+    monkeypatch.setitem(sys.modules, "mcp.server", server_module)
+
+    from agentsgen.mcp_server import _load_mcp_server_class
+
+    assert _load_mcp_server_class() is _FakeMCPServer

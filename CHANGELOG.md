@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.5.1 (2026-09-11)
+
+Lean default agent context, portable OKF links, ID 0.5.2 bootstrap metadata,
+current SET 0.4.0 guidance, Python 3.14 CI coverage, and release artifacts that
+are smoke-tested before GitHub and PyPI publication. See
+[release notes](RELEASES/v0.5.1.md).
+
 ## 0.5.0 (2026-09-07)
 
 Stricter command-reference and generated-section checks, working minimal onboarding, installed-wheel release gates, reproducible demos, and an optional pinned SET integration. Includes Rabbithole seed export and reversible-work guidance. See [release notes](RELEASES/v0.5.0.md).

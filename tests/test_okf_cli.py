@@ -69,6 +69,17 @@ def test_okf_export_writes_bundle_and_check_passes(tmp_path: Path) -> None:
     assert 'type: "Command Surface"' in entrypoints_text
     assert "Rendered from `agents.entrypoints.json`." in entrypoints_text
     assert "`test`" in entrypoints_text
+    assert "(../../../../agents.entrypoints.json)" in entrypoints_text
+
+    overview = (target / "docs" / "ai" / "okf" / "repo" / "overview.md").read_text(
+        encoding="utf-8"
+    )
+    assert "[architecture.md](architecture.md)" in overview
+    assert "[Command Surface](../assets/entrypoints.md)" in overview
+    assert str(target) not in overview
+    assert "Repo root: `.`" in overview
+    assert "| ID | Title | Command | Source |" in entrypoints_text
+    assert "| ID | Title | Command | Source | |" not in entrypoints_text
 
     check = runner.invoke(
         app,

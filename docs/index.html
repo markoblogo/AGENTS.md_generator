@@ -44,7 +44,7 @@
     "url": "https://agentsmd.abvx.xyz/",
     "codeRepository": "https://github.com/markoblogo/AGENTS.md_generator",
     "license": "https://github.com/markoblogo/AGENTS.md_generator/blob/main/LICENSE",
-    "softwareVersion": "0.4.0",
+    "softwareVersion": "0.5.1",
     "author": {
       "@type": "Person",
       "name": "Marko Blogo"
@@ -166,14 +166,14 @@
                 </div>
 
                 <div class="sticker sticker-micro" data-ascii-sticker="LANDING REFRESH">
-                  V0.4.0
+                  V0.5.1
                 </div>
               </div>
               <h1>Agent contract layer for AI-ready repos</h1>
             </div>
             <p class="lede">
               <strong>agentsgen</strong> generates, updates, and checks <strong>AGENTS.md</strong> and <strong>RUNBOOK.md</strong> for AI coding agents.
-              Use it when you want repo instructions that are reviewable, marker-safe, CI-checkable, and reusable across Cursor, Claude Code, Codex, Copilot Workspace, and Aider.
+              Use it when you want repo instructions that are reviewable, marker-safe, CI-checkable, and readable by coding-agent clients.
             </p>
 
             <div class="hero-cta" role="group" aria-label="Primary actions">
@@ -223,7 +223,7 @@
       <div class="container">
         <div class="section-head">
           <h2>How it fits</h2>
-          <p>Four layers. Clear boundaries.</p>
+          <p>Independent tools with explicit boundaries.</p>
         </div>
 
         <div class="grid-2 use-cases-grid">
@@ -242,7 +242,7 @@
           <a class="card card-link" data-ascii-role="card" href="https://github.com/markoblogo/SET">
             <h3><code>SET</code></h3>
             <ul class="bullets">
-              <li>Owns workflow execution: CI entrypoint, orchestration, registry-driven flows, and hook timing.</li>
+              <li>Owns reviewable orchestration: presets, planning, CI entrypoints, and exported workflows.</li>
             </ul>
           </a>
           <a class="card card-link" data-ascii-role="card" href="https://github.com/markoblogo/AGENTS.md_generator/blob/main/docs/ai/id-context.json">
@@ -256,6 +256,12 @@
             <h3><code>abvx-agent-skills</code></h3>
             <ul class="bullets">
               <li>Owns reusable capabilities: compact <code>SKILL.md</code> workflows for coding, frontend, audits, debugging, research, token economy, handoffs, and browser verification.</li>
+            </ul>
+          </a>
+          <a class="card card-link" data-ascii-role="card" href="https://github.com/markoblogo/git-tweet">
+            <h3><code>Git Tweet</code></h3>
+            <ul class="bullets">
+              <li>Consumes a completed GitHub Release downstream and turns its verified release notes into social output.</li>
             </ul>
           </a>
         </div>
@@ -285,16 +291,11 @@
               <span class="code-label">Quickstart</span>
               <button class="copy" type="button" data-copy-target="#qs-code">Copy</button>
             </div>
-            <pre id="qs-code"><code>pipx install agentsgen
+            <pre id="qs-code"><code>uv tool install agentsgen
 cd your-repo
 agentsgen init . --defaults --autodetect
-agentsgen check . --report
-agentsgen update .
-agentsgen fleet scan ~/code --max-depth 2
-agentsgen pack . --autodetect
-cat agents.entrypoints.json
-cat docs/ai/id-context.json</code></pre>
-            <div class="note">Bootstrap, score readiness, apply conservative remediation, scan a repo fleet, then emit optional agent-facing surfaces.</div>
+agentsgen check . --ci</code></pre>
+            <div class="note">Review the detected commands in <code>.agentsgen.json</code> before committing. No API key is required.</div>
             <div class="note quickstart-meta">Outputs: <code>AGENTS.md</code>, <code>RUNBOOK.md</code>, <code>.agentsgen.json</code>, <code>agents.entrypoints.json</code>, and <code>docs/ai/id-context.json</code>.</div>
           </div>
         </div>
@@ -312,7 +313,7 @@ cat docs/ai/id-context.json</code></pre>
           <div class="card" data-ascii-role="card">
             <h3>Distribution</h3>
             <ul class="bullets">
-              <li>Install with <code>pipx install agentsgen</code>.</li>
+              <li>Install with <code>uv tool install agentsgen</code> or <code>pipx install agentsgen</code>.</li>
               <li>Use in CI through the reusable GitHub Action.</li>
               <li>Run <code>check --report</code> and <code>update</code> for the local readiness loop.</li>
               <li>Run <code>fleet scan</code> for a read-only team rollout report.</li>
@@ -322,7 +323,7 @@ cat docs/ai/id-context.json</code></pre>
           <div class="card" data-ascii-role="card">
             <h3>Compatibility</h3>
             <ul class="bullets">
-              <li>Works with Cursor, Claude Code, Codex, Copilot Workspace, and Aider.</li>
+              <li>Produces standard instruction files that Cursor, Claude Code, Codex, Copilot Workspace, and Aider can read; native loading depends on each client.</li>
               <li>Exposes CLI docs, pack artifacts, JSON contracts, and discovery files.</li>
               <li>Keeps hosted discovery separate from local-only MCP execution.</li>
             </ul>
@@ -507,8 +508,8 @@ jobs:
   agentsgen:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@main
+      - uses: actions/checkout@v7
+      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.5.1
         with:
           comment: "true"
           files: |

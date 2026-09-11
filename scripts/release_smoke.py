@@ -11,7 +11,10 @@ from pathlib import Path
 
 def run(exe, root, args, expected=0):
     result = subprocess.run(
-        [exe, args[0], str(root), *args[1:]], capture_output=True, text=True
+        [exe, args[0], str(root), *args[1:]],
+        capture_output=True,
+        text=True,
+        check=False,
     )
     if result.returncode != expected:
         raise SystemExit(
@@ -54,6 +57,10 @@ def main():
                 detail = {"valid_exit": 0, "deleted_script_exit": 1}
             else:
                 run(args.exe, root, ["init", "--defaults", "--autodetect"])
+                agents_text = (root / "AGENTS.md").read_text(encoding="utf-8")
+                agents_lines = len(agents_text.splitlines())
+                agents_bytes = len(agents_text.encode("utf-8"))
+                assert agents_lines <= 160
                 run(args.exe, root, ["check", "--ci"])
                 run(args.exe, root, ["fix", "--all"])
                 before = {
@@ -69,7 +76,12 @@ def main():
                 }
                 assert before == after
                 run(args.exe, root, ["check", "--all", "--ci"])
-                detail = {"second_fix_changed_files": 0, "full_check_exit": 0}
+                detail = {
+                    "agents_md_lines": agents_lines,
+                    "agents_md_bytes": agents_bytes,
+                    "second_fix_changed_files": 0,
+                    "full_check_exit": 0,
+                }
             rows.append(
                 {
                     "demo": case,

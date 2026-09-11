@@ -9,6 +9,7 @@
 A local green test run is not proof of published availability. Record those gates separately.
 The publish workflow repeats tests and installed-wheel demos before uploading.
 
-0.5.0 makes command/reference checks stricter. Existing stale configs may start failing:
-review `.agentsgen.json`, update marker-managed docs, then rerun checks. Unsupported
-command forms remain warnings. Do not suppress a real stale command to obtain a green check.
+Create a reviewed version commit, then push tag `vX.Y.Z`. The release workflow checks
+the tag/version match, builds and smoke-tests the installed wheel, uploads both package
+artifacts to GitHub, and dispatches the trusted PyPI publisher. A manual GitHub release
+still triggers PyPI publication as a recovery path.

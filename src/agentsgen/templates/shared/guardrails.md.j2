@@ -1,5 +1,4 @@
 {% set project_name = project.name|default("this repo") %}
-{% set stack = project.primary_stack|default("unknown") %}
 {% set diff_budget = defaults.guardrails.diff_budget_lines|default(300) %}
 {% set ask_before = defaults.guardrails.ask_before|default([
   "schema changes",
@@ -9,51 +8,15 @@
   "new major dependencies"
 ]) %}
 
-### Guardrails (how to not break {{ project_name }})
+### Guardrails
 
-**Your job:** be useful, be safe, be boring. Small diffs. Deterministic output. No surprises.
-
-#### 0) Scope & intent
-- Implement exactly what’s requested. If requirements are ambiguous: ask **one** precise question (or make the smallest reasonable assumption and state it).
-- Prefer changing **existing code** over adding new systems.
-- Avoid “framework upgrades” unless explicitly asked.
-
-#### 1) Safe edits only
-- Keep diffs **small** (target: <{{ diff_budget }} lines unless unavoidable).
-- Never rewrite whole files when a patch will do.
-- Preserve formatting, naming patterns, and local conventions.
-
-#### 2) No destructive operations
-- Do **not** delete data, migrations, buckets, or user files.
-- Avoid broad refactors touching many modules at once.
-- Never remove features “because unused” without explicit instruction.
-
-#### 3) Secrets & credentials
-- Never hardcode tokens/keys.
-- Never print secrets into logs.
-- If a secret is needed: use env vars + document the name.
-
-#### 4) Side effects / dangerous actions
-- Don’t run commands that can modify the system/network unless asked.
-- Don’t use “dangerous” flags unless explicitly approved.
-- If a task involves running arbitrary tools/scripts: isolate and explain.
-
-#### 5) Ask-before list (must confirm)
-Before doing any of these, ask:
+- Work only within the requested scope and preserve local conventions.
+- Prefer focused changes; use {{ diff_budget }} changed lines as a review signal, not a hard limit.
+- Never discard user files, handwritten content, migrations, or data.
+- Never hardcode tokens/keys. Never print secrets; document required environment-variable names.
+- Run side-effecting or destructive operations only with existing authorization.
+- Before changing these areas, confirm intent unless the current task already authorizes it:
 {% for item in ask_before %}
-- {{ item }}
+  - {{ item }}
 {% endfor %}
-
-#### 6) Definition of Done (DoD)
-A change is “done” only if:
-- the behavior is correct,
-- tests/checks are run (or you explain why they can’t be run),
-- the diff is minimal and readable,
-- docs/comments are updated if behavior changed.
-
-#### 7) Output protocol
-When responding, include:
-- what changed (1–3 bullets),
-- how to verify (commands / steps),
-- risks/assumptions (if any).
-
+- A change is complete when behavior, relevant tests, and affected docs agree.

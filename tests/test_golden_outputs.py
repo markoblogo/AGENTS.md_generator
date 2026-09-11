@@ -39,9 +39,13 @@ def test_golden_python_uv_outputs(tmp_path: Path) -> None:
     assert runner.invoke(app, ["pack", str(target), "--autodetect"]).exit_code == 0
     assert runner.invoke(app, ["understand", str(target)]).exit_code == 0
 
-    assert (target / "AGENTS.md").read_text(encoding="utf-8") == (
-        GOLDEN / "python_uv" / "AGENTS.md"
-    ).read_text(encoding="utf-8")
+    agents_text = (target / "AGENTS.md").read_text(encoding="utf-8")
+    assert agents_text == (GOLDEN / "python_uv" / "AGENTS.md").read_text(
+        encoding="utf-8"
+    )
+    assert len(agents_text.splitlines()) <= 160
+    assert "Never hardcode tokens/keys." in agents_text
+    assert "uv run pytest" in agents_text
     assert (target / "RUNBOOK.md").read_text(encoding="utf-8") == (
         GOLDEN / "python_uv" / "RUNBOOK.md"
     ).read_text(encoding="utf-8")

@@ -26,3 +26,9 @@ kind: "contracts"
 ## TODO (maintainer)
 - List critical contract files/endpoints for this repo.
 <!-- AGENTSGEN:END section=data_contracts -->
+
+## Maintainer route hints
+- `repo_direct`: normal repo edits and verification happen here.
+- `review_contract`: if behavior, safety, or release confidence is unclear, route to the repo's review contract first.
+- `set_orchestration`: cross-repo packaging and reusable route receipts belong in SET.
+- `local_reference_only`: generated hints describe next governing files, not execution authority.

@@ -177,10 +177,7 @@ def test_pack_site_writes_site_llms_manifest(monkeypatch, tmp_path: Path) -> Non
         actions_module,
         "build_site_llms_manifest",
         lambda site_url: (
-            "# Example site\n\n"
-            f"Source: {site_url}\n"
-            "## Representative pages\n"
-            "- /\n"
+            f"# Example site\n\nSource: {site_url}\n## Representative pages\n- /\n"
         ),
     )
 

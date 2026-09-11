@@ -1,7 +1,7 @@
 {
   "version": 1,
   "repo_path": ".",
-  "generated_at": "2026-03-25T16:26:16Z",
+  "generated_at": "2026-09-11T16:44:21Z",
   "files": [
     {
       "path": ".agentsgen.json",
@@ -22,6 +22,12 @@
       "symbols_count": 15
     },
     {
+      "path": ".github/dependabot.yml",
+      "size": 263,
+      "language": "yaml",
+      "symbols_count": 0
+    },
+    {
       "path": ".github/workflows/agentsgen-ci.yml",
       "size": 789,
       "language": "yaml",
@@ -29,25 +35,43 @@
     },
     {
       "path": ".github/workflows/agentsgen-guard.example.yml",
-      "size": 537,
+      "size": 501,
       "language": "yaml",
       "symbols_count": 0
     },
     {
       "path": ".github/workflows/ci.yml",
-      "size": 693,
+      "size": 1500,
+      "language": "yaml",
+      "symbols_count": 0
+    },
+    {
+      "path": ".github/workflows/publish-pypi.yml",
+      "size": 2655,
+      "language": "yaml",
+      "symbols_count": 0
+    },
+    {
+      "path": ".github/workflows/release.yml",
+      "size": 2049,
       "language": "yaml",
       "symbols_count": 0
     },
     {
       "path": ".github/workflows/set.yml",
-      "size": 488,
+      "size": 591,
       "language": "yaml",
       "symbols_count": 0
     },
     {
       "path": "AGENTS.md",
-      "size": 7559,
+      "size": 4218,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "CHANGELOG.md",
+      "size": 1268,
       "language": "markdown",
       "symbols_count": 0
     },
@@ -59,25 +83,25 @@
     },
     {
       "path": "Makefile",
-      "size": 675,
+      "size": 662,
       "language": "unknown",
       "symbols_count": 0
     },
     {
       "path": "README.md",
-      "size": 13106,
+      "size": 5270,
       "language": "markdown",
       "symbols_count": 0
     },
     {
       "path": "README_SNIPPETS.generated.md",
-      "size": 227,
+      "size": 229,
       "language": "markdown",
       "symbols_count": 0
     },
     {
       "path": "README_SNIPPETS.md",
-      "size": 469,
+      "size": 514,
       "language": "markdown",
       "symbols_count": 0
     },
@@ -118,8 +142,44 @@
       "symbols_count": 0
     },
     {
+      "path": "RELEASES/v0.2.0.md",
+      "size": 2160,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "RELEASES/v0.2.1.md",
+      "size": 1506,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "RELEASES/v0.4.0.md",
+      "size": 1668,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "RELEASES/v0.5.0.md",
+      "size": 1161,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "RELEASES/v0.5.1.md",
+      "size": 1444,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
       "path": "RUNBOOK.md",
       "size": 666,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "SECURITY.md",
+      "size": 387,
       "language": "markdown",
       "symbols_count": 0
     },
@@ -137,8 +197,14 @@
     },
     {
       "path": "demo/README.md",
-      "size": 262,
+      "size": 775,
       "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "demo/results.json",
+      "size": 607,
+      "language": "json",
       "symbols_count": 0
     },
     {
@@ -155,7 +221,7 @@
     },
     {
       "path": "docs/ai/data-contracts.md",
-      "size": 533,
+      "size": 929,
       "language": "markdown",
       "symbols_count": 0
     },
@@ -172,9 +238,87 @@
       "symbols_count": 0
     },
     {
-      "path": "docs/ai/repomap.compact.md",
-      "size": 1923,
+      "path": "docs/ai/id-context.json",
+      "size": 2151,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ai/okf/assets/entrypoints.md",
+      "size": 664,
       "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ai/okf/assets/index.md",
+      "size": 124,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ai/okf/index.md",
+      "size": 793,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ai/okf/repo/architecture.md",
+      "size": 658,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ai/okf/repo/contracts.md",
+      "size": 1200,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ai/okf/repo/index.md",
+      "size": 455,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ai/okf/repo/overview.md",
+      "size": 621,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ai/okf/repo/runbook.md",
+      "size": 743,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ai/okf/repo/test-flow.md",
+      "size": 713,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ai/repomap.compact.md",
+      "size": 1977,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ai/tasks/proof-loop-v0/contract.md",
+      "size": 414,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ai/tasks/proof-loop-v0/evidence.json",
+      "size": 1385,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ai/tasks/proof-loop-v0/verdict.json",
+      "size": 691,
+      "language": "json",
       "symbols_count": 0
     },
     {
@@ -190,26 +334,104 @@
       "symbols_count": 4
     },
     {
+      "path": "docs/branch-room-artifact-note.md",
+      "size": 1444,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/cli-reference.md",
+      "size": 12059,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/ecosystem-integrations.md",
+      "size": 1637,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/experimental-llm.md",
+      "size": 1546,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/export-validation-and-projection-rules.md",
+      "size": 1585,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/generated-artifact-registry.md",
+      "size": 1598,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
       "path": "docs/gh-action.md",
       "size": 3494,
       "language": "markdown",
       "symbols_count": 0
     },
     {
+      "path": "docs/harness-capability-matrix.md",
+      "size": 971,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/harness-readable-repo-contract.md",
+      "size": 1474,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
       "path": "docs/llmo-pack.md",
-      "size": 2660,
+      "size": 4163,
       "language": "markdown",
       "symbols_count": 0
     },
     {
       "path": "docs/manifest.md",
-      "size": 1915,
+      "size": 2023,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/multi-harness-export-contract.md",
+      "size": 2898,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/personal-workspace-router.md",
+      "size": 1540,
       "language": "markdown",
       "symbols_count": 0
     },
     {
       "path": "docs/release-checklist.md",
-      "size": 3672,
+      "size": 944,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/repo-route-hints-and-generated-boundary.md",
+      "size": 1963,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/set-integration.md",
+      "size": 898,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "docs/source-to-multi-target-export-contract.md",
+      "size": 2199,
       "language": "markdown",
       "symbols_count": 0
     },
@@ -220,8 +442,20 @@
       "symbols_count": 0
     },
     {
+      "path": "docs/superpowers-harness-projection-note.md",
+      "size": 1709,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
       "path": "drafts/abvx-ecosystem.md",
       "size": 5702,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "drafts/proof-loop-v0.md",
+      "size": 1039,
       "language": "markdown",
       "symbols_count": 0
     },
@@ -238,410 +472,8 @@
       "symbols_count": 0
     },
     {
-      "path": "git-tweet/CONTRIBUTING.md",
-      "size": 1927,
-      "language": "markdown",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/README.md",
-      "size": 13392,
-      "language": "markdown",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/SECURITY.md",
-      "size": 1542,
-      "language": "markdown",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/app/admin-login/page.tsx",
-      "size": 1970,
-      "language": "typescript",
-      "symbols_count": 2
-    },
-    {
-      "path": "git-tweet/app/api/admin-login/route.ts",
-      "size": 1163,
-      "language": "typescript",
-      "symbols_count": 1
-    },
-    {
-      "path": "git-tweet/app/api/connect/github/callback/route.ts",
-      "size": 1880,
-      "language": "typescript",
-      "symbols_count": 1
-    },
-    {
-      "path": "git-tweet/app/api/connect/github/start/route.ts",
-      "size": 1080,
-      "language": "typescript",
-      "symbols_count": 1
-    },
-    {
-      "path": "git-tweet/app/api/connect/github/sync/route.ts",
-      "size": 616,
-      "language": "typescript",
-      "symbols_count": 1
-    },
-    {
-      "path": "git-tweet/app/api/connect/x/callback/route.ts",
-      "size": 1965,
-      "language": "typescript",
-      "symbols_count": 1
-    },
-    {
-      "path": "git-tweet/app/api/connect/x/manual-sync/route.ts",
-      "size": 577,
-      "language": "typescript",
-      "symbols_count": 1
-    },
-    {
-      "path": "git-tweet/app/api/connect/x/start/route.ts",
-      "size": 1642,
-      "language": "typescript",
-      "symbols_count": 1
-    },
-    {
-      "path": "git-tweet/app/api/logs/route.ts",
-      "size": 557,
-      "language": "typescript",
-      "symbols_count": 1
-    },
-    {
-      "path": "git-tweet/app/api/posts/[postId]/rerun/route.ts",
-      "size": 780,
-      "language": "typescript",
-      "symbols_count": 1
-    },
-    {
-      "path": "git-tweet/app/api/repositories/[repositoryId]/activation/route.ts",
-      "size": 1723,
-      "language": "typescript",
-      "symbols_count": 1
-    },
-    {
-      "path": "git-tweet/app/api/repositories/route.ts",
-      "size": 642,
-      "language": "typescript",
-      "symbols_count": 1
-    },
-    {
-      "path": "git-tweet/app/api/webhooks/github/route.ts",
-      "size": 2225,
-      "language": "typescript",
-      "symbols_count": 1
-    },
-    {
-      "path": "git-tweet/app/connect/bluesky/page.tsx",
-      "size": 1292,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/app/connect/github/page.tsx",
-      "size": 2722,
-      "language": "typescript",
-      "symbols_count": 2
-    },
-    {
-      "path": "git-tweet/app/connect/x/page.tsx",
-      "size": 2174,
-      "language": "typescript",
-      "symbols_count": 2
-    },
-    {
-      "path": "git-tweet/app/layout.tsx",
-      "size": 1596,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/app/logs/page.tsx",
-      "size": 5548,
-      "language": "typescript",
-      "symbols_count": 2
-    },
-    {
-      "path": "git-tweet/app/page.tsx",
-      "size": 3692,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/app/repositories/page.tsx",
-      "size": 4432,
-      "language": "typescript",
-      "symbols_count": 5
-    },
-    {
-      "path": "git-tweet/fixtures/webhooks/create-tag.json",
-      "size": 298,
-      "language": "json",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/fixtures/webhooks/release-published.json",
-      "size": 512,
-      "language": "json",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/lib/db/prisma.ts",
-      "size": 312,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/lib/events/semver.ts",
-      "size": 736,
-      "language": "typescript",
-      "symbols_count": 2
-    },
-    {
-      "path": "git-tweet/lib/services/admin-gate.ts",
-      "size": 3259,
-      "language": "typescript",
-      "symbols_count": 11
-    },
-    {
-      "path": "git-tweet/lib/services/bluesky-client.ts",
-      "size": 7029,
-      "language": "typescript",
-      "symbols_count": 9
-    },
-    {
-      "path": "git-tweet/lib/services/bluesky-connection.ts",
-      "size": 948,
-      "language": "typescript",
-      "symbols_count": 2
-    },
-    {
-      "path": "git-tweet/lib/services/dedup.ts",
-      "size": 260,
-      "language": "typescript",
-      "symbols_count": 1
-    },
-    {
-      "path": "git-tweet/lib/services/github-client.ts",
-      "size": 6910,
-      "language": "typescript",
-      "symbols_count": 13
-    },
-    {
-      "path": "git-tweet/lib/services/github-ingestion.ts",
-      "size": 10191,
-      "language": "typescript",
-      "symbols_count": 8
-    },
-    {
-      "path": "git-tweet/lib/services/github-webhook-auth.ts",
-      "size": 769,
-      "language": "typescript",
-      "symbols_count": 1
-    },
-    {
-      "path": "git-tweet/lib/services/ingestion-guardrails.ts",
-      "size": 625,
-      "language": "typescript",
-      "symbols_count": 2
-    },
-    {
-      "path": "git-tweet/lib/services/link-shortener.ts",
-      "size": 3268,
-      "language": "typescript",
-      "symbols_count": 6
-    },
-    {
-      "path": "git-tweet/lib/services/oauth-state.ts",
-      "size": 1844,
-      "language": "typescript",
-      "symbols_count": 6
-    },
-    {
-      "path": "git-tweet/lib/services/owner-user.ts",
-      "size": 311,
-      "language": "typescript",
-      "symbols_count": 1
-    },
-    {
-      "path": "git-tweet/lib/services/post-rerun.ts",
-      "size": 2471,
-      "language": "typescript",
-      "symbols_count": 4
-    },
-    {
-      "path": "git-tweet/lib/services/posting.ts",
-      "size": 4018,
-      "language": "typescript",
-      "symbols_count": 8
-    },
-    {
-      "path": "git-tweet/lib/services/social-link.ts",
-      "size": 536,
-      "language": "typescript",
-      "symbols_count": 2
-    },
-    {
-      "path": "git-tweet/lib/services/tweet-composer.ts",
-      "size": 2707,
-      "language": "typescript",
-      "symbols_count": 5
-    },
-    {
-      "path": "git-tweet/lib/services/x-client.ts",
-      "size": 4817,
-      "language": "typescript",
-      "symbols_count": 7
-    },
-    {
-      "path": "git-tweet/lib/services/x-connection.ts",
-      "size": 2218,
-      "language": "typescript",
-      "symbols_count": 4
-    },
-    {
-      "path": "git-tweet/lib/services/x-oauth.ts",
-      "size": 4954,
-      "language": "typescript",
-      "symbols_count": 10
-    },
-    {
-      "path": "git-tweet/next-env.d.ts",
-      "size": 262,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/next.config.ts",
-      "size": 213,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/package-lock.json",
-      "size": 245748,
-      "language": "json",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/package.json",
-      "size": 1193,
-      "language": "json",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/prisma/migrations/migration_lock.toml",
-      "size": 24,
-      "language": "toml",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/scripts/replay-webhook.mjs",
-      "size": 1560,
-      "language": "javascript",
-      "symbols_count": 3
-    },
-    {
-      "path": "git-tweet/tests/bluesky-client.test.ts",
-      "size": 4614,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/tests/github-client.test.ts",
-      "size": 1222,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/tests/github-ingestion.test.ts",
-      "size": 879,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/tests/github-webhook-auth.test.ts",
-      "size": 1020,
-      "language": "typescript",
-      "symbols_count": 1
-    },
-    {
-      "path": "git-tweet/tests/ingestion-guardrails.test.ts",
-      "size": 1529,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/tests/link-shortener.test.ts",
-      "size": 2022,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/tests/oauth-state.test.ts",
-      "size": 703,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/tests/post-rerun.test.ts",
-      "size": 833,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/tests/posting.test.ts",
-      "size": 1209,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/tests/semver.test.ts",
-      "size": 842,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/tests/tweet-composer.test.ts",
-      "size": 1817,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/tests/x-client.test.ts",
-      "size": 1700,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/tests/x-connection.test.ts",
-      "size": 751,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/tsconfig.json",
-      "size": 606,
-      "language": "json",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/types/events.ts",
-      "size": 1011,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
-      "path": "git-tweet/vitest.config.ts",
-      "size": 223,
-      "language": "typescript",
-      "symbols_count": 0
-    },
-    {
       "path": "pyproject.toml",
-      "size": 830,
+      "size": 2538,
       "language": "toml",
       "symbols_count": 0
     },
@@ -694,10 +526,16 @@
       "symbols_count": 0
     },
     {
-      "path": "scripts/scan_repos.py",
-      "size": 6827,
+      "path": "scripts/release_smoke.py",
+      "size": 3899,
       "language": "python",
-      "symbols_count": 7
+      "symbols_count": 2
+    },
+    {
+      "path": "scripts/scan_repos.py",
+      "size": 1308,
+      "language": "python",
+      "symbols_count": 1
     },
     {
       "path": "scripts/snapshot.py",
@@ -725,33 +563,105 @@
     },
     {
       "path": "src/agentsgen/actions.py",
-      "size": 42282,
+      "size": 1688,
       "language": "python",
-      "symbols_count": 45
+      "symbols_count": 2
     },
     {
       "path": "src/agentsgen/analyze.py",
-      "size": 11539,
+      "size": 11671,
       "language": "python",
       "symbols_count": 21
     },
     {
       "path": "src/agentsgen/cli.py",
-      "size": 35850,
+      "size": 1554,
       "language": "python",
-      "symbols_count": 26
+      "symbols_count": 1
+    },
+    {
+      "path": "src/agentsgen/cli_core.py",
+      "size": 24580,
+      "language": "python",
+      "symbols_count": 14
+    },
+    {
+      "path": "src/agentsgen/cli_extra.py",
+      "size": 10398,
+      "language": "python",
+      "symbols_count": 7
+    },
+    {
+      "path": "src/agentsgen/cli_fleet.py",
+      "size": 1616,
+      "language": "python",
+      "symbols_count": 2
+    },
+    {
+      "path": "src/agentsgen/cli_okf.py",
+      "size": 3452,
+      "language": "python",
+      "symbols_count": 3
+    },
+    {
+      "path": "src/agentsgen/cli_pack.py",
+      "size": 9528,
+      "language": "python",
+      "symbols_count": 3
+    },
+    {
+      "path": "src/agentsgen/cli_reflect.py",
+      "size": 4939,
+      "language": "python",
+      "symbols_count": 3
+    },
+    {
+      "path": "src/agentsgen/cli_support.py",
+      "size": 6676,
+      "language": "python",
+      "symbols_count": 12
+    },
+    {
+      "path": "src/agentsgen/cli_task.py",
+      "size": 7763,
+      "language": "python",
+      "symbols_count": 4
+    },
+    {
+      "path": "src/agentsgen/command_checks.py",
+      "size": 3936,
+      "language": "python",
+      "symbols_count": 1
+    },
+    {
+      "path": "src/agentsgen/compat.py",
+      "size": 530,
+      "language": "python",
+      "symbols_count": 0
     },
     {
       "path": "src/agentsgen/config.py",
-      "size": 8755,
+      "size": 8926,
       "language": "python",
       "symbols_count": 8
     },
     {
-      "path": "src/agentsgen/constants.py",
-      "size": 1237,
+      "path": "src/agentsgen/config_io.py",
+      "size": 430,
       "language": "python",
       "symbols_count": 2
+    },
+    {
+      "path": "src/agentsgen/constants.py",
+      "size": 1260,
+      "language": "python",
+      "symbols_count": 2
+    },
+    {
+      "path": "src/agentsgen/contracts.py",
+      "size": 52441,
+      "language": "python",
+      "symbols_count": 12
     },
     {
       "path": "src/agentsgen/detect/__init__.py",
@@ -802,10 +712,28 @@
       "symbols_count": 4
     },
     {
+      "path": "src/agentsgen/fleet.py",
+      "size": 6952,
+      "language": "python",
+      "symbols_count": 10
+    },
+    {
+      "path": "src/agentsgen/flow_ops.py",
+      "size": 7229,
+      "language": "python",
+      "symbols_count": 9
+    },
+    {
       "path": "src/agentsgen/generate.py",
-      "size": 8366,
+      "size": 8369,
       "language": "python",
       "symbols_count": 7
+    },
+    {
+      "path": "src/agentsgen/generated_artifacts.py",
+      "size": 1546,
+      "language": "python",
+      "symbols_count": 1
     },
     {
       "path": "src/agentsgen/io_utils.py",
@@ -814,14 +742,26 @@
       "symbols_count": 4
     },
     {
+      "path": "src/agentsgen/llm.py",
+      "size": 4715,
+      "language": "python",
+      "symbols_count": 14
+    },
+    {
       "path": "src/agentsgen/markers.py",
       "size": 4835,
       "language": "python",
       "symbols_count": 8
     },
     {
+      "path": "src/agentsgen/mcp_server.py",
+      "size": 11580,
+      "language": "python",
+      "symbols_count": 20
+    },
+    {
       "path": "src/agentsgen/meta.py",
-      "size": 3394,
+      "size": 3526,
       "language": "python",
       "symbols_count": 4
     },
@@ -836,6 +776,24 @@
       "size": 655,
       "language": "python",
       "symbols_count": 1
+    },
+    {
+      "path": "src/agentsgen/okf_export.py",
+      "size": 10602,
+      "language": "python",
+      "symbols_count": 11
+    },
+    {
+      "path": "src/agentsgen/pack_engine.py",
+      "size": 37945,
+      "language": "python",
+      "symbols_count": 25
+    },
+    {
+      "path": "src/agentsgen/patch_engine.py",
+      "size": 10728,
+      "language": "python",
+      "symbols_count": 14
     },
     {
       "path": "src/agentsgen/presets/__init__.py",
@@ -880,16 +838,58 @@
       "symbols_count": 0
     },
     {
+      "path": "src/agentsgen/providers/__init__.py",
+      "size": 35,
+      "language": "python",
+      "symbols_count": 0
+    },
+    {
+      "path": "src/agentsgen/providers/anthropic.py",
+      "size": 1213,
+      "language": "python",
+      "symbols_count": 2
+    },
+    {
+      "path": "src/agentsgen/providers/openai.py",
+      "size": 1195,
+      "language": "python",
+      "symbols_count": 2
+    },
+    {
+      "path": "src/agentsgen/rabbithole_seed.py",
+      "size": 3494,
+      "language": "python",
+      "symbols_count": 4
+    },
+    {
+      "path": "src/agentsgen/reflect_sessions.py",
+      "size": 13816,
+      "language": "python",
+      "symbols_count": 14
+    },
+    {
+      "path": "src/agentsgen/reflect_skills.py",
+      "size": 8266,
+      "language": "python",
+      "symbols_count": 6
+    },
+    {
       "path": "src/agentsgen/render.py",
       "size": 507,
       "language": "python",
       "symbols_count": 3
     },
     {
-      "path": "src/agentsgen/shared_sections.py",
-      "size": 12303,
+      "path": "src/agentsgen/result_types.py",
+      "size": 2551,
       "language": "python",
-      "symbols_count": 8
+      "symbols_count": 9
+    },
+    {
+      "path": "src/agentsgen/shared_sections.py",
+      "size": 5265,
+      "language": "python",
+      "symbols_count": 6
     },
     {
       "path": "src/agentsgen/site_pack.py",
@@ -928,6 +928,12 @@
       "symbols_count": 2
     },
     {
+      "path": "src/agentsgen/task_loop.py",
+      "size": 15015,
+      "language": "python",
+      "symbols_count": 20
+    },
+    {
       "path": "src/agentsgen/templates.py",
       "size": 521,
       "language": "python",
@@ -941,9 +947,27 @@
     },
     {
       "path": "src/agentsgen/understand.py",
-      "size": 38814,
+      "size": 2154,
       "language": "python",
-      "symbols_count": 43
+      "symbols_count": 0
+    },
+    {
+      "path": "src/agentsgen/understand_ast.py",
+      "size": 9766,
+      "language": "python",
+      "symbols_count": 13
+    },
+    {
+      "path": "src/agentsgen/understand_context.py",
+      "size": 29323,
+      "language": "python",
+      "symbols_count": 30
+    },
+    {
+      "path": "src/agentsgen/validators.py",
+      "size": 6675,
+      "language": "python",
+      "symbols_count": 40
     },
     {
       "path": "tests/__init__.py",
@@ -1126,16 +1150,280 @@
       "symbols_count": 0
     },
     {
+      "path": "tests/golden/python_uv/AGENTS.md",
+      "size": 4080,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/python_uv/RUNBOOK.md",
+      "size": 694,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/python_uv/agents.entrypoints.json",
+      "size": 1122,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/repo/README_SNIPPETS.generated.md",
+      "size": 229,
+      "language": "markdown",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/aggregated_check.json",
+      "size": 8517,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/analysis_payload.json",
+      "size": 1365,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/cli_analyze_response.json",
+      "size": 2753,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/cli_meta_response.json",
+      "size": 2597,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/cli_pack_plan_response.json",
+      "size": 1313,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/cli_pack_response.json",
+      "size": 1179,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/cli_reflect_sessions_response.json",
+      "size": 3278,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/cli_reflect_skills_response.json",
+      "size": 2525,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/cli_task_response.json",
+      "size": 1333,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/cli_understand_response.json",
+      "size": 4014,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/detect_result.json",
+      "size": 1575,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/entrypoints.json",
+      "size": 1983,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/file_result.json",
+      "size": 536,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/fleet_scan_report.json",
+      "size": 3651,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/id_context.json",
+      "size": 4937,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/knowledge.json",
+      "size": 3956,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/llm_enhancement_result.json",
+      "size": 584,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/llm_options.json",
+      "size": 643,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/mcp_check_response.json",
+      "size": 10084,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/mcp_detect_response.json",
+      "size": 2213,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/mcp_init_response.json",
+      "size": 3698,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/mcp_pack_response.json",
+      "size": 1902,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/mcp_status_response.json",
+      "size": 3955,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/mcp_understand_response.json",
+      "size": 7635,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/mcp_update_response.json",
+      "size": 3537,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/metadata_payload.json",
+      "size": 1244,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/reflect_sessions_payload.json",
+      "size": 3751,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/reflect_signals_payload.json",
+      "size": 2754,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/reflect_skill_usage_payload.json",
+      "size": 3034,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/repo_status.json",
+      "size": 3042,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/task_contract.json",
+      "size": 834,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/task_evidence.json",
+      "size": 3751,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/task_verdict.json",
+      "size": 2181,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/understand_payload.json",
+      "size": 6127,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/golden/schemas/write_policy.json",
+      "size": 424,
+      "language": "json",
+      "symbols_count": 0
+    },
+    {
+      "path": "tests/test_actions_compat.py",
+      "size": 1976,
+      "language": "python",
+      "symbols_count": 4
+    },
+    {
       "path": "tests/test_analyze_cli.py",
-      "size": 3268,
+      "size": 3337,
       "language": "python",
       "symbols_count": 4
     },
     {
       "path": "tests/test_check_aggregate_cli.py",
-      "size": 3080,
+      "size": 4807,
+      "language": "python",
+      "symbols_count": 8
+    },
+    {
+      "path": "tests/test_cli_json_contracts.py",
+      "size": 10184,
+      "language": "python",
+      "symbols_count": 11
+    },
+    {
+      "path": "tests/test_command_checks.py",
+      "size": 3364,
       "language": "python",
       "symbols_count": 5
+    },
+    {
+      "path": "tests/test_contract_schema_snapshots.py",
+      "size": 637,
+      "language": "python",
+      "symbols_count": 2
+    },
+    {
+      "path": "tests/test_contract_validators.py",
+      "size": 24006,
+      "language": "python",
+      "symbols_count": 4
     },
     {
       "path": "tests/test_detect.py",
@@ -1144,20 +1432,56 @@
       "symbols_count": 6
     },
     {
-      "path": "tests/test_meta_cli.py",
-      "size": 3514,
+      "path": "tests/test_fleet_cli.py",
+      "size": 2832,
+      "language": "python",
+      "symbols_count": 5
+    },
+    {
+      "path": "tests/test_golden_outputs.py",
+      "size": 2655,
       "language": "python",
       "symbols_count": 4
     },
     {
+      "path": "tests/test_llm_enhance.py",
+      "size": 5189,
+      "language": "python",
+      "symbols_count": 11
+    },
+    {
+      "path": "tests/test_markers_property.py",
+      "size": 1358,
+      "language": "python",
+      "symbols_count": 3
+    },
+    {
+      "path": "tests/test_mcp_contracts.py",
+      "size": 6827,
+      "language": "python",
+      "symbols_count": 13
+    },
+    {
+      "path": "tests/test_meta_cli.py",
+      "size": 3583,
+      "language": "python",
+      "symbols_count": 4
+    },
+    {
+      "path": "tests/test_okf_cli.py",
+      "size": 3494,
+      "language": "python",
+      "symbols_count": 5
+    },
+    {
       "path": "tests/test_pack.py",
-      "size": 4530,
+      "size": 5174,
       "language": "python",
       "symbols_count": 5
     },
     {
       "path": "tests/test_pack_cli.py",
-      "size": 6463,
+      "size": 6543,
       "language": "python",
       "symbols_count": 11
     },
@@ -1168,6 +1492,24 @@
       "symbols_count": 3
     },
     {
+      "path": "tests/test_reflect_cli.py",
+      "size": 5429,
+      "language": "python",
+      "symbols_count": 3
+    },
+    {
+      "path": "tests/test_release_consistency.py",
+      "size": 1529,
+      "language": "python",
+      "symbols_count": 3
+    },
+    {
+      "path": "tests/test_smoke_runtime.py",
+      "size": 3452,
+      "language": "python",
+      "symbols_count": 4
+    },
+    {
       "path": "tests/test_snippets_cli.py",
       "size": 3058,
       "language": "python",
@@ -1175,9 +1517,15 @@
     },
     {
       "path": "tests/test_status_cli.py",
-      "size": 1414,
+      "size": 2547,
       "language": "python",
-      "symbols_count": 3
+      "symbols_count": 4
+    },
+    {
+      "path": "tests/test_task_cli.py",
+      "size": 6771,
+      "language": "python",
+      "symbols_count": 5
     },
     {
       "path": "tests/test_understand_cli.py",
@@ -1194,17 +1542,7 @@
     },
     {
       "from": "scripts/scan_repos.py",
-      "to": "src/agentsgen/actions.py",
-      "kind": "import"
-    },
-    {
-      "from": "scripts/scan_repos.py",
-      "to": "src/agentsgen/config.py",
-      "kind": "import"
-    },
-    {
-      "from": "scripts/scan_repos.py",
-      "to": "src/agentsgen/detect/__init__.py",
+      "to": "src/agentsgen/fleet.py",
       "kind": "import"
     },
     {
@@ -1229,52 +1567,12 @@
     },
     {
       "from": "src/agentsgen/actions.py",
+      "to": "src/agentsgen/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/actions.py",
       "to": "src/agentsgen/config.py",
-      "kind": "import"
-    },
-    {
-      "from": "src/agentsgen/actions.py",
-      "to": "src/agentsgen/constants.py",
-      "kind": "import"
-    },
-    {
-      "from": "src/agentsgen/actions.py",
-      "to": "src/agentsgen/detect/__init__.py",
-      "kind": "import"
-    },
-    {
-      "from": "src/agentsgen/actions.py",
-      "to": "src/agentsgen/generate.py",
-      "kind": "import"
-    },
-    {
-      "from": "src/agentsgen/actions.py",
-      "to": "src/agentsgen/io_utils.py",
-      "kind": "import"
-    },
-    {
-      "from": "src/agentsgen/actions.py",
-      "to": "src/agentsgen/markers.py",
-      "kind": "import"
-    },
-    {
-      "from": "src/agentsgen/actions.py",
-      "to": "src/agentsgen/model.py",
-      "kind": "import"
-    },
-    {
-      "from": "src/agentsgen/actions.py",
-      "to": "src/agentsgen/normalize.py",
-      "kind": "import"
-    },
-    {
-      "from": "src/agentsgen/actions.py",
-      "to": "src/agentsgen/render.py",
-      "kind": "import"
-    },
-    {
-      "from": "src/agentsgen/actions.py",
-      "to": "src/agentsgen/shared_sections.py",
       "kind": "import"
     },
     {
@@ -1283,73 +1581,263 @@
       "kind": "import"
     },
     {
-      "from": "src/agentsgen/actions.py",
-      "to": "src/agentsgen/templates.py",
+      "from": "src/agentsgen/analyze.py",
+      "to": "src/agentsgen/generated_artifacts.py",
       "kind": "import"
     },
     {
       "from": "src/agentsgen/analyze.py",
-      "to": "src/agentsgen/actions.py",
+      "to": "src/agentsgen/result_types.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/analyze.py",
+      "to": "src/agentsgen/validators.py",
       "kind": "import"
     },
     {
       "from": "src/agentsgen/cli.py",
+      "to": "src/agentsgen/cli_core.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli.py",
+      "to": "src/agentsgen/cli_extra.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli.py",
+      "to": "src/agentsgen/cli_fleet.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli.py",
+      "to": "src/agentsgen/cli_okf.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli.py",
+      "to": "src/agentsgen/cli_pack.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli.py",
+      "to": "src/agentsgen/cli_reflect.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli.py",
+      "to": "src/agentsgen/cli_task.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_core.py",
       "to": "src/agentsgen/__init__.py",
       "kind": "import"
     },
     {
-      "from": "src/agentsgen/cli.py",
+      "from": "src/agentsgen/cli_core.py",
       "to": "src/agentsgen/actions.py",
       "kind": "import"
     },
     {
-      "from": "src/agentsgen/cli.py",
-      "to": "src/agentsgen/analyze.py",
+      "from": "src/agentsgen/cli_core.py",
+      "to": "src/agentsgen/cli_support.py",
       "kind": "import"
     },
     {
-      "from": "src/agentsgen/cli.py",
+      "from": "src/agentsgen/cli_core.py",
       "to": "src/agentsgen/config.py",
       "kind": "import"
     },
     {
-      "from": "src/agentsgen/cli.py",
+      "from": "src/agentsgen/cli_core.py",
       "to": "src/agentsgen/constants.py",
       "kind": "import"
     },
     {
-      "from": "src/agentsgen/cli.py",
+      "from": "src/agentsgen/cli_core.py",
       "to": "src/agentsgen/detect/__init__.py",
       "kind": "import"
     },
     {
-      "from": "src/agentsgen/cli.py",
-      "to": "src/agentsgen/meta.py",
+      "from": "src/agentsgen/cli_core.py",
+      "to": "src/agentsgen/patch_engine.py",
       "kind": "import"
     },
     {
-      "from": "src/agentsgen/cli.py",
-      "to": "src/agentsgen/model.py",
-      "kind": "import"
-    },
-    {
-      "from": "src/agentsgen/cli.py",
+      "from": "src/agentsgen/cli_core.py",
       "to": "src/agentsgen/presets/__init__.py",
       "kind": "import"
     },
     {
-      "from": "src/agentsgen/cli.py",
+      "from": "src/agentsgen/cli_extra.py",
+      "to": "src/agentsgen/analyze.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_extra.py",
+      "to": "src/agentsgen/cli_support.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_extra.py",
+      "to": "src/agentsgen/detect/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_extra.py",
+      "to": "src/agentsgen/mcp_server.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_extra.py",
+      "to": "src/agentsgen/meta.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_extra.py",
+      "to": "src/agentsgen/rabbithole_seed.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_extra.py",
+      "to": "src/agentsgen/understand_context.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_extra.py",
+      "to": "src/agentsgen/validators.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_fleet.py",
+      "to": "src/agentsgen/cli_support.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_fleet.py",
+      "to": "src/agentsgen/fleet.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_okf.py",
+      "to": "src/agentsgen/cli_support.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_okf.py",
+      "to": "src/agentsgen/okf_export.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_pack.py",
+      "to": "src/agentsgen/actions.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_pack.py",
+      "to": "src/agentsgen/cli_support.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_pack.py",
+      "to": "src/agentsgen/config.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_pack.py",
+      "to": "src/agentsgen/constants.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_pack.py",
+      "to": "src/agentsgen/detect/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_pack.py",
+      "to": "src/agentsgen/pack_engine.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_pack.py",
+      "to": "src/agentsgen/validators.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_reflect.py",
+      "to": "src/agentsgen/cli_support.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_reflect.py",
+      "to": "src/agentsgen/reflect_sessions.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_reflect.py",
+      "to": "src/agentsgen/reflect_skills.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_reflect.py",
+      "to": "src/agentsgen/validators.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_support.py",
+      "to": "src/agentsgen/config.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_support.py",
+      "to": "src/agentsgen/detect/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_support.py",
+      "to": "src/agentsgen/pack_engine.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_support.py",
       "to": "src/agentsgen/stacks/__init__.py",
       "kind": "import"
     },
     {
-      "from": "src/agentsgen/cli.py",
+      "from": "src/agentsgen/cli_support.py",
       "to": "src/agentsgen/stacks/base.py",
       "kind": "import"
     },
     {
-      "from": "src/agentsgen/cli.py",
-      "to": "src/agentsgen/understand.py",
+      "from": "src/agentsgen/cli_task.py",
+      "to": "src/agentsgen/cli_support.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_task.py",
+      "to": "src/agentsgen/task_loop.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/cli_task.py",
+      "to": "src/agentsgen/validators.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/command_checks.py",
+      "to": "src/agentsgen/config.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/compat.py",
+      "to": "src/agentsgen/generated_artifacts.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/compat.py",
+      "to": "src/agentsgen/patch_engine.py",
       "kind": "import"
     },
     {
@@ -1365,6 +1853,26 @@
     {
       "from": "src/agentsgen/config.py",
       "to": "src/agentsgen/model.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/config.py",
+      "to": "src/agentsgen/validators.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/config_io.py",
+      "to": "src/agentsgen/config.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/config_io.py",
+      "to": "src/agentsgen/constants.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/config_io.py",
+      "to": "src/agentsgen/io_utils.py",
       "kind": "import"
     },
     {
@@ -1418,6 +1926,76 @@
       "kind": "import"
     },
     {
+      "from": "src/agentsgen/fleet.py",
+      "to": "src/agentsgen/actions.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/fleet.py",
+      "to": "src/agentsgen/config.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/fleet.py",
+      "to": "src/agentsgen/detect/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/fleet.py",
+      "to": "src/agentsgen/validators.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/flow_ops.py",
+      "to": "src/agentsgen/actions.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/flow_ops.py",
+      "to": "src/agentsgen/config.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/flow_ops.py",
+      "to": "src/agentsgen/detect/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/flow_ops.py",
+      "to": "src/agentsgen/llm.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/flow_ops.py",
+      "to": "src/agentsgen/pack_engine.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/flow_ops.py",
+      "to": "src/agentsgen/patch_engine.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/flow_ops.py",
+      "to": "src/agentsgen/presets/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/flow_ops.py",
+      "to": "src/agentsgen/result_types.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/flow_ops.py",
+      "to": "src/agentsgen/stacks/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/flow_ops.py",
+      "to": "src/agentsgen/stacks/base.py",
+      "kind": "import"
+    },
+    {
       "from": "src/agentsgen/generate.py",
       "to": "src/agentsgen/model.py",
       "kind": "import"
@@ -1428,13 +2006,73 @@
       "kind": "import"
     },
     {
+      "from": "src/agentsgen/generated_artifacts.py",
+      "to": "src/agentsgen/io_utils.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/generated_artifacts.py",
+      "to": "src/agentsgen/patch_engine.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/generated_artifacts.py",
+      "to": "src/agentsgen/result_types.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/llm.py",
+      "to": "src/agentsgen/providers/anthropic.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/llm.py",
+      "to": "src/agentsgen/providers/openai.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/llm.py",
+      "to": "src/agentsgen/understand_context.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/llm.py",
+      "to": "src/agentsgen/validators.py",
+      "kind": "import"
+    },
+    {
       "from": "src/agentsgen/markers.py",
       "to": "src/agentsgen/constants.py",
       "kind": "import"
     },
     {
-      "from": "src/agentsgen/meta.py",
+      "from": "src/agentsgen/mcp_server.py",
       "to": "src/agentsgen/actions.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/mcp_server.py",
+      "to": "src/agentsgen/detect/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/mcp_server.py",
+      "to": "src/agentsgen/flow_ops.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/mcp_server.py",
+      "to": "src/agentsgen/llm.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/mcp_server.py",
+      "to": "src/agentsgen/understand_context.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/mcp_server.py",
+      "to": "src/agentsgen/validators.py",
       "kind": "import"
     },
     {
@@ -1443,8 +2081,253 @@
       "kind": "import"
     },
     {
+      "from": "src/agentsgen/meta.py",
+      "to": "src/agentsgen/generated_artifacts.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/meta.py",
+      "to": "src/agentsgen/result_types.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/meta.py",
+      "to": "src/agentsgen/validators.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/okf_export.py",
+      "to": "src/agentsgen/config.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/okf_export.py",
+      "to": "src/agentsgen/config_io.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/okf_export.py",
+      "to": "src/agentsgen/detect/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/okf_export.py",
+      "to": "src/agentsgen/io_utils.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/okf_export.py",
+      "to": "src/agentsgen/normalize.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/okf_export.py",
+      "to": "src/agentsgen/patch_engine.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/okf_export.py",
+      "to": "src/agentsgen/result_types.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/pack_engine.py",
+      "to": "src/agentsgen/command_checks.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/pack_engine.py",
+      "to": "src/agentsgen/config.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/pack_engine.py",
+      "to": "src/agentsgen/config_io.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/pack_engine.py",
+      "to": "src/agentsgen/constants.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/pack_engine.py",
+      "to": "src/agentsgen/detect/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/pack_engine.py",
+      "to": "src/agentsgen/generate.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/pack_engine.py",
+      "to": "src/agentsgen/generated_artifacts.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/pack_engine.py",
+      "to": "src/agentsgen/io_utils.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/pack_engine.py",
+      "to": "src/agentsgen/markers.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/pack_engine.py",
+      "to": "src/agentsgen/normalize.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/pack_engine.py",
+      "to": "src/agentsgen/patch_engine.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/pack_engine.py",
+      "to": "src/agentsgen/render.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/pack_engine.py",
+      "to": "src/agentsgen/result_types.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/pack_engine.py",
+      "to": "src/agentsgen/site_pack.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/pack_engine.py",
+      "to": "src/agentsgen/templates.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/pack_engine.py",
+      "to": "src/agentsgen/validators.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/patch_engine.py",
+      "to": "src/agentsgen/config.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/patch_engine.py",
+      "to": "src/agentsgen/config_io.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/patch_engine.py",
+      "to": "src/agentsgen/constants.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/patch_engine.py",
+      "to": "src/agentsgen/generate.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/patch_engine.py",
+      "to": "src/agentsgen/io_utils.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/patch_engine.py",
+      "to": "src/agentsgen/llm.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/patch_engine.py",
+      "to": "src/agentsgen/markers.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/patch_engine.py",
+      "to": "src/agentsgen/model.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/patch_engine.py",
+      "to": "src/agentsgen/normalize.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/patch_engine.py",
+      "to": "src/agentsgen/result_types.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/patch_engine.py",
+      "to": "src/agentsgen/shared_sections.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/patch_engine.py",
+      "to": "src/agentsgen/templates.py",
+      "kind": "import"
+    },
+    {
       "from": "src/agentsgen/presets/__init__.py",
       "to": "src/agentsgen/config.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/providers/anthropic.py",
+      "to": "src/agentsgen/llm.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/providers/openai.py",
+      "to": "src/agentsgen/llm.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/reflect_sessions.py",
+      "to": "src/agentsgen/generated_artifacts.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/reflect_sessions.py",
+      "to": "src/agentsgen/io_utils.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/reflect_sessions.py",
+      "to": "src/agentsgen/patch_engine.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/reflect_sessions.py",
+      "to": "src/agentsgen/result_types.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/reflect_sessions.py",
+      "to": "src/agentsgen/validators.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/reflect_skills.py",
+      "to": "src/agentsgen/generated_artifacts.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/reflect_skills.py",
+      "to": "src/agentsgen/reflect_sessions.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/reflect_skills.py",
+      "to": "src/agentsgen/result_types.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/reflect_skills.py",
+      "to": "src/agentsgen/validators.py",
       "kind": "import"
     },
     {
@@ -1503,28 +2386,93 @@
       "kind": "import"
     },
     {
-      "from": "src/agentsgen/understand.py",
-      "to": "src/agentsgen/actions.py",
+      "from": "src/agentsgen/task_loop.py",
+      "to": "src/agentsgen/generated_artifacts.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/task_loop.py",
+      "to": "src/agentsgen/patch_engine.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/task_loop.py",
+      "to": "src/agentsgen/result_types.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/task_loop.py",
+      "to": "src/agentsgen/validators.py",
       "kind": "import"
     },
     {
       "from": "src/agentsgen/understand.py",
-      "to": "src/agentsgen/detect/__init__.py",
+      "to": "src/agentsgen/__init__.py",
       "kind": "import"
     },
     {
-      "from": "src/agentsgen/understand.py",
+      "from": "src/agentsgen/understand_ast.py",
       "to": "src/agentsgen/io_utils.py",
       "kind": "import"
     },
     {
-      "from": "src/agentsgen/understand.py",
+      "from": "src/agentsgen/understand_context.py",
+      "to": "src/agentsgen/detect/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/understand_context.py",
+      "to": "src/agentsgen/io_utils.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/understand_context.py",
       "to": "src/agentsgen/markers.py",
       "kind": "import"
     },
     {
-      "from": "src/agentsgen/understand.py",
+      "from": "src/agentsgen/understand_context.py",
       "to": "src/agentsgen/normalize.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/understand_context.py",
+      "to": "src/agentsgen/patch_engine.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/understand_context.py",
+      "to": "src/agentsgen/result_types.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/understand_context.py",
+      "to": "src/agentsgen/understand_ast.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/understand_context.py",
+      "to": "src/agentsgen/validators.py",
+      "kind": "import"
+    },
+    {
+      "from": "src/agentsgen/validators.py",
+      "to": "src/agentsgen/contracts.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_actions_compat.py",
+      "to": "src/agentsgen/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_actions_compat.py",
+      "to": "src/agentsgen/config.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_actions_compat.py",
+      "to": "src/agentsgen/detect/__init__.py",
       "kind": "import"
     },
     {
@@ -1543,8 +2491,108 @@
       "kind": "import"
     },
     {
+      "from": "tests/test_cli_json_contracts.py",
+      "to": "src/agentsgen/cli.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_cli_json_contracts.py",
+      "to": "src/agentsgen/cli_extra.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_cli_json_contracts.py",
+      "to": "src/agentsgen/result_types.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_cli_json_contracts.py",
+      "to": "src/agentsgen/validators.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_command_checks.py",
+      "to": "src/agentsgen/cli.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_command_checks.py",
+      "to": "src/agentsgen/command_checks.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_command_checks.py",
+      "to": "src/agentsgen/config.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_command_checks.py",
+      "to": "src/agentsgen/model.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_contract_schema_snapshots.py",
+      "to": "src/agentsgen/contracts.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_contract_validators.py",
+      "to": "src/agentsgen/contracts.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_contract_validators.py",
+      "to": "src/agentsgen/validators.py",
+      "kind": "import"
+    },
+    {
       "from": "tests/test_detect.py",
       "to": "src/agentsgen/detect/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_fleet_cli.py",
+      "to": "src/agentsgen/cli.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_fleet_cli.py",
+      "to": "src/agentsgen/validators.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_golden_outputs.py",
+      "to": "src/agentsgen/cli.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_llm_enhance.py",
+      "to": "src/agentsgen/cli.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_llm_enhance.py",
+      "to": "src/agentsgen/llm.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_markers_property.py",
+      "to": "src/agentsgen/markers.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_mcp_contracts.py",
+      "to": "src/agentsgen/llm.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_mcp_contracts.py",
+      "to": "src/agentsgen/mcp_server.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_mcp_contracts.py",
+      "to": "src/agentsgen/validators.py",
       "kind": "import"
     },
     {
@@ -1559,6 +2607,11 @@
     },
     {
       "from": "tests/test_meta_cli.py",
+      "to": "src/agentsgen/cli.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_okf_cli.py",
       "to": "src/agentsgen/cli.py",
       "kind": "import"
     },
@@ -1593,6 +2646,36 @@
       "kind": "import"
     },
     {
+      "from": "tests/test_reflect_cli.py",
+      "to": "src/agentsgen/cli.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_reflect_cli.py",
+      "to": "src/agentsgen/validators.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_release_consistency.py",
+      "to": "src/agentsgen/__init__.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_smoke_runtime.py",
+      "to": "src/agentsgen/actions.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_smoke_runtime.py",
+      "to": "src/agentsgen/config.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_smoke_runtime.py",
+      "to": "src/agentsgen/model.py",
+      "kind": "import"
+    },
+    {
       "from": "tests/test_snippets_cli.py",
       "to": "src/agentsgen/cli.py",
       "kind": "import"
@@ -1605,6 +2688,11 @@
     {
       "from": "tests/test_status_cli.py",
       "to": "src/agentsgen/constants.py",
+      "kind": "import"
+    },
+    {
+      "from": "tests/test_task_cli.py",
+      "to": "src/agentsgen/cli.py",
       "kind": "import"
     },
     {
@@ -1631,115 +2719,26 @@
     }
   ],
   "changed_files": [
-    ".github/workflows/set.yml",
-    "agents.knowledge.json",
-    "docs/ai/repomap.compact.md"
+    ".github/workflows/agentsgen-guard.example.yml"
   ],
   "entrypoint_files": [],
   "slice": {
-    "focus": "understand",
-    "focus_matches": [
-      ".github/workflows/set.yml",
-      "CONTRIBUTING_AI.md",
-      "README.md",
-      "docs/ai/repomap.compact.md",
-      "drafts/abvx-ecosystem.md",
-      "drafts/tool-contract.md",
-      "src/agentsgen/cli.py",
-      "src/agentsgen/understand.py",
-      "tests/test_understand_cli.py"
-    ],
+    "focus": null,
+    "focus_matches": [],
     "changed_only": false,
     "changed_matches": [
-      ".github/workflows/set.yml",
-      "docs/ai/repomap.compact.md"
+      ".github/workflows/agentsgen-guard.example.yml"
     ]
   },
   "relevance": [
     {
-      "path": "src/agentsgen/cli.py",
-      "score": 85,
+      "path": "src/agentsgen/validators.py",
+      "score": 73,
       "signals": [
-        "focus:understand",
-        "inbound:9",
-        "outbound:12",
-        "symbols:26",
-        "size:35850"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": false,
-      "entrypoint": false
-    },
-    {
-      "path": "docs/ai/repomap.compact.md",
-      "score": 71,
-      "signals": [
-        "focus:understand",
-        "git-changed",
-        "size:1923"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
-      "entrypoint": false
-    },
-    {
-      "path": ".github/workflows/set.yml",
-      "score": 70,
-      "signals": [
-        "focus:understand",
-        "git-changed"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": true,
-      "entrypoint": false
-    },
-    {
-      "path": "src/agentsgen/understand.py",
-      "score": 61,
-      "signals": [
-        "focus:understand",
-        "inbound:1",
-        "outbound:5",
-        "symbols:43",
-        "size:38814"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": false,
-      "entrypoint": false
-    },
-    {
-      "path": "tests/test_understand_cli.py",
-      "score": 55,
-      "signals": [
-        "focus:understand",
+        "inbound:20",
         "outbound:1",
-        "symbols:8",
-        "size:11436"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": false,
-      "entrypoint": false
-    },
-    {
-      "path": "src/agentsgen/actions.py",
-      "score": 54,
-      "signals": [
-        "focus-neighbor",
-        "inbound:8",
-        "outbound:12",
-        "symbols:45",
-        "size:42282"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": false,
-      "entrypoint": false
-    },
-    {
-      "path": "README.md",
-      "score": 46,
-      "signals": [
-        "focus:understand",
-        "size:13106"
+        "symbols:40",
+        "size:6675"
       ],
       "distance_from_entrypoint": null,
       "changed": false,
@@ -1747,13 +2746,74 @@
     },
     {
       "path": "src/agentsgen/config.py",
-      "score": 46,
+      "score": 68,
       "signals": [
-        "focus-neighbor",
-        "inbound:6",
-        "outbound:3",
+        "inbound:17",
+        "outbound:4",
         "symbols:8",
-        "size:8755"
+        "size:8926"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/cli.py",
+      "score": 57,
+      "signals": [
+        "inbound:17",
+        "outbound:7",
+        "symbols:1",
+        "size:1554"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/patch_engine.py",
+      "score": 45,
+      "signals": [
+        "inbound:9",
+        "outbound:12",
+        "symbols:14",
+        "size:10728"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/result_types.py",
+      "score": 45,
+      "signals": [
+        "inbound:12",
+        "symbols:9",
+        "size:2551"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/detect/__init__.py",
+      "score": 41,
+      "signals": [
+        "inbound:13",
+        "outbound:2"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/cli_support.py",
+      "score": 37,
+      "signals": [
+        "inbound:7",
+        "outbound:5",
+        "symbols:12",
+        "size:6676"
       ],
       "distance_from_entrypoint": null,
       "changed": false,
@@ -1761,10 +2821,9 @@
     },
     {
       "path": "src/agentsgen/model.py",
-      "score": 46,
+      "score": 37,
       "signals": [
-        "focus-neighbor",
-        "inbound:9",
+        "inbound:10",
         "symbols:5",
         "size:3187"
       ],
@@ -1773,32 +2832,73 @@
       "entrypoint": false
     },
     {
-      "path": "drafts/abvx-ecosystem.md",
-      "score": 43,
+      "path": "src/agentsgen/llm.py",
+      "score": 36,
       "signals": [
-        "focus:understand",
-        "size:5702"
+        "inbound:7",
+        "outbound:4",
+        "symbols:14",
+        "size:4715"
       ],
       "distance_from_entrypoint": null,
       "changed": false,
       "entrypoint": false
     },
     {
-      "path": "drafts/tool-contract.md",
-      "score": 42,
+      "path": "src/agentsgen/actions.py",
+      "score": 33,
       "signals": [
-        "focus:understand",
-        "size:3923"
+        "inbound:9",
+        "outbound:3",
+        "symbols:2",
+        "size:1688"
       ],
       "distance_from_entrypoint": null,
       "changed": false,
       "entrypoint": false
     },
     {
-      "path": "CONTRIBUTING_AI.md",
-      "score": 40,
+      "path": ".github/workflows/agentsgen-guard.example.yml",
+      "score": 30,
       "signals": [
-        "focus:understand"
+        "git-changed"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": true,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/io_utils.py",
+      "score": 28,
+      "signals": [
+        "inbound:8",
+        "symbols:4"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/pack_engine.py",
+      "score": 27,
+      "signals": [
+        "inbound:3",
+        "outbound:16",
+        "symbols:25",
+        "size:37945"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/understand_context.py",
+      "score": 27,
+      "signals": [
+        "inbound:3",
+        "outbound:8",
+        "symbols:30",
+        "size:29323"
       ],
       "distance_from_entrypoint": null,
       "changed": false,
@@ -1806,52 +2906,12 @@
     },
     {
       "path": "src/agentsgen/analyze.py",
-      "score": 36,
+      "score": 26,
       "signals": [
-        "focus-neighbor",
         "inbound:3",
-        "outbound:1",
+        "outbound:3",
         "symbols:21",
-        "size:11539"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": false,
-      "entrypoint": false
-    },
-    {
-      "path": "src/agentsgen/detect/__init__.py",
-      "score": 32,
-      "signals": [
-        "focus-neighbor",
-        "inbound:6",
-        "outbound:2"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": false,
-      "entrypoint": false
-    },
-    {
-      "path": "src/agentsgen/stacks/base.py",
-      "score": 31,
-      "signals": [
-        "focus-neighbor",
-        "inbound:5",
-        "outbound:1",
-        "symbols:3"
-      ],
-      "distance_from_entrypoint": null,
-      "changed": false,
-      "entrypoint": false
-    },
-    {
-      "path": "src/agentsgen/markers.py",
-      "score": 30,
-      "signals": [
-        "focus-neighbor",
-        "inbound:2",
-        "outbound:1",
-        "symbols:8",
-        "size:4835"
+        "size:11671"
       ],
       "distance_from_entrypoint": null,
       "changed": false,
@@ -1859,10 +2919,9 @@
     },
     {
       "path": "src/agentsgen/constants.py",
-      "score": 29,
+      "score": 26,
       "signals": [
-        "focus-neighbor",
-        "inbound:5",
+        "inbound:8",
         "symbols:2"
       ],
       "distance_from_entrypoint": null,
@@ -1870,13 +2929,13 @@
       "entrypoint": false
     },
     {
-      "path": "tests/test_pack_cli.py",
+      "path": "src/agentsgen/generated_artifacts.py",
       "score": 26,
       "signals": [
-        "focus-neighbor",
-        "outbound:2",
-        "symbols:11",
-        "size:6463"
+        "inbound:7",
+        "outbound:3",
+        "symbols:1",
+        "size:1546"
       ],
       "distance_from_entrypoint": null,
       "changed": false,
@@ -1886,22 +2945,33 @@
       "path": "src/agentsgen/__init__.py",
       "score": 24,
       "signals": [
-        "focus-neighbor",
-        "inbound:4"
+        "inbound:8"
       ],
       "distance_from_entrypoint": null,
       "changed": false,
       "entrypoint": false
     },
     {
-      "path": "src/agentsgen/meta.py",
-      "score": 23,
+      "path": "src/agentsgen/markers.py",
+      "score": 24,
       "signals": [
-        "focus-neighbor",
-        "inbound:1",
-        "outbound:2",
-        "symbols:4",
-        "size:3394"
+        "inbound:4",
+        "outbound:1",
+        "symbols:8",
+        "size:4835"
+      ],
+      "distance_from_entrypoint": null,
+      "changed": false,
+      "entrypoint": false
+    },
+    {
+      "path": "src/agentsgen/mcp_server.py",
+      "score": 24,
+      "signals": [
+        "inbound:2",
+        "outbound:6",
+        "symbols:20",
+        "size:11580"
       ],
       "distance_from_entrypoint": null,
       "changed": false,

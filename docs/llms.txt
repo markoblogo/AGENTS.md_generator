@@ -46,9 +46,10 @@ Delivery concept:
   discipline.
 
 Companion layers:
-- SET orchestrates agentsgen in CI and registry workflows: https://github.com/markoblogo/SET
-- ID carries portable human/operator context: https://github.com/markoblogo/ID
-- ABVX Agent Skills provides reusable agent workflows: https://github.com/markoblogo/abvx-agent-skills
+- SET 0.4.0 orchestrates agentsgen in reviewable workflows: https://github.com/markoblogo/SET
+- ID 0.5.2 carries portable human/operator context: https://github.com/markoblogo/ID
+- ABVX Agent Skills 0.15.0 provides reusable agent workflows: https://github.com/markoblogo/abvx-agent-skills
+- Git Tweet publishes completed GitHub Releases downstream: https://github.com/markoblogo/git-tweet
 - ABVX Lab presents the public stack: https://lab.abvx.xyz/
 
 Safety model:

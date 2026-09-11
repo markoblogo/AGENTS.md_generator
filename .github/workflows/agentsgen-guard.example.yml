@@ -12,10 +12,10 @@ jobs:
   guard:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
 
       - name: AGENTS docs guard
-        uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@main
+        uses: ./.github/actions/agentsgen-guard
         with:
           path: "."
           files: "AGENTS.md,RUNBOOK.md"

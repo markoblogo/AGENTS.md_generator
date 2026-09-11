@@ -4,19 +4,21 @@
   "results": [
     {
       "demo": "handwritten",
-      "seconds": 0.146,
+      "seconds": 0.377,
       "original_sha256": "9cf6eb7adc15d2ef64a7f8cb75c87ad7156b881cc7861fa72a442713af352fd9",
       "preserved": true
     },
     {
       "demo": "stale-command",
-      "seconds": 0.294,
+      "seconds": 0.274,
       "valid_exit": 0,
       "deleted_script_exit": 1
     },
     {
       "demo": "clean-start",
-      "seconds": 0.55,
+      "seconds": 0.475,
+      "agents_md_lines": 124,
+      "agents_md_bytes": 3877,
       "second_fix_changed_files": 0,
       "full_check_exit": 0
     }
