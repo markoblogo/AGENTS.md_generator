@@ -180,9 +180,13 @@
               "type": "string"
             },
             "type": "array"
+          },
+          "primary_human_bootstrap": {
+            "type": "string"
           }
         },
         "required": [
+          "primary_human_bootstrap",
           "preferred_inputs",
           "preferred_human_bootstrap",
           "notes"

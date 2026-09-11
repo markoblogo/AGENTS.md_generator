@@ -447,6 +447,7 @@ def _pack_id_context_json(target: Path, cfg: ToolConfig, *, autodetect: bool) ->
             },
         },
         "usage": {
+            "primary_human_bootstrap": "profiles/<owner>/soul.md",
             "preferred_inputs": [
                 AGENTS_FILENAME,
                 RUNBOOK_FILENAME,
@@ -465,7 +466,7 @@ def _pack_id_context_json(target: Path, cfg: ToolConfig, *, autodetect: bool) ->
                 "Use this manifest as the repo-local companion to an ID profile; it does not replace human-owned ID artifacts.",
                 "AGENTS.md Generator owns repo context, while ID owns portable person and policy context.",
                 "SET can route both layers together, but this manifest is useful even without SET.",
-                "If an ID profile is available, start with soul.md as the fast human bootstrap layer, then expand to profile.core.md and handshake.md when needed.",
+                "If an ID profile is available, load the primary soul.md first; expand to profile.core.md and handshake.md only when the task requires them.",
             ],
         },
     }

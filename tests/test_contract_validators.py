@@ -196,6 +196,7 @@ def test_validate_other_payloads_accept_minimal_shapes() -> None:
                 },
             },
             "usage": {
+                "primary_human_bootstrap": "profiles/<owner>/soul.md",
                 "preferred_inputs": [],
                 "preferred_human_bootstrap": [
                     "profiles/<owner>/soul.md",

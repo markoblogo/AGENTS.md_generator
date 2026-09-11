@@ -37,11 +37,11 @@ jobs:
           fi
           echo "tag=$tag" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v7
         with:
           ref: ${{ steps.ref.outputs.tag }}
 
-      - uses: actions/setup-python@v6
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.11"
 
@@ -68,10 +68,15 @@ jobs:
           pytest -q
           agentsgen check . --all --ci
 
-      - name: Build package
+      - name: Download reviewed release artifacts
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
-          python -m pip install --upgrade pip build twine
-          python -m build
+          mkdir -p dist
+          gh release download "${{ steps.ref.outputs.tag }}" --dir dist --pattern '*.whl' --pattern '*.tar.gz'
+          test "$(find dist -maxdepth 1 -name '*.whl' | wc -l | tr -d ' ')" = "1"
+          test "$(find dist -maxdepth 1 -name '*.tar.gz' | wc -l | tr -d ' ')" = "1"
+          python -m pip install --upgrade twine
           twine check dist/*
 
       - name: Verify installed wheel

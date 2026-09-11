@@ -1,7 +1,7 @@
 {
   "version": 1,
   "generated_by": "agentsgen",
-  "generated_at": "2026-06-13T15:35:05Z",
+  "generated_at": "2026-09-11T16:37:14Z",
   "repo": {
     "name": "AGENTS.md Generator",
     "path": ".",
@@ -40,6 +40,7 @@
     }
   },
   "usage": {
+    "primary_human_bootstrap": "profiles/<owner>/soul.md",
     "preferred_inputs": [
       "AGENTS.md",
       "RUNBOOK.md",
@@ -58,7 +59,7 @@
       "Use this manifest as the repo-local companion to an ID profile; it does not replace human-owned ID artifacts.",
       "AGENTS.md Generator owns repo context, while ID owns portable person and policy context.",
       "SET can route both layers together, but this manifest is useful even without SET.",
-      "If an ID profile is available, start with soul.md as the fast human bootstrap layer, then expand to profile.core.md and handshake.md when needed."
+      "If an ID profile is available, load the primary soul.md first; expand to profile.core.md and handshake.md only when the task requires them."
     ]
   }
 }

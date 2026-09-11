@@ -303,11 +303,17 @@ ID_CONTEXT_SCHEMA = _named(
             ),
             "usage": _object(
                 properties={
+                    "primary_human_bootstrap": _string(),
                     "preferred_inputs": _array(_string()),
                     "preferred_human_bootstrap": _array(_string()),
                     "notes": _array(_string()),
                 },
-                required=["preferred_inputs", "preferred_human_bootstrap", "notes"],
+                required=[
+                    "primary_human_bootstrap",
+                    "preferred_inputs",
+                    "preferred_human_bootstrap",
+                    "notes",
+                ],
             ),
         },
         required=[

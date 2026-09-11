@@ -16,11 +16,11 @@ resource: "agents.entrypoints.json"
 Rendered from `agents.entrypoints.json`.
 
 # Commands
-| ID | Title | Command | Source | |
+| ID | Title | Command | Source |
 | --- | --- | --- | --- |
 | `test` | Test | `make test` | config |
 | `lint` | Lint | `make lint` | config |
 | `format` | Format | `make format` | config |
 
 # Citations
-* [Repo entrypoints manifest](../agents.entrypoints.json)
+* [Repo entrypoints manifest](../../../../agents.entrypoints.json)

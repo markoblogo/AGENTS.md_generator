@@ -118,10 +118,10 @@ def _repo_overview_body(target: Path, cfg: ToolConfig, source_dir: Path) -> str:
     ]
     for name in available_docs:
         target_rel = {
-            "architecture.md": "/repo/architecture.md",
-            "how-to-run.md": "/repo/runbook.md",
-            "how-to-test.md": "/repo/test-flow.md",
-            "data-contracts.md": "/repo/contracts.md",
+            "architecture.md": "architecture.md",
+            "how-to-run.md": "runbook.md",
+            "how-to-test.md": "test-flow.md",
+            "data-contracts.md": "contracts.md",
         }[name]
         lines.append(f"* [{name}]({target_rel})")
     lines.extend(["", "# Commands"])
@@ -133,8 +133,8 @@ def _repo_overview_body(target: Path, cfg: ToolConfig, source_dir: Path) -> str:
         [
             "",
             "# Links",
-            "* [Command Surface](/assets/entrypoints.md)",
-            f"* Repo root: `{target.resolve()}`",
+            "* [Command Surface](../assets/entrypoints.md)",
+            "* Repo root: `.`",
         ]
     )
     return "\n".join(lines)
@@ -144,8 +144,7 @@ def _entrypoints_body(target: Path) -> str:
     manifest_path = target / "agents.entrypoints.json"
     if not manifest_path.is_file():
         return (
-            "# Summary\n"
-            "No `agents.entrypoints.json` file was found at export time.\n"
+            "# Summary\nNo `agents.entrypoints.json` file was found at export time.\n"
         )
 
     payload = read_json(manifest_path)
@@ -161,7 +160,7 @@ def _entrypoints_body(target: Path) -> str:
     else:
         lines.extend(
             [
-                "| ID | Title | Command | Source | |",
+                "| ID | Title | Command | Source |",
                 "| --- | --- | --- | --- |",
             ]
         )
@@ -179,7 +178,7 @@ def _entrypoints_body(target: Path) -> str:
         [
             "",
             "# Citations",
-            "* [Repo entrypoints manifest](../agents.entrypoints.json)",
+            "* [Repo entrypoints manifest](../../../../agents.entrypoints.json)",
         ]
     )
     return "\n".join(lines)

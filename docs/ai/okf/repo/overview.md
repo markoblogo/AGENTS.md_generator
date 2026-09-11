@@ -15,10 +15,10 @@ kind: "overview"
 Primary stack: `python`.
 
 # Exported sources
-* [architecture.md](/repo/architecture.md)
-* [how-to-run.md](/repo/runbook.md)
-* [how-to-test.md](/repo/test-flow.md)
-* [data-contracts.md](/repo/contracts.md)
+* [architecture.md](architecture.md)
+* [how-to-run.md](runbook.md)
+* [how-to-test.md](test-flow.md)
+* [data-contracts.md](contracts.md)
 
 # Commands
 * `test`: `make test`
@@ -26,5 +26,5 @@ Primary stack: `python`.
 * `format`: `make format`
 
 # Links
-* [Command Surface](/assets/entrypoints.md)
-* Repo root: `/Users/antonbiletskiy-volokh/Documents/Codex/2026-06-13/plannotator-effective-html-https-github-com/work/AGENTS.md_generator`
+* [Command Surface](../assets/entrypoints.md)
+* Repo root: `.`

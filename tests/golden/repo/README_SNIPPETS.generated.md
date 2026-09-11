@@ -10,5 +10,5 @@ This file is generated from README.md snippet markers. Do not edit by hand.
 Source: README.md (snippet: install)
 
 ```sh
-pipx install agentsgen
+uv tool install agentsgen
 ```

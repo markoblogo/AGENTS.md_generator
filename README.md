@@ -8,12 +8,14 @@ Generate repo instructions, preserve handwritten rules, and catch stale command 
 
 ## Start in one minute
 
-Requires Python 3.11+ and [pipx](https://pipx.pypa.io/stable/installation/).
+Requires Python 3.11+. Install it as an isolated CLI with
+[uv](https://docs.astral.sh/uv/) (recommended) or
+[pipx](https://pipx.pypa.io/stable/installation/).
 Run inside your repository:
 
 <!-- AGENTSGEN:SNIPPET name=install -->
 ```sh
-pipx install agentsgen
+uv tool install agentsgen
 ```
 <!-- AGENTSGEN:ENDSNIPPET -->
 
@@ -25,6 +27,8 @@ agentsgen check . --ci
 Creates `.agentsgen.json`, `AGENTS.md`, and `RUNBOOK.md` (plus starter prompts).
 Review the detected commands in `.agentsgen.json` before committing.
 No API key is required for these commands.
+
+Prefer pipx? Run `pipx install agentsgen`.
 
 Already have handwritten instructions? The original stays unchanged and proposals
 appear in `AGENTS.generated.md` / `RUNBOOK.generated.md`. Review and copy the
@@ -69,8 +73,8 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
-      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.5.0
+      - uses: actions/checkout@v7
+      - uses: markoblogo/AGENTS.md_generator/.github/actions/agentsgen-guard@v0.5.1
 ```
 
 For immutable dependencies, pin the action to the reviewed release commit SHA.
@@ -101,16 +105,20 @@ reported as **not verified**. Existence does not prove that a command succeeds.
 Run your actual tests separately. `check --format json` includes warning details.
 The readiness score is a heuristic, not a measure of AI task quality.
 
-## Use alone or with SET
+## ABVX ecosystem
 
 **One repository:** install agentsgen directly; SET is optional.
 **Workflow orchestration:** [SET](https://github.com/markoblogo/SET) adds presets,
 repo-local planning configuration, and reviewable workflow exports.
-The supported release pair is **agentsgen 0.5.0 + SET 0.3.0**.
-See the [integration guide](docs/set-integration.md).
+The tested stack is **agentsgen 0.5.1 + SET 0.4.0 + ID 0.5.2**.
+See the [SET guide](docs/set-integration.md) and
+[ecosystem integration guide](docs/ecosystem-integrations.md).
 
 [abvx-agent-skills](https://github.com/markoblogo/abvx-agent-skills) supplies reusable
 workflows; it is not installed or required by this CLI.
+[ID](https://github.com/markoblogo/ID) supplies portable human context, with
+`docs/ai/id-context.json` as the explicit bridge. [Git Tweet](https://github.com/markoblogo/git-tweet)
+can publish a completed GitHub Release downstream; it is not part of generation or CI.
 
 ## Documentation and contributions
 

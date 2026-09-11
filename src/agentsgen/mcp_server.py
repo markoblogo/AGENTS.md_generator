@@ -278,15 +278,26 @@ def build_mcp_pack_response(
     return _json_safe(payload)
 
 
-def serve_stdio() -> None:
+def _load_mcp_server_class():
     try:
-        from mcp.server.fastmcp import FastMCP
-    except Exception as exc:  # pragma: no cover - optional dependency
-        raise RuntimeError(
-            "MCP support requires the optional dependency group: pip install '.[mcp]'"
-        ) from exc
+        from mcp.server import MCPServer
 
-    server = FastMCP("agentsgen")
+        return MCPServer
+    except ImportError:
+        try:
+            from mcp.server.fastmcp import FastMCP
+
+            return FastMCP
+        except ImportError as exc:  # pragma: no cover - optional dependency
+            raise RuntimeError(
+                "MCP support requires the optional dependency group: pip install '.[mcp]'"
+            ) from exc
+
+
+def serve_stdio() -> None:
+    server_class = _load_mcp_server_class()
+
+    server = server_class("agentsgen")
 
     @server.tool()
     def status(path: str = ".") -> dict[str, object]:

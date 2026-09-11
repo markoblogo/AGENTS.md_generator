@@ -204,19 +204,19 @@ def render_runbook_md(info: ProjectInfo, template_path: Path) -> str:
         [
             "- Run tests: "
             + (
-                f"`{c.get('test','').strip()}`"
+                f"`{c.get('test', '').strip()}`"
                 if c.get("test", "").strip()
                 else "(not set)"
             ),
             "- Lint: "
             + (
-                f"`{c.get('lint','').strip()}`"
+                f"`{c.get('lint', '').strip()}`"
                 if c.get("lint", "").strip()
                 else "(not set)"
             ),
             "- Build: "
             + (
-                f"`{c.get('build','').strip()}`"
+                f"`{c.get('build', '').strip()}`"
                 if c.get("build", "").strip()
                 else "(not set)"
             ),

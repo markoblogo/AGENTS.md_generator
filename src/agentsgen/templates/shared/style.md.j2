@@ -1,31 +1,10 @@
 {% set stack = project.primary_stack|default("unknown") %}
 
-### Style & conventions ({{ stack }})
+### Style ({{ stack }})
 
-#### 1) Follow the repo
-- Match existing naming, structure, and patterns.
-- Don’t introduce new abstractions unless they reduce complexity.
-
-#### 2) Readability wins
-- Prefer clear code over clever code.
-- Keep functions small and single-purpose.
-- Choose explicit names over short names.
-
-#### 3) Errors & edge cases
-- Validate inputs at boundaries.
-- Fail loudly for programmer errors, gracefully for user errors.
-- Add helpful error messages (actionable, not vague).
-
-#### 4) Logging (if applicable)
-- Log meaningful events, not noise.
-- Never log secrets or personal data.
-
-#### 5) Types / docs (if applicable)
-- Add type hints where it improves clarity.
-- Add docstrings for public functions and tricky logic.
-- Write comments only when the “why” is non-obvious.
-
-#### 6) Dependencies
-- Prefer standard library / existing deps.
-- Avoid adding heavy dependencies for small tasks.
-
+- Match existing naming, formatting, and module boundaries.
+- Prefer direct code and explicit errors over new abstractions.
+- Validate external input at system boundaries.
+- Keep logs free of secrets and personal data.
+- Add types or comments where they clarify a public or non-obvious contract.
+- Reuse current dependencies unless a new one materially reduces complexity.
