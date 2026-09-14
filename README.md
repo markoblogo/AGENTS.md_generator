@@ -132,3 +132,11 @@ and expected/actual output. Remove secrets before sharing a fixture.
 
 Contributor setup: `python3 -m venv .venv`, activate it, then `pip install -e ".[dev]"`.
 Run `pytest -q`, `ruff check .`, `ruff format --check .`, and `mypy src`.
+
+<!-- ABVX:ECOSYSTEM:BEGIN -->
+## ABVX ecosystem
+
+This project is listed in the [ABVX ecosystem](https://abvx.xyz/systems).
+
+_This block is generated from the reviewed ABVX ecosystem registry._
+<!-- ABVX:ECOSYSTEM:END -->
