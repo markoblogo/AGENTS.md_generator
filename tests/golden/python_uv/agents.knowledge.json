@@ -11,7 +11,7 @@
     },
     {
       "path": "AGENTS.md",
-      "size": 4080,
+      "size": 4544,
       "language": "markdown",
       "symbols_count": 0
     },
@@ -134,9 +134,9 @@
   "relevance": [
     {
       "path": "AGENTS.md",
-      "score": 2,
+      "score": 3,
       "signals": [
-        "size:4080"
+        "size:4544"
       ],
       "distance_from_entrypoint": null,
       "changed": false,

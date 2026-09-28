@@ -41,11 +41,12 @@ This file is for coding agents (Codex/Claude/Cursor/etc.). Keep it strict and ac
 <!-- AGENTSGEN:START section=workflow -->
 ### Workflow
 
-1. Read the nearest instructions and reproduce the current behavior.
-2. Implement the smallest coherent change and keep generated output reviewable.
-3. Run the narrowest useful check, then the full project checks before finalizing.
-4. Update docs and contracts when behavior changes.
-5. Report changed behavior, verification, and any material limitation.
+1. Read the nearest instructions; inspect the current worktree and reproduce the behavior before editing.
+2. Isolate work when changes overlap or run concurrently; otherwise keep the workflow lightweight and preserve existing user changes.
+3. Implement the smallest coherent change. Reuse a service layer for genuinely shared mechanics; avoid speculative abstractions.
+4. Verify the changed behavior with the narrowest useful evidence, then run broader checks appropriate to the change. For visual changes, compare the same important view/state before and after when feasible.
+5. Update docs and contracts when behavior changes; distinguish local checks from CI, deployment, and release status.
+6. Report what changed, what evidence passed, and any material limitation. Do not commit, push, or deploy unless requested.
 <!-- AGENTSGEN:END section=workflow -->
 
 <!-- AGENTSGEN:START section=verification -->
