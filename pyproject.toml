@@ -51,7 +51,7 @@ dev = [
   "ruff==0.16.7"
 ]
 llm = [
-  "openai>=1.35,<4",
+  "openai>=3.9.0,<4",
   "anthropic>=0.34,<2",
 ]
 mcp = [
