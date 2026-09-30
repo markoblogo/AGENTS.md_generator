@@ -99,5 +99,5 @@ package-dir = {"" = "src"}
 agentsgen = ["templates/**/*.tpl", "templates/**/*.md", "templates/**/*.j2", "presets/*.agentsgen.json"]
 
 [build-system]
-requires = ["setuptools>=68", "wheel"]
+requires = ["setuptools>=84.0.0", "wheel"]
 build-backend = "setuptools.build_meta"
