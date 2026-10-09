@@ -50,6 +50,8 @@ The JSON report identifies the missing script and asks you to review
 Three [reproducible demos](demo/README.md) cover handwritten preservation,
 stale-command detection, and repeatable setup without a README.
 
+For a reader-facing walkthrough, see the [AGENTS.md Generator worked example](https://abvx.xyz/work/agents-md-generator?utm_source=github&utm_medium=readme&utm_campaign=abvx_guides_2026_10&utm_content=agentsgen) on ABVX, including the fixture results and their limits.
+
 ## Safe updates
 
 ```sh
