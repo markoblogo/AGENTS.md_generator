@@ -12,6 +12,18 @@ installable and has a narrow responsibility.
 | [ABVX Agent Skills](https://github.com/markoblogo/abvx-agent-skills) | Reusable task workflows | Opt in per task; no agentsgen runtime dependency |
 | [Git Tweet](https://github.com/markoblogo/git-tweet) | Release-to-social publishing | Consumes a published GitHub Release downstream; no source-code coupling |
 
+## Optional video-production companion
+
+[Framewright](https://github.com/markoblogo/framewright) provides a video workflow
+router, production recipes and experiment evidence. agentsgen supplies lean
+repository context around the selected video project; it does not generate video,
+install the renderer or authorise publishing. Keep large media and models outside
+Git, and keep product-specific commands in the project's own context.
+
+Framewright stays independently installable, like the optional skill library.
+Its router is `structural_only`; no combined agentsgen-to-video execution test is
+claimed. See [its ecosystem contract](https://github.com/markoblogo/framewright/blob/main/docs/ecosystem.md).
+
 ## Recommended flow
 
 1. Use agentsgen to generate and verify lean repository context.
