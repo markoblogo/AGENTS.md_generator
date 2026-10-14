@@ -122,6 +122,10 @@ workflows; it is not installed or required by this CLI.
 `docs/ai/id-context.json` as the explicit bridge. [Git Tweet](https://github.com/markoblogo/git-tweet)
 can publish a completed GitHub Release downstream; it is not part of generation or CI.
 
+[Framewright](https://github.com/markoblogo/framewright) adds an optional video
+methods and evidence layer for project promos and book trailers. It uses repo
+context without becoming an agentsgen runtime dependency; see the integration guide above.
+
 ## Documentation and contributions
 
 - [CLI and experimental features](docs/cli-reference.md): fleet, repo maps, MCP, proof artifacts, reflection and exports.
